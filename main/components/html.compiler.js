@@ -1,6 +1,7 @@
 import { join } from './join.js'
 
 const tagChange = (variableName, trueValue, value, dataID) => {
+    value = typeof value === 'object' ? JSON.stringify(value) : value
     return `<v dependency="${variableName}" true-value="${trueValue}" ${dataID}>${value}</v>`
 }
 

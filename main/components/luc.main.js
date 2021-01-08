@@ -27,5 +27,4 @@ export class Luc {
             this.state[variableName] = setValue[variableName]
         }
     }
-
 }
