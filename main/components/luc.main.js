@@ -19,4 +19,13 @@ export class Luc {
     $compileAgain () {
         compiler(document.body, this.state, this.changes, this.dataID)
     }
+
+    $setState (setValue) {
+        setValue = (typeof setValue === 'function' ? setValue() : setValue)
+
+        for (const variableName in setValue) {
+            this.state[variableName] = setValue[variableName]
+        }
+    }
+
 }
