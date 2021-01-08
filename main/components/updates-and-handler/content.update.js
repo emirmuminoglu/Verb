@@ -5,7 +5,7 @@ export const contentUpdate = (template, state, changes, dataID, doItByForce = fa
         if (element.getAttribute(dataID) !== null) {
             const variableName = element.getAttribute('dependency')
             const trueValue = element.getAttribute('true-value')
-            const joinResult = join(state, changes, variableName)
+            const joinResult = join(state, changes, variableName.trim())
 
             if (doItByForce) {
                 element.innerText = joinResult.changeValue

@@ -1,5 +1,5 @@
 import { compiler } from './html.compiler.js'
-import { contentUpdate } from './updates/distribution.js'
+import { contentUpdate, attributeHandler } from './updates-and-handler/distribution.js'
 
 export class Luc {
     constructor (dataID, { state = {}, changes = {} }) {
@@ -13,6 +13,7 @@ export class Luc {
 
     $update (doItByForce) {
         contentUpdate(this.tempalte, this.state, this.changes, this.dataID, doItByForce)
+        attributeHandler(this.tempalte, this.state, this.changes)
     }
 
     $compileAgain () {

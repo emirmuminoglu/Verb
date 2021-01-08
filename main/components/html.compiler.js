@@ -26,8 +26,8 @@ export const compiler = (template, state, changes, dataID) => {
                 }
             }
 
-            const variableName = template.innerText.slice(position.start, position.end).trim()
-            const joinResult = join(state, changes, variableName)
+            const variableName = template.innerText.slice(position.start, position.end)
+            const joinResult = join(state, changes, variableName.trim())
 
             template.innerHTML = template.innerHTML.replace(`{{${variableName}}}`, tagChange(variableName, joinResult.trueValue, joinResult.changeValue, dataID))
         }
