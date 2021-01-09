@@ -25,6 +25,8 @@ export class Luc {
 
     $compileAgain () {
         compiler(document.body, this.state, this.changes, this.dataID)
+
+        return {$update: this.$update}
     }
 
     $setState (setValue) {
@@ -33,5 +35,8 @@ export class Luc {
         for (const variableName in setValue) {
             this.state[variableName] = setValue[variableName]
         }
+
+        this.$compileAgain()
+        this.$update()
     }
 }

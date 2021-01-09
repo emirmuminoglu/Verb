@@ -11,7 +11,9 @@ const setAttribute = (element, attributeList) => {
 
 const clearAttribute = (element, attributeList) => {
     attributeList.map(attributeName => {
-        element.setAttribute(attributeName, (element.getAttribute(attributeName).replace(element.getAttribute(`@view-${attributeName}`), '')).trim())
+        if (element.getAttribute(attributeName) !== null) {
+            element.setAttribute(attributeName, (element.getAttribute(attributeName).replace(element.getAttribute(`@view-${attributeName}`), '')).trim())
+        }
     })
 }
 
