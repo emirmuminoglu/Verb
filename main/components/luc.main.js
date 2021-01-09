@@ -1,5 +1,6 @@
 import { compiler } from './html.compiler.js'
 import { contentUpdate, attributeHandler } from './updates-and-handler/distribution.js'
+import { view } from './dynamic-tag-operations/distribution.js'
 
 export class Luc {
     constructor (dataID, { state = {}, changes = {} }) {
@@ -8,12 +9,18 @@ export class Luc {
         this.state = state
         this.changes = changes
 
+        this.first()
+    }
+
+    first () {
         this.$compileAgain()
+        this.$update()
     }
 
     $update (doItByForce) {
         contentUpdate(this.tempalte, this.state, this.changes, this.dataID, doItByForce)
         attributeHandler(this.tempalte, this.state, this.changes)
+        view(this.tempalte, this.state)
     }
 
     $compileAgain () {
