@@ -5,32 +5,32 @@ const tagChange = (variableName, trueValue, value, dataID) => {
     return `<v dependency="${variableName}" true-value="${trueValue}" ${dataID}>${value}</v>`
 }
 
-export const compiler = (template, state, changes, dataID) => {
-    const length = template.innerText.length
+const getLength = (template = document.body) => {
+    return template.innerHTML.length
+}
 
-    for (let start = 0; start < length; start++) {
-        const position = {}
-        const first = template.innerText[start]
-        const last = template.innerText[(start + 1)]
+export const compiler = async (template, state, changes, dataID) => {
+    const position = {start: '', end: ''}
+
+    for (let start = 0; start < await getLength(); start++) {
+        const first = template.innerHTML[start]
+        const last = template.innerHTML[(start + 1)]
 
         if (first === '{' && last === '{') {
-            position.start = Number(start + 2)
-
-            for (let finish = start; finish < length; finish++) {
-                const first = template.innerText[finish]
-                const last = template.innerText[(finish + 1)]
-
+            for (let finish = start; finish < await getLength(); finish++) {
+                const first = template.innerHTML[finish]
+                const last = template.innerHTML[(finish + 1)]
+                
                 if (first === '}' && last === '}') {
+                    position.start = await new Number(start + 2)
                     position.end = finish
-
-                    break
+                    
+                    const variableName = await template.innerHTML.slice(position.start, position.end)
+                    const joinResult = await join(state, changes, variableName.trim())
+                    
+                    template.innerHTML = await template.innerHTML.replace(`{{${variableName}}}`, tagChange(variableName, joinResult.trueValue, joinResult.changeValue, dataID))
                 }
             }
-
-            const variableName = template.innerText.slice(position.start, position.end)
-            const joinResult = join(state, changes, variableName.trim())
-
-            template.innerHTML = template.innerHTML.replace(`{{${variableName}}}`, tagChange(variableName, joinResult.trueValue, joinResult.changeValue, dataID))
         }
     }
 }
