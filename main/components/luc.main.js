@@ -31,12 +31,15 @@ export class Luc {
 
     $setState (setValue) {
         setValue = (typeof setValue === 'function' ? setValue() : setValue)
+        const variables = {}
 
         for (const variableName in setValue) {
             this.state[variableName] = setValue[variableName]
+            variables[variableName] = setValue[variableName]
         }
 
-        this.$compileAgain()
         this.$update()
+
+        return variables
     }
 }
