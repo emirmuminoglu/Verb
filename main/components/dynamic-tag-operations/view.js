@@ -19,13 +19,14 @@ const clearAttribute = (element, attributeList) => {
 
 export const view = (template, state) => {
     template.querySelectorAll('*').forEach(element => {
-        const attributeList = []
         let view = element.getAttribute('@view')
-        element.getAttributeNames().map(name => name.includes('@view-') ? attributeList.push(name.replace('@view-', '')) : null)
-        
+
         if (view !== null) {
+            const attributeList = []
+            element.getAttributeNames().map(name => name.includes('@view-') ? attributeList.push(name.replace('@view-', '')) : null)
+        
             if (eval(view)) {
-                element.style.display = 'unset'
+                element.style.display = ''
                 setAttribute(element, attributeList)
             } else {
                 element.style.display = 'none'

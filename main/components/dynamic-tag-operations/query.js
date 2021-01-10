@@ -22,7 +22,7 @@ export const query = (template, state) => {
             if (eval(start)) {
                 root.style.display = ''
 
-                for (let i = 0; i !== tree; i++ ) {
+                for (let i = 0; i !== tree; i++) {
                     root = root.nextElementSibling
 
                     root.style.display = 'none'
@@ -30,14 +30,14 @@ export const query = (template, state) => {
             } else {
                 let resetRoot = root
 
-                for (let i = 0; i !== tree; i++ ) {
+                for (let i = 0; i !== tree; i++) {
                     resetRoot.style.display = 'none'
                     
                     resetRoot = resetRoot.nextElementSibling
                     resetRoot.style.display = 'none'
                 }
 
-                for (let i = 0; i !== tree; i++ ) {
+                for (let i = 0; i !== tree; i++) {
                     root = root.nextElementSibling
                     const query = getQueryValue(root)
 

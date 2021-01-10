@@ -15,6 +15,7 @@ export class Luc {
 
     first () {
         tools.map(tool => this[tool.name] = (ID) => tool(this.tempalte, ID))
+
         this.$compileAgain()
         this.$update()
     }
@@ -27,9 +28,9 @@ export class Luc {
     }
 
     $compileAgain () {
-        compiler(document.body, this.state, this.changes, this.dataID)
+        compiler(this.tempalte, this.state, this.changes, this.dataID)
 
-        return {$update: this.$update}
+        return {$update: (doItByForce) => this.$update(doItByForce)}
     }
 
     $setState (setValue) {

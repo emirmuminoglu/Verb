@@ -15,7 +15,6 @@ export const attributeHandler = (template, state, changes) => {
                     const newValue = elementValue.split(' ')
                     newValue[(newValue.length - 1)] = joinResult.changeValue
                     element.setAttribute(attributeName, newValue.join(' '))
-
                 } else {
                     element.setAttribute('processed', '')
                     element.setAttribute(attributeName, (elementValue + ' ' + joinResult.changeValue))
