@@ -20,7 +20,7 @@ export const query = (template, state) => {
 
         if (start !== null) {
             if (eval(start)) {
-                root.style.display = 'unset'
+                root.style.display = ''
 
                 for (let i = 0; i !== tree; i++ ) {
                     root = root.nextElementSibling
@@ -42,7 +42,7 @@ export const query = (template, state) => {
                     const query = getQueryValue(root)
 
                     if (eval(query)) {
-                        root.style.display = 'unset'
+                        root.style.display = ''
 
                         break
                     }

@@ -1,6 +1,7 @@
 import { compiler } from './html.compiler.js'
 import { contentUpdate, attributeHandler } from './updates-and-handler/distribution.js'
 import { view, query } from './dynamic-tag-operations/distribution.js'
+import tools from './tools.js'
 
 export class Luc {
     constructor (dataID, { state = {}, changes = {} }) {
@@ -13,6 +14,7 @@ export class Luc {
     }
 
     first () {
+        tools.map(tool => this[tool.name] = (ID) => tool(this.tempalte, ID))
         this.$compileAgain()
         this.$update()
     }
