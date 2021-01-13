@@ -3,7 +3,7 @@ import { contentUpdate, attributeHandler } from './updates-and-handler/distribut
 import { view, query } from './dynamic-tag-operations/distribution.js'
 import Tools from './tools.js'
 
-export class LucComponent {
+export class createComponent {
     constructor ({
         id,
         html,
@@ -85,10 +85,10 @@ export class LucComponent {
         }
     }
 
-    $render (prop, dataID) {
+    async $render (prop, dataID) {
         this.props = prop
         this.state = this.stateConsumer(prop)
-        this.template = this.html(prop, this.state)
+        this.template = await this.html(prop, this.state)
         this.methodsConsumer = this.methods(prop, this.state)
         this.eventsConsumer = this.events(prop, this.state)
         this.changesConsumer = this.changes(prop, this.state)

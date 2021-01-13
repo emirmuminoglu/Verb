@@ -4,9 +4,9 @@ import { view, query } from './dynamic-tag-operations/distribution.js'
 import Tools from './tools.js'
 
 export class Luc {
-    constructor (dataID, { state = {}, changes = {} }) {
+    constructor (template, dataID, { state = {}, changes = {} }) {
         this.dataID = dataID
-        this.template = document.body
+        this.template = template
         this.state = state
         this.changes = changes
 

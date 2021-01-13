@@ -1,4 +1,4 @@
-const $get = (template, ID = 'undefined') => {
+const $get = (template, ID = '') => {
     if (ID !== '') {
         if (template.querySelector(ID) !== null) {
             return template.querySelector(ID)
@@ -10,7 +10,7 @@ const $get = (template, ID = 'undefined') => {
     }
 }
 
-const $getAll = (template, ID = 'undefined') => {
+const $getAll = (template, ID = '') => {
     if (ID !== '') {
         if (template.querySelector(ID) !== null) {
             return template.querySelectorAll(ID)

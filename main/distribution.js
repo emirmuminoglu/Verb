@@ -1,4 +1,5 @@
 import { Luc } from './components/luc.main.js'
-import { LucComponent } from './components/component.js'
+import { createComponent } from './components/component.js'
+import { getHTML } from './components/get-html.js'
 
-export { Luc, LucComponent }
+export { Luc, createComponent, getHTML }
