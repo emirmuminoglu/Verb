@@ -4,7 +4,15 @@ import { view, query } from './dynamic-tag-operations/distribution.js'
 import Tools from './tools.js'
 
 export class LucComponent {
-    constructor ({ id, html, state = () => {return {}}, methods = {}, events = {}, changes = {}, created = () => {} }) {
+    constructor ({
+        id,
+        html,
+        state = () => ({}),
+        methods = () => ({}),
+        events = () => ({}),
+        changes = () => ({}),
+        created = () => {}
+    }) {
         this.template = ''
         this.ID = id
         this.html = html
@@ -15,6 +23,9 @@ export class LucComponent {
         this.props = {}
         this.methods = methods
         this.created = created
+        this.content = {
+            state: this.state
+        }
     }
 
     $template (tagName, attributes, inner) {
@@ -40,14 +51,14 @@ export class LucComponent {
     }
 
     $update (doItByForce) {
-        contentUpdate(this.template, this.state, this.changes, this.dataID, doItByForce)
-        attributeHandler(this.template, this.state, this.changes, this.dataID)
+        contentUpdate(this.template, this.state, this.changesConsumer, this.dataID, doItByForce)
+        attributeHandler(this.template, this.state, this.changesConsumer, this.dataID)
         view(this.template, this.state, this.dataID)
         query(this.template, this.state, this.dataID)
     }
 
     $compileAgain () {
-        compiler(this.template, this.state, this.changes, this.dataID)
+        compiler(this.template, this.state, this.changesConsumer, this.dataID)
 
         this.$update()
 
@@ -55,9 +66,9 @@ export class LucComponent {
     }
 
     eventHandler (prop) {
-        for (const name in this.events) {
+        for (const name in this.eventsConsumer) {
             const eventName = name.slice((name.indexOf('[') + 1), name.indexOf(']')).trim()
-            const event = this.events[name]
+            const event = this.eventsConsumer[name]
             const id = name.slice(0, name.indexOf('[')).trim()
             const additionalProcessing = name.slice((name.indexOf('(') + 1), name.indexOf(')'))
             const additionalProcessingMode = name.includes('(')
@@ -78,12 +89,15 @@ export class LucComponent {
         this.props = prop
         this.state = this.stateConsumer(prop)
         this.template = this.html(prop, this.state)
+        this.methodsConsumer = this.methods(prop, this.state)
+        this.eventsConsumer = this.events(prop, this.state)
+        this.changesConsumer = this.changes(prop, this.state)
         this.dataID = dataID
-        
+
         document.querySelectorAll(this.ID).forEach(e => e.appendChild(this.template))
         
         this.first(prop, dataID)
-        this.created({content: this})
+        this.created(prop, this.state)
     }
 
     $setState (setValue) {
