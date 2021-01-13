@@ -12,39 +12,41 @@ const getQueryValue = (element) => {
     }
 }
 
-export const query = (template, state) => {
+export const query = (template, state, dataID) => {
     template.querySelectorAll('*').forEach(element => {
-        const tree = Number(element.getAttribute('@tree') === null || '' ? 0 : element.getAttribute('@tree'))
-        const start = element.getAttribute('@if')
-        let root = element
+        if (element.getAttribute(dataID) !== null) {
+            const tree = Number(element.getAttribute('@tree') === null || '' ? 0 : element.getAttribute('@tree'))
+            const start = element.getAttribute('@if')
+            let root = element
+        
+            if (start !== null) {
+                if (eval(start)) {
+                    root.style.display = ''
 
-        if (start !== null) {
-            if (eval(start)) {
-                root.style.display = ''
+                    for (let i = 0; i !== tree; i++) {
+                        root = root.nextElementSibling
 
-                for (let i = 0; i !== tree; i++) {
-                    root = root.nextElementSibling
+                        root.style.display = 'none'
+                    }
+                } else {
+                    let resetRoot = root
 
-                    root.style.display = 'none'
-                }
-            } else {
-                let resetRoot = root
-
-                for (let i = 0; i !== tree; i++) {
-                    resetRoot.style.display = 'none'
+                    for (let i = 0; i !== tree; i++) {
+                        resetRoot.style.display = 'none'
                     
-                    resetRoot = resetRoot.nextElementSibling
-                    resetRoot.style.display = 'none'
-                }
+                        resetRoot = resetRoot.nextElementSibling
+                        resetRoot.style.display = 'none'
+                    }
 
-                for (let i = 0; i !== tree; i++) {
-                    root = root.nextElementSibling
-                    const query = getQueryValue(root)
+                    for (let i = 0; i !== tree; i++) {
+                        root = root.nextElementSibling
+                        const query = getQueryValue(root)
 
-                    if (eval(query)) {
-                        root.style.display = ''
+                        if (eval(query)) {
+                            root.style.display = ''
 
-                        break
+                            break
+                        }
                     }
                 }
             }

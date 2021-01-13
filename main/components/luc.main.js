@@ -1,12 +1,12 @@
 import { compiler } from './html.compiler.js'
 import { contentUpdate, attributeHandler } from './updates-and-handler/distribution.js'
 import { view, query } from './dynamic-tag-operations/distribution.js'
-import tools from './tools.js'
+import Tools from './tools.js'
 
 export class Luc {
     constructor (dataID, { state = {}, changes = {} }) {
         this.dataID = dataID
-        this.tempalte = document.body
+        this.template = document.body
         this.state = state
         this.changes = changes
 
@@ -14,21 +14,21 @@ export class Luc {
     }
 
     first () {
-        tools.map(tool => this[tool.name] = (ID) => tool(this.tempalte, ID))
+        Tools.map(tool => this[tool.name] = (ID) => tool(this.template, ID))
 
         this.$compileAgain()
         this.$update()
     }
 
     $update (doItByForce) {
-        contentUpdate(this.tempalte, this.state, this.changes, this.dataID, doItByForce)
-        attributeHandler(this.tempalte, this.state, this.changes)
-        view(this.tempalte, this.state)
-        query(this.tempalte, this.state)
+        contentUpdate(this.template, this.state, this.changes, this.dataID, doItByForce)
+        attributeHandler(this.template, this.state, this.changes, this.dataID)
+        view(this.template, this.state, this.dataID)
+        query(this.template, this.state)
     }
 
     $compileAgain () {
-        compiler(this.tempalte, this.state, this.changes, this.dataID)
+        compiler(this.template, this.state, this.changes, this.dataID)
 
         return {$update: (doItByForce) => this.$update(doItByForce)}
     }

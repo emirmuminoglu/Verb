@@ -17,20 +17,22 @@ const clearAttribute = (element, attributeList) => {
     })
 }
 
-export const view = (template, state) => {
+export const view = (template, state, dataID) => {
     template.querySelectorAll('*').forEach(element => {
-        let view = element.getAttribute('@view')
-
-        if (view !== null) {
-            const attributeList = []
-            element.getAttributeNames().map(name => name.includes('@view-') ? attributeList.push(name.replace('@view-', '')) : null)
-        
-            if (eval(view)) {
-                element.style.display = ''
-                setAttribute(element, attributeList)
-            } else {
-                element.style.display = 'none'
-                clearAttribute(element, attributeList)
+        if (element.getAttribute(dataID) !== null) {
+            let view = element.getAttribute('@view')
+            
+            if (view !== null) {
+                const attributeList = []
+                element.getAttributeNames().map(name => name.includes('@view-') ? attributeList.push(name.replace('@view-', '')) : null)
+                
+                if (eval(view)) {
+                    element.style.display = ''
+                    setAttribute(element, attributeList)
+                } else {
+                    element.style.display = 'none'
+                    clearAttribute(element, attributeList)
+                }
             }
         }
     })
