@@ -16,6 +16,10 @@ export class Luc {
     first () {
         Tools.map(tool => this[tool.name] = (ID) => tool(this.template, ID))
 
+        this.template.querySelectorAll('*').forEach(element => {
+            element.setAttribute(this.dataID, '')
+        })
+
         this.$update()
         this.$compileAgain()
     }
@@ -25,7 +29,7 @@ export class Luc {
         attributeHandler(this.template, this.state, this.changes, this.dataID)
         view(this.template, this.state, this.dataID)
         query(this.template, this.state)
-        loop(this.template, this.state, this.changes)
+        loop(this.template, this.state, this.changes, this.dataID)
     }
     
     $compileAgain () {

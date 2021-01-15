@@ -1,6 +1,6 @@
 import { compiler } from './html.compiler.js'
 import { contentUpdate, attributeHandler } from './updates-and-handler/distribution.js'
-import { view, query } from './dynamic-tag-operations/distribution.js'
+import { view, query, loop } from './dynamic-tag-operations/distribution.js'
 import Tools from './tools.js'
 
 export class createComponent {
@@ -18,8 +18,9 @@ export class createComponent {
         this.html = html
         this.events = events
         this.stateConsumer = state
+        this.changesConsumer = changes
+        this.changes = {}
         this.state = {}
-        this.changes = changes
         this.props = {}
         this.methods = methods
         this.created = created
@@ -45,20 +46,21 @@ export class createComponent {
 
         Tools.map(tool => this[tool.name] = (ID) => tool(this.template, ID))
 
-        this.$compileAgain()
         this.$update(dataID)
+        this.$compileAgain()
         this.eventHandler(prop)
     }
 
     $update (doItByForce) {
-        contentUpdate(this.template, this.state, this.changesConsumer, this.dataID, doItByForce)
-        attributeHandler(this.template, this.state, this.changesConsumer, this.dataID)
+        contentUpdate(this.template, this.state, this.changes, this.dataID, doItByForce)
+        attributeHandler(this.template, this.state, this.chanchangesgesConsumer, this.dataID)
         view(this.template, this.state, this.dataID)
         query(this.template, this.state, this.dataID)
+        loop(this.template, this.state, this.changes, this.dataID)
     }
 
     $compileAgain () {
-        compiler(this.template, this.state, this.changesConsumer, this.dataID)
+        compiler(this.template, this.state, this.changes, this.dataID)
 
         this.$update()
 
@@ -91,7 +93,7 @@ export class createComponent {
         this.template = await this.html(prop, this.state)
         this.methodsConsumer = this.methods(prop, this.state)
         this.eventsConsumer = this.events(prop, this.state)
-        this.changesConsumer = this.changes(prop, this.state)
+        this.changes = this.changesConsumer(prop, this.state)
         this.dataID = dataID
 
         document.querySelectorAll(this.ID).forEach(e => e.appendChild(this.template))
