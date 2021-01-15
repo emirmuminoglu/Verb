@@ -35,13 +35,12 @@ const $addEvent = (template, ID = '', eventName = 'click', event = () => {}) => 
     }
 }
 
-const $remove = (template, ID = '' ) => {    
-    if (ID !== '') {        
-            template.querySelector(ID).remove()
+const $remove = (template, ID = '') => {
+    if (ID !== '') {
+        return template.querySelector(ID).remove()
     } else {
         console.error('(LucJS Error): ID parameter cannot be left blank in ($remove) method.')
     }
-
 }
 
 export default [$get, $getAll, $addEvent, $remove]
