@@ -1,6 +1,6 @@
 import { compiler } from './html.compiler.js'
 import { contentUpdate, attributeHandler } from './updates-and-handler/distribution.js'
-import { view, query } from './dynamic-tag-operations/distribution.js'
+import { view, query, loop } from './dynamic-tag-operations/distribution.js'
 import Tools from './tools.js'
 
 export class Luc {
@@ -16,8 +16,8 @@ export class Luc {
     first () {
         Tools.map(tool => this[tool.name] = (ID) => tool(this.template, ID))
 
-        this.$compileAgain()
         this.$update()
+        this.$compileAgain()
     }
 
     $update (doItByForce) {
@@ -25,8 +25,9 @@ export class Luc {
         attributeHandler(this.template, this.state, this.changes, this.dataID)
         view(this.template, this.state, this.dataID)
         query(this.template, this.state)
+        loop(this.template, this.state, this.changes)
     }
-
+    
     $compileAgain () {
         compiler(this.template, this.state, this.changes, this.dataID)
 

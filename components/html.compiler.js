@@ -5,7 +5,7 @@ const tagChange = (variableName, trueValue, value, dataID) => {
     return `<v dependency="${variableName}" true-value="${trueValue}" ${dataID}>${value}</v>`
 }
 
-export const compiler = async (template, state, changes, dataID) => {
+export const compiler = (template, state, changes, dataID) => {
     for (let i = 0; i < template.innerHTML.length; i++) {
         const start = (template.innerText.indexOf('{{') + 2)
         const end = template.innerText.indexOf('}}')
@@ -13,10 +13,13 @@ export const compiler = async (template, state, changes, dataID) => {
         if (start !== -1 && end !== -1) {
             const variableName = template.innerText.slice(start, end)
             const joinResult = join(state, changes, variableName)
+            console.log('return content:', variableName, state)
             
             template.innerHTML = template.innerHTML.replace(`{{${variableName}}}`,
                 tagChange(variableName, joinResult.trueValue, joinResult.changeValue, dataID)
             )
         }
     }
+
+    return template
 }
