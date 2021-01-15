@@ -14,7 +14,7 @@ export class Luc {
     }
 
     first () {
-        Tools.map(tool => this[tool.name] = (ID) => tool(this.template, ID))
+        Tools.map(tool => this[tool.name] = (ID, param1, param2) => tool(this.template, ID, param1, param2))
 
         this.template.querySelectorAll('*').forEach(element => {
             element.setAttribute(this.dataID, '')

@@ -6,7 +6,7 @@ const $get = (template, ID = '') => {
             return 'undefined'
         }
     } else {
-        console.error('(LucJS Error): ID parameter cannot be left blank in ($Get) method.')
+        console.error('(LucJS Error): ID parameter cannot be left blank in ($get) method.')
     }
 }
 
@@ -18,8 +18,22 @@ const $getAll = (template, ID = '') => {
             return 'undefined'
         }
     } else {
-        console.error('(LucJS Error): ID parameter cannot be left blank in ($Get) method.')
+        console.error('(LucJS Error): ID parameter cannot be left blank in ($getAll) method.')
     }
 }
 
-export default [$get, $getAll]
+const $addEvent = (template, ID = '', eventName = 'click', event = () => {}) => {
+    const el = template.querySelector(ID)
+    if (ID !== '') {
+        if (el !== null) {
+            console.log(template, ID, eventName, event)
+            template.querySelector(ID).addEventListener(eventName, () => event(el))
+        } else {
+            return 'undefined'
+        }
+    } else {
+        console.error('(LucJS Error): ID parameter cannot be left blank in ($addEvent) method.')
+    }
+}
+
+export default [$get, $getAll, $addEvent]
