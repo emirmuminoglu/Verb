@@ -52,11 +52,11 @@ export class createComponent {
     }
 
     $update (doItByForce) {
+        loop(this.template, this.state, this.changes, this.dataID)
         contentUpdate(this.template, this.state, this.changes, this.dataID, doItByForce)
         attributeHandler(this.template, this.state, this.chanchangesgesConsumer, this.dataID)
         view(this.template, this.state, this.dataID)
         query(this.template, this.state, this.dataID)
-        loop(this.template, this.state, this.changes, this.dataID)
     }
 
     $compileAgain () {
