@@ -19,6 +19,16 @@ export class Luc {
         this.$compileAgain()
     }
 
+    $use (name, useItem) {
+        if (window.luc === undefined) {
+            window.luc = {}
+        }
+
+        window.luc[name] = useItem
+
+        console.log(window.luc)
+    }
+
     $update (doItByForce) {
         loop(this.template, this.state, this.changes, this.dataID)
         contentUpdate(this.template, this.state, this.changes, this.dataID, doItByForce)
