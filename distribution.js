@@ -1,4 +1,4 @@
-import { Luc } from './components/luc.main.js'
+import { Luc } from './components/luc.js'
 import { createComponent } from './components/component.js'
 import { getTemplate } from './components/get.template.js'
 import { tools } from './components/tools.js'
