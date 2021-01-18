@@ -1,4 +1,4 @@
-import { compiler } from '../html.compiler.js'
+import { compiler } from '../compiler.js'
 import { join } from '../join.js'
 
 export const loop = (template, state, changes, dataID) => {
