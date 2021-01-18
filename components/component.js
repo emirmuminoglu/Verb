@@ -24,9 +24,14 @@ export class createComponent {
         this.props = {}
         this.methods = methods
         this.created = created
-        this.content = {
-            state: this.state
-        }
+
+        this.template.querySelectorAll('*').forEach(element => element.setAttribute(dataID, ''))
+
+        Tools.map(tool => this[tool.name] = (ID) => tool(this.template, ID))
+
+        this.$update(dataID)
+        this.$compileAgain()
+        this.eventHandler(prop)
     }
 
     $template (tagName, attributes, inner) {
@@ -39,16 +44,6 @@ export class createComponent {
         template.innerHTML = inner
 
         return template
-    }
-
-    first (prop, dataID) {
-        this.template.querySelectorAll('*').forEach(element => element.setAttribute(dataID, ''))
-
-        Tools.map(tool => this[tool.name] = (ID) => tool(this.template, ID))
-
-        this.$update(dataID)
-        this.$compileAgain()
-        this.eventHandler(prop)
     }
 
     $update (doItByForce) {
