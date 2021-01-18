@@ -6,7 +6,7 @@ import { systemTools } from './tools.js'
 
 export class createComponent {
     constructor ({
-        id,
+        root,
         html,
         state = () => ({}),
         methods = () => ({}),
@@ -15,7 +15,7 @@ export class createComponent {
         created = () => {}
     } = {}) {
         this.template = ''
-        this.ID = id
+        this.root = root
         this.html = html
         this.events = events
         this.stateConsumer = state
@@ -96,7 +96,7 @@ export class createComponent {
         this.dataID = dataID
         this.first(prop, dataID)
 
-        document.querySelectorAll(this.ID).forEach(e => e.appendChild(this.template))
+        document.querySelectorAll(this.root).forEach(e => e.appendChild(this.template))
         
         this.created(prop, this.state)
     }
