@@ -5,10 +5,10 @@ export const attributeHandler = (template, state, changes, dataID) => {
         if (element.getAttribute(dataID) !== null) {
             element.getAttributeNames().map(attributeText => {
                 if (attributeText.includes('&') && attributeText !== '&change') {
-                    const attributeName = attributeText.replace('&', '')
+                    const attributeName = attributeText.replace('&', '').trim()
                     const variableName = element.getAttribute(attributeText)
                     const changeMode = element.getAttribute('&change')
-                    const elementValue = element.getAttribute(attributeName) !== null ? element.getAttribute(attributeName) : ''
+                    const elementValue = element.getAttribute(attributeName.trim()) !== null ? element.getAttribute(attributeName) : ''
                 
                     const joinResult = join(state, changeMode !== null ? changes : {}, variableName)
                 
@@ -20,7 +20,11 @@ export const attributeHandler = (template, state, changes, dataID) => {
                         }
                     } else {
                         element.setAttribute('processed', '')
-                        element.setAttribute(attributeName, (elementValue + elementValue !== '' ? ' ' : '' + joinResult.changeValue))
+                        element.setAttribute(attributeName, (
+                            elementValue + (
+                                elementValue === '' ? '' : ' '
+                            ) + joinResult.changeValue)
+                        )
                     }
                 }
             })
