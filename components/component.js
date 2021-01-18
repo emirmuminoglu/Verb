@@ -72,7 +72,7 @@ export class createComponent {
             const event = this.eventsConsumer[name]
             const id = name.slice(0, name.indexOf('[')).trim()
             const additionalProcessing = name.slice((name.indexOf('(') + 1), name.indexOf(')'))
-            const additionalProcessingMode = name.includes('(')
+            const additionalProcessingMode = name.includes('($update)') || name.includes('($compileAgain)')
 
             this.template.querySelectorAll(id).forEach(e => {
                 e.addEventListener(eventName, () => {

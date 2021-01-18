@@ -25,8 +25,6 @@ export class Luc {
         }
 
         window.luc[name] = useItem
-
-        console.log(window.luc)
     }
 
     $update (doItByForce) {
