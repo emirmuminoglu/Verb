@@ -2,7 +2,7 @@ import { compiler } from './html.compiler.js'
 import { contentUpdate, attributeHandler } from './updates-and-handler/distribution.js'
 import { view, query, loop } from './dynamic-tag-operations/distribution.js'
 import { createKey } from './create.key.js'
-import Tools from './tools.js'
+import { systemTools } from './tools.js'
 
 export class createComponent {
     constructor ({
@@ -43,7 +43,7 @@ export class createComponent {
         this.template.setAttribute(dataID, '')
         this.template.querySelectorAll('*').forEach(element => element.setAttribute(dataID, ''))
 
-        Tools.map(tool => this[tool.name] = (ID) => tool(this.template, ID))
+        systemTools.map(tool => this[tool.name] = (ID) => tool(this.template, ID))
 
         this.$update(dataID)
         this.$compileAgain()

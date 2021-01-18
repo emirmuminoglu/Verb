@@ -43,4 +43,16 @@ const $remove = (template, ID = '') => {
     }
 }
 
-export default [$get, $getAll, $addEvent, $remove]
+// for system
+export const systemTools =  [$get, $getAll, $addEvent, $remove]
+
+// for users
+// Element of JSON object type
+// as it is more convenient to use
+// exported as tools for users.
+export const tools = {
+    $get: (ID) => $get(document, ID),
+    $getAll: (ID) => $getAll(document, ID),
+    $addEvent: (ID, eventName, event) => $addEvent(document, ID, eventName, event),
+    $remove: (ID) => $remove(document, ID),
+}
