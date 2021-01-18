@@ -1,7 +1,7 @@
 import { compiler } from './html.compiler.js'
 import { contentUpdate, attributeHandler } from './updates-and-handler/distribution.js'
 import { view, query, loop } from './dynamic-tag-operations/distribution.js'
-import { createKey } from './create-key.js'
+import { createKey } from './create.key.js'
 import Tools from './tools.js'
 
 export class Luc {
