@@ -6,7 +6,7 @@ const tagChange = (variableName, trueValue, value, dataID) => {
 }
 
 export const compiler = (template, state, changes, dataID) => {
-    for (let i = 0; i < template.innerHTML.length; i++) {
+    for (let i = 0; i < template.innerText.length; i++) {
         const start = (template.innerText.indexOf('{{') + 2)
         const end = template.innerText.indexOf('}}')
 

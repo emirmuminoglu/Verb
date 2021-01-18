@@ -1,6 +1,7 @@
 import { compiler } from './html.compiler.js'
 import { contentUpdate, attributeHandler } from './updates-and-handler/distribution.js'
 import { view, query, loop } from './dynamic-tag-operations/distribution.js'
+import { createKey } from './create-key.js'
 import Tools from './tools.js'
 
 export class createComponent {
@@ -12,7 +13,7 @@ export class createComponent {
         events = () => ({}),
         changes = () => ({}),
         created = () => {}
-    }) {
+    } = {}) {
         this.template = ''
         this.ID = id
         this.html = html
@@ -24,14 +25,6 @@ export class createComponent {
         this.props = {}
         this.methods = methods
         this.created = created
-
-        this.template.querySelectorAll('*').forEach(element => element.setAttribute(dataID, ''))
-
-        Tools.map(tool => this[tool.name] = (ID) => tool(this.template, ID))
-
-        this.$update(dataID)
-        this.$compileAgain()
-        this.eventHandler(prop)
     }
 
     $template (tagName, attributes, inner) {
@@ -46,6 +39,17 @@ export class createComponent {
         return template
     }
 
+    first (prop, dataID) {
+        this.template.setAttribute(dataID, '')
+        this.template.querySelectorAll('*').forEach(element => element.setAttribute(dataID, ''))
+
+        Tools.map(tool => this[tool.name] = (ID) => tool(this.template, ID))
+
+        this.$update(dataID)
+        this.$compileAgain()
+        this.eventHandler(prop)
+    }
+
     $update (doItByForce) {
         loop(this.template, this.state, this.changes, this.dataID)
         contentUpdate(this.template, this.state, this.changes, this.dataID, doItByForce)
@@ -54,12 +58,12 @@ export class createComponent {
         query(this.template, this.state, this.dataID)
     }
 
-    $compileAgain () {
+    $compileAgain (isUpdate) {
         compiler(this.template, this.state, this.changes, this.dataID)
 
-        this.$update()
-
-        return {$update: (doItByForce) => this.$update(doItByForce)}
+        if (isUpdate) {
+            this.$update()
+        }
     }
 
     eventHandler (prop) {
@@ -82,7 +86,7 @@ export class createComponent {
         }
     }
 
-    async $render (prop, dataID) {
+    async $render (prop, dataID = createKey()) {
         this.props = prop
         this.state = this.stateConsumer(prop)
         this.template = await this.html(prop, this.state)
@@ -90,10 +94,10 @@ export class createComponent {
         this.eventsConsumer = this.events(prop, this.state)
         this.changes = this.changesConsumer(prop, this.state)
         this.dataID = dataID
+        this.first(prop, dataID)
 
         document.querySelectorAll(this.ID).forEach(e => e.appendChild(this.template))
         
-        this.first(prop, dataID)
         this.created(prop, this.state)
     }
 
