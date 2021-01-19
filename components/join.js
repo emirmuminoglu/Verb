@@ -1,6 +1,6 @@
-const changeHandler = (value, changes, variableName) => {
+const changeHandler = async (value, changes, variableName) => {
     if (changes[variableName]) {
-        return changes[variableName](value)
+        return await changes[variableName](value)
     } else {
         return value
     }
