@@ -5,7 +5,7 @@ import BreakPoints from '../settings.js'
 export const loop = (template, state, changes, dataID) => {
     const { dynamicTagBreakPoint } = BreakPoints
 
-    template.querySelectorAll('*').forEach(containerElement => {
+    template.querySelectorAll('*').forEach(async containerElement => {
         const container = containerElement.getAttribute(`${dynamicTagBreakPoint}for-container`)
 
         if (containerElement.getAttribute(dataID) !== null) {
@@ -24,7 +24,7 @@ export const loop = (template, state, changes, dataID) => {
                 if (element.getAttribute(`${dynamicTagBreakPoint}for`) !== null) {
                     const use = _for.slice((_for.indexOf('(') + 1), _for.indexOf(')')).split(',')
                     const listName = _for.split('in')[_for.split('in').length - 1].trim()
-                    const list = join(state, changes, listName).changeValue
+                    const list = await join(state, changes, listName).changeValue
 
                     const distribution = {
                         itemName: use[0].trim(),

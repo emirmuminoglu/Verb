@@ -35,8 +35,8 @@ export class Luc {
         query(this.template, this.state, this.dataID)
     }
     
-    $compileAgain (isUpdate) {
-        compiler(this.template, this.state, this.changes, this.dataID)
+    async $compileAgain (isUpdate) {
+        await compiler(this.template, this.state, this.changes, this.dataID)
 
         if (isUpdate) {
             this.$update()

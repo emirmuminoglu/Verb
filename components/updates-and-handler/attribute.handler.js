@@ -6,14 +6,14 @@ export const attributeHandler = (template, state, changes, dataID) => {
 
     template.querySelectorAll('*').forEach(element => {
         if (element.getAttribute(dataID) !== null) {
-            element.getAttributeNames().map(attributeText => {
+            element.getAttributeNames().map(async attributeText => {
                 if (attributeText.includes(dynamicTagAttributeBreakPoint) && attributeText !== `${dynamicTagAttributeBreakPoint}change`) {
                     const attributeName = attributeText.replace(dynamicTagAttributeBreakPoint, '').trim()
                     const variableName = element.getAttribute(attributeText)
                     const changeMode = element.getAttribute(`${dynamicTagAttributeBreakPoint}change`)
                     const elementValue = element.getAttribute(attributeName.trim()) !== null ? element.getAttribute(attributeName) : ''
                 
-                    const joinResult = join(state, changeMode !== null ? changes : {}, variableName)
+                    const joinResult = await join(state, changeMode !== null ? changes : {}, variableName)
                 
                     if (element.getAttribute('processed') !== null) {
                         if (joinResult.trueValue !== undefined) {

@@ -39,14 +39,14 @@ export class createComponent {
         return template
     }
 
-    first (prop, dataID) {
+    async first (prop, dataID) {
         this.template.setAttribute(dataID, '')
         this.template.querySelectorAll('*').forEach(element => element.setAttribute(dataID, ''))
 
         systemTools.map(tool => this[tool.name] = (ID) => tool(this.template, ID))
 
         this.$update(dataID)
-        this.$compileAgain()
+        await this.$compileAgain()
         this.eventHandler(prop)
     }
 
@@ -58,8 +58,8 @@ export class createComponent {
         query(this.template, this.state, this.dataID)
     }
 
-    $compileAgain (isUpdate) {
-        compiler(this.template, this.state, this.changes, this.dataID)
+    async $compileAgain (isUpdate) {
+        await compiler(this.template, this.state, this.changes, this.dataID)
 
         if (isUpdate) {
             this.$update()

@@ -1,12 +1,12 @@
 const changeHandler = async (value, changes, variableName) => {
     if (changes[variableName]) {
-        return await changes[variableName](value)
+        return await (changes[variableName](value))
     } else {
         return value
     }
 }
 
-export const join = (state, changes, variableName) => {
+export const join = async (state, changes, variableName) => {
     let trueValue
     let changeValue
 
@@ -26,12 +26,13 @@ export const join = (state, changes, variableName) => {
         })
 
         trueValue = output
-        changeValue = changeHandler(output, changes, variableName)
+        await changeHandler(output, changes, variableName).then(res => changeValue = res)
     } else {
         trueValue = state[variableName]
-        changeValue = changeHandler(trueValue, changes, variableName)
-    }
+        await changeHandler(trueValue, changes, variableName).then(res => changeValue = res)
 
+    }
+    
     return {
         trueValue: typeof trueValue === 'object' ? JSON.stringify(trueValue) : trueValue,
         changeValue: typeof changeValue === 'object' ? JSON.stringify(changeValue) : changeValue

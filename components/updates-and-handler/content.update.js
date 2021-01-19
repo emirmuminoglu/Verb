@@ -4,11 +4,11 @@ import BreakPoints from '../settings.js'
 export const contentUpdate = (template, state, changes, dataID, doItByForce = false) => {
     const { variableTagName } = BreakPoints
 
-    template.querySelectorAll(variableTagName).forEach(element => {
+    template.querySelectorAll(variableTagName).forEach(async element => {
         if (element.getAttribute(dataID) !== null) {
             const variableName = element.getAttribute('dependency')
             const trueValue = element.getAttribute('true-value')
-            const joinResult = join(state, changes, variableName.trim())
+            const joinResult = await join(state, changes, variableName.trim())
 
             if (doItByForce) {
                 element.innerText = joinResult.changeValue
