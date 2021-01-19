@@ -1,5 +1,5 @@
-import { view } from './view.js'
+import { show } from './show.js'
 import { query } from './query.js'
 import { loop } from './loop.js'
 
-export { view, query, loop }
+export { show, query, loop }

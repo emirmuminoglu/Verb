@@ -1,5 +1,5 @@
 export const createKey = () => {
-    let defaultKey = 'data-l'
+    let defaultKey = 'data-l-'
     
     for (let i = 0; i < 3; i++) {
         const alphabet = 'abcdefghijklmnoprsjtuvyz'

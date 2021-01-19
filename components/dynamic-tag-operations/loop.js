@@ -1,9 +1,12 @@
 import { compiler } from '../compiler.js'
 import { join } from '../join.js'
+import BreakPoints from '../settings.js'
 
 export const loop = (template, state, changes, dataID) => {
+    const { dynamicTagBreakPoint } = BreakPoints
+
     template.querySelectorAll('*').forEach(containerElement => {
-        const container = containerElement.getAttribute('@for-container')
+        const container = containerElement.getAttribute(`${dynamicTagBreakPoint}for-container`)
 
         if (containerElement.getAttribute(dataID) !== null) {
             if (container !== null) {
@@ -15,10 +18,10 @@ export const loop = (template, state, changes, dataID) => {
 
                 const element = containerElement.children[0]
                 containerElement.innerHTML = ''
-                const _for = element.getAttribute('@for')
-                const key = element.getAttribute('@key')
+                const _for = element.getAttribute(`${dynamicTagBreakPoint}for`)
+                const key = element.getAttribute(`${dynamicTagBreakPoint}key`)
 
-                if (element.getAttribute('@for') !== null) {
+                if (element.getAttribute(`${dynamicTagBreakPoint}for`) !== null) {
                     const use = _for.slice((_for.indexOf('(') + 1), _for.indexOf(')')).split(',')
                     const listName = _for.split('in')[_for.split('in').length - 1].trim()
                     const list = join(state, changes, listName).changeValue

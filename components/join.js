@@ -32,5 +32,8 @@ export const join = (state, changes, variableName) => {
         changeValue = changeHandler(trueValue, changes, variableName)
     }
 
-    return {trueValue, changeValue}
+    return {
+        trueValue: typeof trueValue === 'object' ? JSON.stringify(trueValue) : trueValue,
+        changeValue: typeof changeValue === 'object' ? JSON.stringify(changeValue) : changeValue
+    }
 }

@@ -1,13 +1,16 @@
 import { join } from '../join.js'
+import BreakPoints from '../settings.js'
 
 export const attributeHandler = (template, state, changes, dataID) => {
+    const { dynamicTagAttributeBreakPoint } = BreakPoints
+
     template.querySelectorAll('*').forEach(element => {
         if (element.getAttribute(dataID) !== null) {
             element.getAttributeNames().map(attributeText => {
-                if (attributeText.includes('&') && attributeText !== '&change') {
-                    const attributeName = attributeText.replace('&', '').trim()
+                if (attributeText.includes(dynamicTagAttributeBreakPoint) && attributeText !== `${dynamicTagAttributeBreakPoint}change`) {
+                    const attributeName = attributeText.replace(dynamicTagAttributeBreakPoint, '').trim()
                     const variableName = element.getAttribute(attributeText)
-                    const changeMode = element.getAttribute('&change')
+                    const changeMode = element.getAttribute(`${dynamicTagAttributeBreakPoint}change`)
                     const elementValue = element.getAttribute(attributeName.trim()) !== null ? element.getAttribute(attributeName) : ''
                 
                     const joinResult = join(state, changeMode !== null ? changes : {}, variableName)

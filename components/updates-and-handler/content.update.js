@@ -1,7 +1,10 @@
 import { join } from '../join.js'
+import BreakPoints from '../settings.js'
 
 export const contentUpdate = (template, state, changes, dataID, doItByForce = false) => {
-    template.querySelectorAll('v').forEach(element => {
+    const { variableTagName } = BreakPoints
+
+    template.querySelectorAll(variableTagName).forEach(element => {
         if (element.getAttribute(dataID) !== null) {
             const variableName = element.getAttribute('dependency')
             const trueValue = element.getAttribute('true-value')

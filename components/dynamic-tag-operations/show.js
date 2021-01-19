@@ -1,6 +1,10 @@
+import BreakPoints from '../settings.js'
+
 const setAttribute = (element, attributeList) => {
+    const { dynamicTagBreakPoint } = BreakPoints
+
     attributeList.map(attributeName => {
-        const viewValue = element.getAttribute(`@view-${attributeName}`)
+        const viewValue = element.getAttribute(`${dynamicTagBreakPoint}show-${attributeName}`)
         const elementValue = element.getAttribute(attributeName) !== null ? element.getAttribute(attributeName).trimLeft() : ''
 
         if (!elementValue.includes(viewValue)) {
@@ -10,23 +14,27 @@ const setAttribute = (element, attributeList) => {
 }
 
 const clearAttribute = (element, attributeList) => {
+    const { dynamicTagBreakPoint } = BreakPoints
+
     attributeList.map(attributeName => {
         if (element.getAttribute(attributeName) !== null) {
-            element.setAttribute(attributeName, (element.getAttribute(attributeName).replace(element.getAttribute(`@view-${attributeName}`), '')).trim())
+            element.setAttribute(attributeName, (element.getAttribute(attributeName).replace(element.getAttribute(`${dynamicTagBreakPoint}show-${attributeName}`), '')).trim())
         }
     })
 }
 
-export const view = (template, state, dataID) => {
+export const show = (template, state, dataID) => {
+    const { dynamicTagBreakPoint } = BreakPoints
+
     template.querySelectorAll('*').forEach(element => {
         if (element.getAttribute(dataID) !== null) {
-            let view = element.getAttribute('@view')
+            let show = element.getAttribute(`${dynamicTagBreakPoint}show`)
             
-            if (view !== null) {
+            if (show !== null) {
                 const attributeList = []
-                element.getAttributeNames().map(name => name.includes('@view-') ? attributeList.push(name.replace('@view-', '')) : null)
+                element.getAttributeNames().map(name => name.includes(`${dynamicTagBreakPoint}show-`) ? attributeList.push(name.replace(`${dynamicTagBreakPoint}show-`, '')) : null)
                 
-                if (eval(view)) {
+                if (eval(show)) {
                     element.style.display = ''
                     setAttribute(element, attributeList)
                 } else {
