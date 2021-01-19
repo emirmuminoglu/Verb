@@ -16,7 +16,7 @@ export class Luc {
         this.template.querySelectorAll('*').forEach(element => element.setAttribute(this.dataID, ''))
 
         this.$update()
-        this.$compileAgain()
+        this.$compileAgain(true)
     }
 
     $use (name, useItem) {
@@ -35,8 +35,8 @@ export class Luc {
         query(this.template, this.state, this.dataID)
     }
     
-    async $compileAgain (isUpdate) {
-        await compiler(this.template, this.state, this.changes, this.dataID)
+    $compileAgain (isUpdate) {
+        compiler(this.template, this.state, this.changes, this.dataID)
 
         if (isUpdate) {
             this.$update()

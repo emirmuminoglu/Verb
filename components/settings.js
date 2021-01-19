@@ -1,6 +1,6 @@
 export default {
     dynamicTagBreakPoint: 'l:',
-    dynamicTagAttributeBreakPoint: 'l:',
+    dynamicTagAttributeBreakPoint: '$',
     variableTagName: 'v',
     useVariableStart: '{{',
     useVariableEnd: '}}'

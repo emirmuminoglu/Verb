@@ -24,7 +24,7 @@ export const loop = (template, state, changes, dataID) => {
                 if (element.getAttribute(`${dynamicTagBreakPoint}for`) !== null) {
                     const use = _for.slice((_for.indexOf('(') + 1), _for.indexOf(')')).split(',')
                     const listName = _for.split('in')[_for.split('in').length - 1].trim()
-                    const list = await join(state, changes, listName).changeValue
+                    const list = JSON.parse(await (await join(state, changes, listName)).changeValue)
 
                     const distribution = {
                         itemName: use[0].trim(),
@@ -42,7 +42,7 @@ export const loop = (template, state, changes, dataID) => {
 
                         const cloneElement = element.cloneNode(element)
 
-                        result.push(compiler(cloneElement, localState, changes, i))
+                        result.push(await compiler(cloneElement, localState, changes, i))
                     }
 
                     result.map(el => {
