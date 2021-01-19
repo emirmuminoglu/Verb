@@ -46,7 +46,7 @@ export class createComponent {
         systemTools.map(tool => this[tool.name] = (ID) => tool(this.template, ID))
 
         this.$update(dataID)
-        this.$compileAgain(true)
+        this.$compileAgain()
         this.eventHandler(prop)
     }
 
