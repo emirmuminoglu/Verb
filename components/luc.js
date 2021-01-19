@@ -16,7 +16,7 @@ export class Luc {
         this.template.querySelectorAll('*').forEach(element => element.setAttribute(this.dataID, ''))
 
         this.$update()
-        this.$compileAgain(true)
+        this.$compileAgain()
     }
 
     $use (name, useItem) {
