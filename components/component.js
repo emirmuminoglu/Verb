@@ -48,6 +48,8 @@ export class createComponent {
         this.$update(dataID)
         this.$compileAgain()
         this.eventHandler(prop)
+
+        contentUpdate(this.template, this.state, this.changes, this.dataID, true)
     }
 
     $update (doItByForce) {
