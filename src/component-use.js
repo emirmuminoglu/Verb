@@ -1,7 +1,7 @@
 import { CreateComponent } from './component.js'
 import BreakPoints from '../settings.js'
 
-export const $componentUse = ({ root, component, props = {}, dataID }) => {
+export const $componentUse = ({ root, component, props = {}, dataID, propTypeControls }) => {
     const { componentPropsBreakPoint } = BreakPoints
     const components = []
     
@@ -14,9 +14,7 @@ export const $componentUse = ({ root, component, props = {}, dataID }) => {
                 const propName = attrName.replace(componentPropsBreakPoint, '')
                 let propValue = root.getAttribute(attrName)
 
-                if (propValue.includes('{') || propValue.includes('[')) {
-                    propValue = eval(`[${propValue}][0]`)
-                }
+                propValue = eval(`[${propValue}][0]`)
 
                 propsClone[propName] = propValue
             } else {
@@ -29,9 +27,26 @@ export const $componentUse = ({ root, component, props = {}, dataID }) => {
         })
 
         const componentClone = new CreateComponent(component).$render(root.tagName, propsClone, addAttributes)
+
         componentClone.then(res => {
             components.push(res)
         })
+
+        for (const [controlName, controlValue] of Object.entries(propTypeControls)) {
+            const type = controlValue.replace('.require', '')
+            const require = controlValue.includes('.require')
+
+            const prop = propsClone[controlName]
+            if (prop !== undefined) {
+                if (typeof prop !== type) {
+                    console.error(`"${controlName}" value was expected to come in "${type}" type but came in "${typeof prop}" type. Value:`, prop, '. Type: "' + typeof prop + '". Props', propsClone)
+                }
+            } else {
+                if (require) {
+                    console.error(`The value of "${controlName}" was supposed to come but it didn't. Props:`, propsClone)
+                }
+            }
+        }
     })
 
     return components
