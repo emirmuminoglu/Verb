@@ -68,7 +68,7 @@ export class createComponent {
         }
     }
 
-    eventHandler (prop) {
+    eventHandler (props) {
         for (const name in this.eventsConsumer) {
             const eventName = name.slice((name.indexOf('[') + 1), name.indexOf(']')).trim()
             const event = this.eventsConsumer[name]
@@ -87,8 +87,8 @@ export class createComponent {
                         name = name.replace('($update)', '').replace('($compileAgain)', '').trim()
 
                         if (name !== id) {
-                            el.addEventListener(name, () => {
-                                event(el)
+                            el.addEventListener(name, (target) => {
+                                event({element: el, target, props: props, _this: this})
 
                                 if (topAdditionalProcessingMode) {
                                     const additionalProcessing = name.slice((name.indexOf('(') + 1), name.indexOf(')')).trim()
@@ -100,9 +100,9 @@ export class createComponent {
                     }
                 })
             } else {
-                this.template.querySelectorAll(id).forEach(e => {
-                    e.addEventListener(eventName, () => {
-                        event(e, prop)
+                this.template.querySelectorAll(id).forEach(el => {
+                    e.addEventListener(eventName, (target) => {
+                        event({element: el, target, props: props})
                         
                         if (additionalProcessingMode !== false) {
                             this[additionalProcessing](true)
