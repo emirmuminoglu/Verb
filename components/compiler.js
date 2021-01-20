@@ -10,17 +10,21 @@ const tagChange = (variableName, trueValue, value, dataID) => {
 export const compiler = (template, state, changes, dataID) => {
     const { useVariableStart, useVariableEnd } = BreakPoints
 
-    for (let i = 0; i < template.innerText.length; i++) {
-        const start = (template.innerText.indexOf(useVariableStart) + 2)
-        const end = template.innerText.indexOf(useVariableEnd)
+    if (!template.innerText.indexOf(useVariableStart) && template.innerText.indexOf(useVariableEnd)) {
+        for (let i = 0; i < template.innerText.length; i++) {
+            const start = (template.innerText.indexOf(useVariableStart) + 2)
+            const end = template.innerText.indexOf(useVariableEnd)
 
-        if (start !== -1 && end !== -1) {
-            const variableName = template.innerText.slice(start, end)
-            const joinResult = join(state, changes, variableName)
+            if (start !== -1 && end !== -1) {
+                const variableName = template.innerText.slice(start, end)
+                const joinResult = join(state, changes, variableName)
             
-            template.innerHTML = template.innerHTML.replace(`${useVariableStart}${variableName}${useVariableEnd}`,
-                tagChange(variableName, joinResult.trueValue, joinResult.changeValue, dataID)
-            )
+                template.innerHTML = template.innerHTML.replace(`${useVariableStart}${variableName}${useVariableEnd}`,
+                    tagChange(variableName, joinResult.trueValue, joinResult.changeValue, dataID)
+                )
+            } else {
+                break
+            }
         }
     }
 
