@@ -10,7 +10,7 @@ const tagChange = (variableName, trueValue, value, dataID) => {
 export const compiler = (template, state, changes, dataID) => {
     const { useVariableStart, useVariableEnd } = BreakPoints
 
-    if (!template.innerText.indexOf(useVariableStart) && template.innerText.indexOf(useVariableEnd)) {
+    if (template.innerText.indexOf(useVariableStart) !== -1 && template.innerText.indexOf(useVariableEnd) !== -1) {
         for (let i = 0; i < template.innerText.length; i++) {
             const start = (template.innerText.indexOf(useVariableStart) + 2)
             const end = template.innerText.indexOf(useVariableEnd)
@@ -27,6 +27,7 @@ export const compiler = (template, state, changes, dataID) => {
             }
         }
     }
+
 
     return template
 }
