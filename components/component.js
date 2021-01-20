@@ -73,18 +73,43 @@ export class createComponent {
             const eventName = name.slice((name.indexOf('[') + 1), name.indexOf(']')).trim()
             const event = this.eventsConsumer[name]
             const id = name.slice(0, name.indexOf('[')).trim()
-            const additionalProcessing = name.slice((name.indexOf('(') + 1), name.indexOf(')'))
+            const additionalProcessing = name.slice((name.indexOf('(') + 1), name.indexOf(')')).trim()
             const additionalProcessingMode = name.includes('($update)') || name.includes('($compileAgain)')
 
-            this.template.querySelectorAll(id).forEach(e => {
-                e.addEventListener(eventName, () => {
-                    event(e, prop)
-                    
-                    if (additionalProcessingMode !== false) {
-                        this[additionalProcessing](true)
+            if (name === 'top') {
+                const top = this.eventsConsumer.top
+                const id = this.eventsConsumer.top.id
+                const elements = this.template.querySelectorAll(id)
+
+                elements.forEach(el => {
+                    for (let [name, event] of Object.entries(top)) {
+                        const topAdditionalProcessingMode = name.includes('($update)') || name.includes('($compileAgain)')
+                        name = name.replace('($update)', '').replace('($compileAgain)', '').trim()
+
+                        if (name !== id) {
+                            el.addEventListener(name, () => {
+                                event(el)
+
+                                if (topAdditionalProcessingMode) {
+                                    const additionalProcessing = name.slice((name.indexOf('(') + 1), name.indexOf(')')).trim()
+        
+                                    this[additionalProcessing](true)
+                                }
+                            })
+                        }
                     }
                 })
-            })
+            } else {
+                this.template.querySelectorAll(id).forEach(e => {
+                    e.addEventListener(eventName, () => {
+                        event(e, prop)
+                        
+                        if (additionalProcessingMode !== false) {
+                            this[additionalProcessing](true)
+                        }
+                    })
+                })
+            }
         }
     }
 
