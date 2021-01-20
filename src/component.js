@@ -55,8 +55,8 @@ export class CreateComponent {
 
         systemTools.map(tool => this[tool.name] = (ID) => tool(this.template, ID))
 
-        this.$update(dataID)
         this.$compileAgain()
+        this.$update(true)
         this.eventHandler(prop)
 
         contentUpdate(this.template, this.state, this.changes, this.dataID, true)
