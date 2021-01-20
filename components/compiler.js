@@ -1,14 +1,21 @@
 import { join } from './join.js'
 import BreakPoints from './settings.js'
 
-const tagChange = (variableName, trueValue, value, dataID) => {
+const tagChange = (variableName, trueValue, value, dataID, innerFormat) => {
     const { variableTagName } = BreakPoints
 
-    return `<${variableTagName} dependency="${variableName}" true-value="${trueValue}" ${dataID}>${value}</${variableTagName}>`
+    return `
+        <${variableTagName}
+        dependency="${variableName}"
+        true-value="${trueValue}"
+        inner-format="${innerFormat ? 'html' : 'text'}"
+        ${dataID}
+        >${value}</${variableTagName}>
+    `
 }
 
 export const compiler = (template, state, changes, dataID) => {
-    const { useVariableStart, useVariableEnd } = BreakPoints
+    const { useVariableStart, useVariableEnd, useHTMLMark } = BreakPoints
 
     if (template.innerText.indexOf(useVariableStart) !== -1 && template.innerText.indexOf(useVariableEnd) !== -1) {
         for (let i = 0; i < template.innerText.length; i++) {
@@ -17,10 +24,11 @@ export const compiler = (template, state, changes, dataID) => {
 
             if (start !== -1 && end !== -1) {
                 const variableName = template.innerText.slice(start, end)
-                const joinResult = join(state, changes, variableName)
-            
+                const innerFormat = variableName.includes(useHTMLMark)
+                const joinResult = join(state, changes, variableName.replace(useHTMLMark, ''))
+
                 template.innerHTML = template.innerHTML.replace(`${useVariableStart}${variableName}${useVariableEnd}`,
-                    tagChange(variableName, joinResult.trueValue, joinResult.changeValue, dataID)
+                    tagChange(variableName.replace(useHTMLMark, ''), joinResult.trueValue, joinResult.changeValue, dataID, innerFormat)
                 )
             } else {
                 break

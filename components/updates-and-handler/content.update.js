@@ -1,6 +1,17 @@
 import { join } from '../join.js'
 import BreakPoints from '../settings.js'
 
+function update (element, joinResult) {
+    const innerFormat = element.getAttribute('inner-format')
+
+    if (innerFormat === 'html') {
+        element.innerHTML = joinResult.changeValue
+    } else if (innerFormat === 'text') {
+        element.innerHTML = ''
+        element.innerText = joinResult.changeValue
+    }
+}
+
 export const contentUpdate = (template, state, changes, dataID, doItByForce = false) => {
     const { variableTagName } = BreakPoints
 
@@ -11,12 +22,10 @@ export const contentUpdate = (template, state, changes, dataID, doItByForce = fa
             const joinResult = await join(state, changes, variableName.trim())
 
             if (doItByForce) {
-                element.innerText = joinResult.changeValue
-                element.setAttribute('true-value', joinResult.trueValue)
+                update(element, joinResult)
             } else {
                 if (joinResult.trueValue !== trueValue) {
-                    element.innerText = joinResult.changeValue
-                    element.setAttribute('true-value', joinResult.trueValue)
+                    update(element, joinResult)
                 }
             }
         }

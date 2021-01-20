@@ -3,5 +3,6 @@ export default {
     dynamicTagAttributeBreakPoint: '$',
     variableTagName: 'v',
     useVariableStart: '{{',
-    useVariableEnd: '}}'
+    useVariableEnd: '}}',
+    useHTMLMark: '__html__'
 }

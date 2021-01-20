@@ -17,6 +17,8 @@ export class Luc {
 
         this.$update()
         this.$compileAgain()
+
+        contentUpdate(this.template, this.state, this.changes, this.dataID, true)
     }
 
     $use (name, useItem) {
