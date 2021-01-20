@@ -13,6 +13,12 @@ export class Luc {
         
         systemTools.map(tool => this[tool.name] = (ID, param1, param2) => tool(this.template, ID, param1, param2))
 
+        document.body.innerHTML = ''
+        const templateNode = document.querySelector('template')
+        const content = templateNode.content.cloneNode(true)
+
+        this.template.appendChild(content)
+
         this.template.querySelectorAll('*').forEach(element => element.setAttribute(this.dataID, ''))
 
         this.$update()
