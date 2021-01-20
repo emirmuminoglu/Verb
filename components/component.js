@@ -101,7 +101,7 @@ export class createComponent {
                 })
             } else {
                 this.template.querySelectorAll(id).forEach(el => {
-                    e.addEventListener(eventName, (target) => {
+                    el.addEventListener(eventName, (target) => {
                         event({element: el, target, props: props})
                         
                         if (additionalProcessingMode !== false) {
