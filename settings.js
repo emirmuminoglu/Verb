@@ -5,6 +5,9 @@ export default {
     // keyword of dynamic tag attributes
     dynamicTagAttributeBreakPoint: '$',
 
+    // keyword props sent to components
+    componentPropsBreakPoint: 'p:',
+
     // The name of the tag that the variables used from state in HTML will be converted for updates
     variableTagName: 'v',
 

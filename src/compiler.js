@@ -26,7 +26,7 @@ export const compiler = (template, state, changes, dataID) => {
             if (start !== -1 && end !== -1) {
                 const variableName = template.innerText.slice(start, end)
                 const innerFormat = variableName.includes(useHTMLMark)
-                const joinResult = join(state, changes, variableName.replace(useHTMLMark, ''))
+                const joinResult = join(state, changes, variableName.replace(useHTMLMark, '').trim())
 
                 template.innerHTML = template.innerHTML.replace(`${useVariableStart}${variableName}${useVariableEnd}`,
                     tagChange(variableName.replace(useHTMLMark, ''), joinResult.trueValue, joinResult.changeValue, dataID, innerFormat)

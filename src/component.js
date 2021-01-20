@@ -4,7 +4,7 @@ import { show, query, loop } from './dynamic-tag-operations/distribution.js'
 import { createKey } from './create.key.js'
 import { systemTools } from './tools.js'
 
-export class createComponent {
+export class CreateComponent {
     /**
      * 
      * @param {Object} param0 Component data submitted during component creation must be object
@@ -138,9 +138,9 @@ export class createComponent {
      * @param {String} dataID dataID must be a string. dataID is not required to be sent
      */
 
-    async $render(root, prop, dataID = createKey()) {
+    async $render(root, prop, addAttributes, dataID = createKey()) {
         this.props = prop
-        this.state = this.stateConsumer(prop)
+        this.state = Object.assign(this.stateConsumer(), prop)
         this.template = await this.html(prop, this.state)
         this.methodsConsumer = this.methods(prop, this.state)
         this.eventsConsumer = this.events(prop, this.state)
@@ -148,9 +148,15 @@ export class createComponent {
         this.dataID = dataID
         this.first(prop, dataID)
 
+        for (const [name, value] of Object.entries(addAttributes)) {
+            this.template.setAttribute(name, value)
+        }
+
         document.querySelector(root).replaceWith(this.template)
 
         this.created(prop, this.state)
+
+        return this
     }
 
     /**
