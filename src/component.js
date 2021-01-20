@@ -9,14 +9,14 @@ export class createComponent {
      * 
      * @param {Object} param0 Component data submitted during component creation must be object
      */
-    constructor ({
+    constructor({
         root,
         html,
         state = () => ({}),
         methods = () => ({}),
         events = () => ({}),
         changes = () => ({}),
-        created = () => {}
+        created = () => { }
     } = {}) {
         this.template = ''
         this.root = root
@@ -37,7 +37,7 @@ export class createComponent {
      * @param {String} inner are HTML codes of the main tag of this component
      */
 
-    $template (tagName, attributes, inner) {
+    $template(tagName, attributes, inner) {
         const template = document.createElement(tagName)
 
         for (const name in attributes) {
@@ -49,7 +49,7 @@ export class createComponent {
         return template
     }
 
-    first (prop, dataID) {
+    first(prop, dataID) {
         this.template.setAttribute(dataID, '')
         this.template.querySelectorAll('*').forEach(element => element.setAttribute(dataID, ''))
 
@@ -67,7 +67,7 @@ export class createComponent {
      * true: force update, false: check value
      */
 
-    $update (doItByForce) {
+    $update(doItByForce) {
         loop(this.template, this.state, this.changes, this.dataID)
         contentUpdate(this.template, this.state, this.changes, this.dataID, doItByForce)
         attributeHandler(this.template, this.state, this.chanchangesgesConsumer, this.dataID)
@@ -80,7 +80,7 @@ export class createComponent {
      * @param {Boolean} doItByForce Update after compilation will make mandatory update true: forced update, controlled update
      */
 
-    $compileAgain (isUpdate, doItByForce) {
+    $compileAgain(isUpdate, doItByForce) {
         compiler(this.template, this.state, this.changes, this.dataID)
 
         if (isUpdate) {
@@ -88,7 +88,7 @@ export class createComponent {
         }
     }
 
-    eventHandler (props) {
+    eventHandler(props) {
         for (const name in this.eventsConsumer) {
             const eventName = name.slice((name.indexOf('[') + 1), name.indexOf(']')).trim()
             const event = this.eventsConsumer[name]
@@ -108,11 +108,11 @@ export class createComponent {
 
                         if (name !== id) {
                             el.addEventListener(name, (target) => {
-                                event({element: el, target, props: props, _this: this})
+                                event({ element: el, target, props: props, _this: this })
 
                                 if (topAdditionalProcessingMode) {
                                     const additionalProcessing = name.slice((name.indexOf('(') + 1), name.indexOf(')')).trim()
-        
+
                                     this[additionalProcessing](true)
                                 }
                             })
@@ -122,8 +122,8 @@ export class createComponent {
             } else {
                 this.template.querySelectorAll(id).forEach(el => {
                     el.addEventListener(eventName, (target) => {
-                        event({element: el, target, props: props})
-                        
+                        event({ element: el, target, props: props })
+
                         if (additionalProcessingMode !== false) {
                             this[additionalProcessing](true)
                         }
@@ -138,7 +138,7 @@ export class createComponent {
      * @param {String} dataID dataID must be a string. dataID is not required to be sent
      */
 
-    async $render (prop, dataID = createKey()) {
+    async $render(root, prop, dataID = createKey()) {
         this.props = prop
         this.state = this.stateConsumer(prop)
         this.template = await this.html(prop, this.state)
@@ -148,8 +148,8 @@ export class createComponent {
         this.dataID = dataID
         this.first(prop, dataID)
 
-        document.querySelectorAll(this.root).forEach(e => e.appendChild(this.template))
-        
+        document.querySelector(root).replaceWith(this.template)
+
         this.created(prop, this.state)
     }
 
@@ -159,7 +159,7 @@ export class createComponent {
      * equal to a value in the state
     */
 
-    $setState (setValue) {
+    $setState(setValue) {
         setValue = (typeof setValue === 'function' ? setValue() : setValue)
         const variables = {}
 
