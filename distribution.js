@@ -1,7 +1,7 @@
-import { Luc } from './components/luc.js'
-import { createComponent } from './components/component.js'
-import { getTemplate } from './components/get.template.js'
-import { tools } from './components/tools.js'
+import { Luc } from './src/luc.js'
+import { createComponent } from './src/component.js'
+import { getTemplate } from './src/get.template.js'
+import { tools } from './src/tools.js'
 
 export {
     Luc,
