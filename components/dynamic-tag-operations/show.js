@@ -1,4 +1,4 @@
-import BreakPoints from '../settings.js'
+import BreakPoints from '../../settings.js'
 
 const setAttribute = (element, attributeList) => {
     const { dynamicTagBreakPoint } = BreakPoints

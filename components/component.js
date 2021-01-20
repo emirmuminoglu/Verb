@@ -5,6 +5,10 @@ import { createKey } from './create.key.js'
 import { systemTools } from './tools.js'
 
 export class createComponent {
+    /**
+     * 
+     * @param {Object} param0 Component data submitted during component creation must be object
+     */
     constructor ({
         root,
         html,
@@ -26,6 +30,12 @@ export class createComponent {
         this.methods = methods
         this.created = created
     }
+
+    /**
+     * @param {String} tagName is the name of the main label of this component
+     * @param {Object} attributes are the characteristics of the main label of this component
+     * @param {String} inner are HTML codes of the main tag of this component
+     */
 
     $template (tagName, attributes, inner) {
         const template = document.createElement(tagName)
@@ -52,6 +62,11 @@ export class createComponent {
         contentUpdate(this.template, this.state, this.changes, this.dataID, true)
     }
 
+    /**
+     * @param {Boolean} doItByForce specifies obligation to update,
+     * true: force update, false: check value
+     */
+
     $update (doItByForce) {
         loop(this.template, this.state, this.changes, this.dataID)
         contentUpdate(this.template, this.state, this.changes, this.dataID, doItByForce)
@@ -60,7 +75,12 @@ export class createComponent {
         query(this.template, this.state, this.dataID)
     }
 
-    $compileAgain (isUpdate) {
+    /**
+     * @param {Boolean} isUpdate Will it be updated after compilation?
+     * @param {Boolean} doItByForce Update after compilation will make mandatory update true: forced update, controlled update
+     */
+
+    $compileAgain (isUpdate, doItByForce) {
         compiler(this.template, this.state, this.changes, this.dataID)
 
         if (isUpdate) {
@@ -113,6 +133,11 @@ export class createComponent {
         }
     }
 
+    /**
+     * @param {any} prop 
+     * @param {String} dataID dataID must be a string. dataID is not required to be sent
+     */
+
     async $render (prop, dataID = createKey()) {
         this.props = prop
         this.state = this.stateConsumer(prop)
@@ -127,6 +152,12 @@ export class createComponent {
         
         this.created(prop, this.state)
     }
+
+    /**
+     * @param {Object} setValue exchange operations must be
+     * done within a JSON object. Each value in the object is
+     * equal to a value in the state
+    */
 
     $setState (setValue) {
         setValue = (typeof setValue === 'function' ? setValue() : setValue)

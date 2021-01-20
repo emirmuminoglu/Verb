@@ -1,5 +1,5 @@
 import { join } from '../join.js'
-import BreakPoints from '../settings.js'
+import BreakPoints from '../../settings.js'
 
 export const attributeHandler = (template, state, changes, dataID) => {
     const { dynamicTagAttributeBreakPoint } = BreakPoints

@@ -1,6 +1,6 @@
 import { compiler } from '../compiler.js'
 import { join } from '../join.js'
-import BreakPoints from '../settings.js'
+import BreakPoints from '../../settings.js'
 
 export const loop = (template, state, changes, dataID) => {
     const { dynamicTagBreakPoint } = BreakPoints

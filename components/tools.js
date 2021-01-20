@@ -1,3 +1,6 @@
+/**
+ * @param {String} ID The query of the element to be accessed
+*/
 const $get = (template, ID = '') => {
     if (ID !== '') {
         if (template.querySelector(ID) !== null) {
@@ -10,6 +13,9 @@ const $get = (template, ID = '') => {
     }
 }
 
+/**
+ * @param {String} ID The query of the element to be accessed
+*/
 const $getAll = (template, ID = '') => {
     if (ID !== '') {
         if (template.querySelector(ID) !== null) {
@@ -22,7 +28,13 @@ const $getAll = (template, ID = '') => {
     }
 }
 
-const $addEvent = (template, ID = '', eventName = 'click', event = () => {}) => {
+/**
+ * 
+ * @param {String} ID The query of the element to be accessed
+ * @param {String} eventName event name to be assigned to element
+ * @param {Function} event event to be assigned to element
+*/
+const $addEvent = (template, ID = '', eventName = '', event = () => {}) => {
     const el = template.querySelector(ID)
     if (ID !== '') {
         if (el !== null) {            
@@ -35,6 +47,9 @@ const $addEvent = (template, ID = '', eventName = 'click', event = () => {}) => 
     }
 }
 
+/**
+ * @param {String} ID The query of the element to be accessed
+*/
 const $remove = (template, ID = '') => {
     if (ID !== '') {
         return template.querySelector(ID).remove()
@@ -43,6 +58,9 @@ const $remove = (template, ID = '') => {
     }
 }
 
+/**
+ * @param {Object} eventsList The events object to be assigned to the selected elements e, each object name element contains the event name to be assigned to the element, and its values ​​are events.
+*/
 const $addEventList = (template, eventsList = {}) => {
     for (const [eventIsString, event] of Object.entries(eventsList)) {
         const id = eventIsString.slice(0, eventIsString.indexOf('[')).trim()

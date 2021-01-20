@@ -1,5 +1,5 @@
 import { join } from '../join.js'
-import BreakPoints from '../settings.js'
+import BreakPoints from '../../settings.js'
 
 function update (element, joinResult) {
     const innerFormat = element.getAttribute('inner-format')
