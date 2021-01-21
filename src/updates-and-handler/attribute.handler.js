@@ -14,7 +14,8 @@ export const attributeHandler = (template, state, changes, dataID) => {
                     const elementValue = element.getAttribute(attributeName.trim()) !== null ? element.getAttribute(attributeName) : ''
                 
                     const joinResult = await join(state, changeMode !== null ? changes : {}, variableName)
-                
+
+                    
                     if (element.getAttribute('processed') !== null) {
                         if (joinResult.trueValue !== undefined) {
                             const newValue = elementValue.split(' ')

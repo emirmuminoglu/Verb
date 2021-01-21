@@ -4,7 +4,7 @@ import { show, query, loop } from './dynamic-tag-operations/distribution.js'
 import { createKey } from './create.key.js'
 import { systemTools } from './tools.js'
 
-export class Luc {
+export class Vanille {
     constructor ({ state = {}, changes = {} } = {}, template = document.body, dataID = createKey()) {
         this.template = template
         this.dataID = dataID
@@ -28,11 +28,11 @@ export class Luc {
     }
 
     $use (name, useItem) {
-        if (window.luc === undefined) {
-            window.luc = {}
+        if (window.vanille === undefined) {
+            window.vanille = {}
         }
 
-        window.luc[name] = useItem
+        window.vanille[name] = useItem
     }
 
     $update (doItByForce) {

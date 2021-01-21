@@ -1,2 +1,2 @@
-# Luc.Js
+# Vanille.Js
 ## under development

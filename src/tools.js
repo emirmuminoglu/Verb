@@ -9,7 +9,7 @@ const $get = (template, ID = '') => {
             return 'undefined'
         }
     } else {
-        console.error('(LucJS Error): ID parameter cannot be left blank in ($get) method.')
+        console.error('(Vanille.js Error): ID parameter cannot be left blank in ($get) method.')
     }
 }
 
@@ -24,7 +24,7 @@ const $getAll = (template, ID = '') => {
             return 'undefined'
         }
     } else {
-        console.error('(LucJS Error): ID parameter cannot be left blank in ($getAll) method.')
+        console.error('(Vanille.js Error): ID parameter cannot be left blank in ($getAll) method.')
     }
 }
 
@@ -43,7 +43,7 @@ const $addEvent = (template, ID = '', eventName = '', event = () => {}) => {
             return 'undefined'
         }
     } else {
-        console.error('(LucJS Error): ID parameter cannot be left blank in ($addEvent) method.')
+        console.error('(Vanille.js Error): ID parameter cannot be left blank in ($addEvent) method.')
     }
 }
 
@@ -54,7 +54,7 @@ const $remove = (template, ID = '') => {
     if (ID !== '') {
         return template.querySelector(ID).remove()
     } else {
-        console.error('(LucJS Error): ID parameter cannot be left blank in ($remove) method.')
+        console.error('(Vanille.js Error): ID parameter cannot be left blank in ($remove) method.')
     }
 }
 
@@ -79,7 +79,7 @@ const $addEventList = (template, eventsList = {}) => {
                 template.querySelector(id).addEventListener(eventName, () => event(template.querySelector(id)))
             }
         } else {
-            console.error('(LucJS Error): each event assignment must have an element ID before "[" in the action name.')
+            console.error('(Vanille.js Error): each event assignment must have an element ID before "[" in the action name.')
         }
     }
 }
