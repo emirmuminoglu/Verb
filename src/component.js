@@ -20,7 +20,6 @@ export class CreateComponent {
         created = () => { }
     } = {}) {
         this.template = ''
-        this.root = root
         this.html = html
         this.events = events
         this.stateConsumer = state
