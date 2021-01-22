@@ -1,5 +1,6 @@
 import { join } from '../join.js'
 import BreakPoints from '../../settings.js'
+import { getVanille, setVanille } from '../DOMVanilleObject.js'
 
 function update (element, joinResult) {
     const innerFormat = element.getAttribute('inner-format')
@@ -10,6 +11,8 @@ function update (element, joinResult) {
         element.innerHTML = ''
         element.innerText = joinResult.changeValue
     }
+
+    setVanille(element, 'true-value', joinResult.trueValue)
 }
 
 export const contentUpdate = (template, state, changes, dataID, doItByForce = false) => {
@@ -17,8 +20,8 @@ export const contentUpdate = (template, state, changes, dataID, doItByForce = fa
     
     template.querySelectorAll(variableTagName).forEach(async element => {
         if (element.getAttribute(dataID) !== null) {
-            const variableName = element.getAttribute('dependency')
-            const trueValue = element.getAttribute('true-value')
+            const variableName = getVanille(element, 'dependency')
+            const trueValue = getVanille(element, 'true-value')
             const joinResult = await join(state, changes, variableName.trim())
 
             if (doItByForce) {

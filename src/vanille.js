@@ -3,6 +3,7 @@ import { contentUpdate, attributeHandler } from './updates-and-handler/distribut
 import { show, query } from './dynamic-tag-operations/distribution.js'
 import { createKey } from './create.key.js'
 import { systemTools } from './tools.js'
+import { getVanille, setVanille } from './DOMVanilleObject.js'
 
 export class Vanille {
     constructor ({ state = {}, changes = {} } = {}, template = document.body, dataID = createKey()) {
@@ -19,10 +20,21 @@ export class Vanille {
 
         this.template.appendChild(content)
 
-        this.template.querySelectorAll('*').forEach(element => element.setAttribute(this.dataID, ''))
-
+        
         this.$update()
         this.compile()
+        
+        this.template.querySelectorAll('*').forEach(element => {
+            element.setAttribute(this.dataID, '')
+
+            if (element.tagName === 'V') {
+                setVanille(element, 'true-value', element.getAttribute('true-value'))
+                setVanille(element, 'dependency', element.getAttribute('dependency'))
+                
+                element.removeAttribute('true-value')
+                element.removeAttribute('dependency')
+            }
+        })
 
         contentUpdate(this.template, this.state, this.changes, this.dataID, true)
     }
