@@ -2,7 +2,6 @@ import { CreateComponent } from './component.js'
 import BreakPoints from '../settings.js'
 
 const write = (rootName, props, component) => {
-    const components = []
     const { componentPropsBreakPoint } = BreakPoints
 
     const root = document.querySelector(rootName)
@@ -60,11 +59,13 @@ export const $componentUse = ({ rootName, component, props = {}, propTypes = {},
 
             components.push(componentClone)
         })
+
+        return components
     } else {
-        const { components, propsClone } = write(rootName, props, component)
+        const { componentClone, propsClone } = write(rootName, props, component)
         
         propTypesControl(propTypes, propsClone)
         
-        return components
+        return componentClone
     }
 }
