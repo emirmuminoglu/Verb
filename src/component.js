@@ -11,13 +11,13 @@ export class CreateComponent {
      * @param {Object} param0 Component data submitted during component creation must be object
      */
     constructor({
-        root,
         html,
         state = () => ({}),
         methods = () => ({}),
         events = () => ({}),
         changes = () => ({}),
-        created = () => { }
+        created = () => {},
+        propTypes = {}
     } = {}) {
         this.template = ''
         this.html = html
@@ -29,6 +29,7 @@ export class CreateComponent {
         this.props = {}
         this.methods = methods
         this.created = created
+        this.propTypes = propTypes
     }
 
     /**
@@ -156,6 +157,7 @@ export class CreateComponent {
         this.eventsConsumer = this.events(prop, this.state)
         this.changes = this.changesConsumer(prop, this.state)
         this.dataID = dataID
+        
         this.first(prop, dataID)
 
         for (const [name, value] of Object.entries(addAttributes)) {

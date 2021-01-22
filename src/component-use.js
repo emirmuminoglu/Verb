@@ -27,44 +27,42 @@ const write = (rootName, props, component) => {
 
     const componentClone = new CreateComponent(component).$render(root.tagName, propsClone, addAttributes)
 
+    componentClone.then(res => propTypesControl(res.propTypes, res.state))
+
     return {componentClone, propsClone}
 }
 
-const propTypesControl = (propTypesControl, propsClone) => {
+const propTypesControl = (propTypesControl, state) => {
     for (const [controlName, controlValue] of Object.entries(propTypesControl)) {
         const type = controlValue.replace('.require', '')
         const require = controlValue.includes('.require')
     
-        const prop = propsClone[controlName]
+        const prop = state[controlName]
         if (prop !== undefined) {
             if (typeof prop !== type) {
-                console.error(`"${controlName}" value was expected to come in "${type}" type but came in "${typeof prop}" type. Value:`, prop, '. Type: "' + typeof prop + '". Props', propsClone)
+                console.error(`"${controlName}" value was expected to come in "${type}" type but came in "${typeof prop}" type. Value:`, prop, '. Type: "' + typeof prop + '". Props', state)
             }
         } else {
             if (require) {
-                console.error(`The value of "${controlName}" was supposed to come but it didn't. Props:`, propsClone)
+                console.error(`The value of "${controlName}" was supposed to come but it didn't. Props:`, state)
             }
         }
     }
 }
 
-export const $componentUse = ({ rootName, component, props = {}, propTypes = {}, plural = false, } ) => {
+export const $componentUse = ({ rootName, component, props = {}, plural = false, } ) => {
     if (plural) {
         const components = []
 
         document.querySelectorAll(rootName).forEach(root => {
-            const { componentClone, propsClone } = write(rootName, props, component)
-
-            propTypesControl(propTypes, propsClone)
+            const { componentClone } = write(rootName, props, component)
 
             components.push(componentClone)
         })
 
         return components
     } else {
-        const { componentClone, propsClone } = write(rootName, props, component)
-        
-        propTypesControl(propTypes, propsClone)
+        const { componentClone } = write(rootName, props, component)
         
         return componentClone
     }
