@@ -14,7 +14,7 @@ function update (element, joinResult) {
 
 export const contentUpdate = (template, state, changes, dataID, doItByForce = false) => {
     const { variableTagName } = BreakPoints
-
+    
     template.querySelectorAll(variableTagName).forEach(async element => {
         if (element.getAttribute(dataID) !== null) {
             const variableName = element.getAttribute('dependency')

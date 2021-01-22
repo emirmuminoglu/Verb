@@ -1,6 +1,6 @@
 import { compiler } from './compiler.js'
 import { contentUpdate, attributeHandler } from './updates-and-handler/distribution.js'
-import { show, query, loop } from './dynamic-tag-operations/distribution.js'
+import { show, query } from './dynamic-tag-operations/distribution.js'
 import { createKey } from './create.key.js'
 import { systemTools } from './tools.js'
 
@@ -68,7 +68,6 @@ export class CreateComponent {
      */
 
     $update(doItByForce) {
-        loop(this.template, this.state, this.changes, this.dataID)
         contentUpdate(this.template, this.state, this.changes, this.dataID, doItByForce)
         attributeHandler(this.template, this.state, this.chanchangesgesConsumer, this.dataID)
         show(this.template, this.state, this.dataID)
