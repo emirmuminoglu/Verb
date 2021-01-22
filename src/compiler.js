@@ -18,13 +18,13 @@ const tagChange = (variableName, trueValue, value, dataID, innerFormat) => {
 export const compiler = (template, state, changes, dataID) => {
     const { useVariableStart, useVariableEnd, useHTMLMark } = BreakPoints
 
-    if (template.innerText.indexOf(useVariableStart) !== -1 && template.innerText.indexOf(useVariableEnd) !== -1) {
-        for (let i = 0; i < template.innerText.length; i++) {
-            const start = (template.innerText.indexOf(useVariableStart) + 2)
-            const end = template.innerText.indexOf(useVariableEnd)
+    if (template.innerHTML.indexOf(useVariableStart) !== -1 && template.innerHTML.indexOf(useVariableEnd) !== -1) {
+        for (let i = 0; i < template.innerHTML.length; i++) {
+            const start = (template.innerHTML.indexOf(useVariableStart) + 2)
+            const end = template.innerHTML.indexOf(useVariableEnd)
 
             if (start !== -1 && end !== -1) {
-                const variableName = template.innerText.slice(start, end)
+                const variableName = template.innerHTML.slice(start, end)
                 const innerFormat = variableName.includes(useHTMLMark)
                 const joinResult = join(state, changes, variableName.replace(useHTMLMark, '').trim())
 

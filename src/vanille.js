@@ -22,7 +22,7 @@ export class Vanille {
         this.template.querySelectorAll('*').forEach(element => element.setAttribute(this.dataID, ''))
 
         this.$update()
-        this.$compileAgain()
+        this.compile()
 
         contentUpdate(this.template, this.state, this.changes, this.dataID, true)
     }
@@ -33,6 +33,7 @@ export class Vanille {
         }
 
         window.vanille[name] = useItem
+        this[name] = useItem
     }
 
     $update (doItByForce) {
@@ -43,7 +44,7 @@ export class Vanille {
         query(this.template, this.state, this.dataID)
     }
     
-    $compileAgain (isUpdate) {
+    compile (isUpdate) {
         compiler(this.template, this.state, this.changes, this.dataID)
 
         if (isUpdate) {

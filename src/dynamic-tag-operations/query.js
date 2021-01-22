@@ -21,39 +21,49 @@ export const query = (template, state, dataID) => {
 
     template.querySelectorAll('*').forEach(element => {
         if (element.getAttribute(dataID) !== null) {
-            const tree = Number(element.getAttribute(`${dynamicTagBreakPoint}tree`) === null || '' ? 0 : element.getAttribute(`${dynamicTagBreakPoint}tree`))
-            const start = element.getAttribute(`${dynamicTagBreakPoint}if`)
-            let root = element
-        
-            if (start !== null) {
-                if (eval(start)) {
-                    root.style.display = ''
+            const isIf = element.getAttribute(`${dynamicTagBreakPoint}if`)
+            const queryElements = []
 
-                    for (let i = 1; i !== tree; i++) {
-                        root = root.nextElementSibling
+            if (isIf !== null) {
+                let nextElement = element.nextElementSibling
+                queryElements.push(element)
 
-                        root.style.display = 'none'
-                    }
-                } else {
-                    let resetRoot = root
+                for (let i = 0; i < 30; i++) {
+                    const nextElementIsIf = nextElement.getAttribute(`${dynamicTagBreakPoint}if`)
+                    const nextElementIsElseIf = nextElement.getAttribute(`${dynamicTagBreakPoint}else-if`)
+                    const nextElementElse = nextElement.getAttribute(`${dynamicTagBreakPoint}else`)
 
-                    for (let i = 1; i !== tree; i++) {
-                        resetRoot.style.display = 'none'
-                    
-                        resetRoot = resetRoot.nextElementSibling
-                        resetRoot.style.display = 'none'
-                    }
+                    if (nextElementIsIf === null) {
+                        if (nextElementIsElseIf !== null) {
+                            queryElements.push(nextElement)
+                        } else if (nextElementElse !== null) {
+                            queryElements.push(nextElement)
 
-                    for (let i = 1; i !== tree; i++) {
-                        root = root.nextElementSibling
-                        const query = getQueryValue(root)
-
-                        if (eval(query)) {
-                            root.style.display = ''
-
+                            break
+                        } else {
                             break
                         }
                     }
+
+                    nextElement = nextElement.nextElementSibling
+                }
+            }
+
+            queryElements.map(el => el.style.display = 'none')
+
+            for (const i in queryElements) {
+                const el = queryElements[i]
+                const isIf = el.getAttribute(`${dynamicTagBreakPoint}if`)
+                const query = getQueryValue(el)
+
+                if (isIf !== null && eval(query)) {
+                    el.style.display = ''
+
+                    break
+                } else if (eval(query)) {
+                    el.style.display = ''
+
+                    break
                 }
             }
         }
