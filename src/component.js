@@ -3,6 +3,7 @@ import { contentUpdate, attributeHandler } from './updates-and-handler/distribut
 import { show, query } from './dynamic-tag-operations/distribution.js'
 import { createKey } from './create.key.js'
 import { systemTools } from './tools.js'
+import { getVanille, setVanille } from './DOMVanilleObject.js'
 
 export class CreateComponent {
     /**
@@ -51,13 +52,24 @@ export class CreateComponent {
 
     first(prop, dataID) {
         this.template.setAttribute(dataID, '')
-        this.template.querySelectorAll('*').forEach(element => element.setAttribute(dataID, ''))
-
+        
         systemTools.map(tool => this[tool.name] = (ID) => tool(this.template, ID))
-
+        
         this.$compileAgain()
-        this.$update(true)
         this.eventHandler(prop)
+        
+        this.template.querySelectorAll('*').forEach(element => {
+            element.setAttribute(dataID, '')
+            if (element.tagName === 'V') {
+                setVanille(element, 'true-value', element.getAttribute('true-value'))
+                setVanille(element, 'dependency', element.getAttribute('dependency').trim())
+                
+                element.removeAttribute('true-value')
+                element.removeAttribute('dependency')
+            }
+        })
+
+        this.$update(true)
 
         contentUpdate(this.template, this.state, this.changes, this.dataID, true)
     }

@@ -22,6 +22,7 @@ export const contentUpdate = (template, state, changes, dataID, doItByForce = fa
         if (element.getAttribute(dataID) !== null) {
             const variableName = getVanille(element, 'dependency')
             const trueValue = getVanille(element, 'true-value')
+            console.log(variableName, element.vanille, element)
             const joinResult = await join(state, changes, variableName.trim())
 
             if (doItByForce) {
