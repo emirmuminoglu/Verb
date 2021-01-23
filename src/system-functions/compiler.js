@@ -1,8 +1,8 @@
 import { join } from './join.js'
-import BreakPoints from '../../settings.js'
+import Settings from '../../settings.js'
 
 const tagChange = (variableName, trueValue, value, dataID, innerFormat) => {
-    const { variableTagName } = BreakPoints
+    const { variableTagName } = Settings
 
     return `
         <${variableTagName}
@@ -16,7 +16,7 @@ const tagChange = (variableName, trueValue, value, dataID, innerFormat) => {
 }
 
 export const compiler = (template, state, changes, dataID) => {
-const { useVariableStart, useVariableEnd, useHTMLMark } = BreakPoints
+const { useVariableStart, useVariableEnd, useHTMLMark } = Settings
 
     if (template.innerHTML.indexOf(useVariableStart) !== -1 && template.innerHTML.indexOf(useVariableEnd) !== -1) {
         for (let i = 0; i < template.innerHTML.length; i++) {

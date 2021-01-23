@@ -3,7 +3,7 @@ import { contentUpdate, attributeHandler } from './updates-and-handler/distribut
 import { show, query } from './dynamic-tag-operations/distribution.js'
 import { createKey } from './system-functions/create.key.js'
 import { systemTools } from './tools.js'
-import { setVanille } from './system-functions/DOMVanilleObject.js'
+import { getVanille, setVanille } from './system-functions/DOMVanilleObject.js'
 
 export class Vanille {
     constructor ({ state = {}, changes = {} } = {}, template = document.body, dataID = createKey()) {

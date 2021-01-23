@@ -29,9 +29,9 @@ export const query = (template, state, dataID) => {
                 queryElements.push(element)
 
                 for (let i = 0; i < 30; i++) {
-                    const nextElementIsIf = nextElement.getAttribute(`${dynamicTagBreakPoint}if`)
-                    const nextElementIsElseIf = nextElement.getAttribute(`${dynamicTagBreakPoint}else-if`)
-                    const nextElementElse = nextElement.getAttribute(`${dynamicTagBreakPoint}else`)
+                    const nextElementIsIf = nextElement !== null ? nextElement.getAttribute(`${dynamicTagBreakPoint}if`) : null
+                    const nextElementIsElseIf = nextElement !== null ? nextElement.getAttribute(`${dynamicTagBreakPoint}else-if`) : null
+                    const nextElementElse = nextElement != null ? nextElement.getAttribute(`${dynamicTagBreakPoint}else`) : null
 
                     if (nextElementIsIf === null) {
                         if (nextElementIsElseIf !== null) {
