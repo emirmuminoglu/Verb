@@ -1,3 +1,5 @@
+import { control } from "./error.js"
+
 const changeHandler = (value, changes, variableName) => {
     if (changes[variableName]) {
         return changes[variableName](value)
@@ -23,11 +25,14 @@ export const join = (state, changes, variableName) => {
             } else {
                 output = output[route]
             }
+
+            control(`${output}`).isNot({ value: 'undefined' }).err(`A value named ${variableName} was not found in state. Check the values ​​you use in HTML`)
         })
 
         trueValue = output
         changeValue = changeHandler(output, changes, variableName)
     } else {
+        control(`${state[variableName]}`).isNot({ value: 'undefined' }).err(`A value named ${variableName} was not found in state. Check the values ​​you use in HTML`)
         trueValue = state[variableName]
         changeValue = changeHandler(trueValue, changes, variableName)
     }
