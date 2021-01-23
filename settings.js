@@ -1,4 +1,6 @@
-export default {
+import { settingsControl } from './src/settings.control.js'
+
+const settings = {
     // keyword for dynamic tag operations
     dynamicTagBreakPoint: 'l:',
 
@@ -23,9 +25,14 @@ export default {
     useHTMLMark: '__html__'
 }
 
+export default settings
+
 /**
  * update alerts
  * 
  * useHTMLmark
  * Give the value as a value that will not have the same name in the state
+ * dynamic Tag BreakPoint and dynamic Tag Attribute BreakPoint values ​​should not be the same.
 */
+
+settingsControl(settings)
