@@ -6,8 +6,8 @@ const tagChange = (variableName, trueValue, value, dataID, innerFormat) => {
 
     return `
         <${variableTagName}
-            dependency="${variableName}"
-            true-value="${trueValue}"
+            dependency='${variableName}'
+            true-value='${trueValue}'
             inner-format="${innerFormat ? 'html' : 'text'}"
             ${dataID}
         >${value}
