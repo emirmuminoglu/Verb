@@ -1,9 +1,9 @@
 import { compiler } from './compiler.js'
-import { contentUpdate, attributeHandler } from './updates-and-handler/distribution.js'
-import { show, query } from './dynamic-tag-operations/distribution.js'
+import { contentUpdate, attributeHandler } from '../updates-and-handler/distribution.js'
+import { show, query } from '../dynamic-tag-operations/distribution.js'
 import { createKey } from './create.key.js'
-import { systemTools } from './tools.js'
-import { getVanille, setVanille } from './DOMVanilleObject.js'
+import { systemTools } from '../tools.js'
+import { setVanille } from './DOMVanilleObject.js'
 
 export class CreateComponent {
     /**

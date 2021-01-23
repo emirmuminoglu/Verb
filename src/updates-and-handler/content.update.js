@@ -1,6 +1,6 @@
-import { join } from '../join.js'
+import { join } from '../system-functions/join.js'
 import BreakPoints from '../../settings.js'
-import { getVanille, setVanille } from '../DOMVanilleObject.js'
+import { getVanille, setVanille } from '../system-functions/DOMVanilleObject.js'
 
 function update (element, joinResult) {
     const innerFormat = element.getAttribute('inner-format')

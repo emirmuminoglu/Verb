@@ -1,5 +1,5 @@
 import { join } from './join.js'
-import BreakPoints from '../settings.js'
+import BreakPoints from '../../settings.js'
 
 const tagChange = (variableName, trueValue, value, dataID, innerFormat) => {
     const { variableTagName } = BreakPoints

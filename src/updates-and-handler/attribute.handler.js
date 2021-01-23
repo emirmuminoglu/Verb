@@ -1,4 +1,4 @@
-import { join } from '../join.js'
+import { join } from '../system-functions/join.js'
 import BreakPoints from '../../settings.js'
 
 export const attributeHandler = (template, state, changes, dataID) => {

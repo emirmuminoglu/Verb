@@ -1,5 +1,5 @@
-import { CreateComponent } from './component.js'
-import BreakPoints from '../settings.js'
+import { CreateComponent } from '../system-functions/component.js'
+import BreakPoints from '../../settings.js'
 
 const write = (rootName, props, component) => {
     const { componentPropsBreakPoint } = BreakPoints
