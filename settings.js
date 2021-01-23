@@ -1,28 +1,31 @@
-import { settingsControl } from './src/settings.control.js'
+import { settingsControl } from "./src/settings.control.js"
 
 const settings = {
     // keyword for dynamic tag operations
-    dynamicTagBreakPoint: 'l:',
+    dynamicTagBreakPoint: "l:",
 
     // keyword of dynamic tag attributes
-    dynamicTagAttributeBreakPoint: '$',
+    dynamicTagAttributeBreakPoint: "$",
 
     // keyword props sent to components
-    componentPropsBreakPoint: 'p:',
+    componentPropsBreakPoint: "p:",
 
     // The name of the tag that the variables used from state in HTML will be converted for updates
-    variableTagName: 'v',
+    variableTagName: "v",
 
     // To use a state variable in HTML, the beginning of the sign to be written
     // warn! replacement is not recommended
-    useVariableStart: '{{',
+    useVariableStart: "{{",
 
     // Sign end to be written to use a state variable in HTML
     // warn! replacement is not recommended
-    useVariableEnd: '}}',
+    useVariableEnd: "}}",
+
+    // The character length of the signs to use variables in HTML
+    useVariableLength: 2,
 
     // Keyword to use if you want to print a variable in state into the content as HTML
-    useHTMLMark: '__html__'
+    useHTMLMark: "__html__"
 }
 
 export default settings

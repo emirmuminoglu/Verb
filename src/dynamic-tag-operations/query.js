@@ -1,37 +1,37 @@
-import BreakPoints from '../../settings.js'
+import Settings from '../../settings.js'
 
 const getQueryValue = (element) => {
-    const { dynamicTagBreakPoint } = BreakPoints
+    const { dynamicTagBreakPoint } = Settings
 
     const name =  element.getAttributeNames().map(name => {
         if (name.includes(dynamicTagBreakPoint)) {
             return name
         }
-    })[0]
+    })
 
     if (name !== `${dynamicTagBreakPoint}else`) {
-        return element.getAttribute(name)
+        return element.getAttribute(name[0])
     } else {
         return true
     }
 }
 
 export const query = (template, state, dataID) => {
-    const { dynamicTagBreakPoint } = BreakPoints
+    const { dynamicTagBreakPoint } = Settings
 
-    template.querySelectorAll('*').forEach(element => {
+    template.querySelectorAll("*").forEach(element => {
         if (element.getAttribute(dataID) !== null) {
-            const isIf = element.getAttribute(`${dynamicTagBreakPoint}if`)
-            const queryElements = []
+            const isIf = element.getAttribute(`${dynamicTagBreakPoint}if`),
+            queryElements = []
 
             if (isIf !== null) {
                 let nextElement = element.nextElementSibling
                 queryElements.push(element)
 
                 for (let i = 0; i < 30; i++) {
-                    const nextElementIsIf = nextElement !== null ? nextElement.getAttribute(`${dynamicTagBreakPoint}if`) : null
-                    const nextElementIsElseIf = nextElement !== null ? nextElement.getAttribute(`${dynamicTagBreakPoint}else-if`) : null
-                    const nextElementElse = nextElement != null ? nextElement.getAttribute(`${dynamicTagBreakPoint}else`) : null
+                    const nextElementIsIf = nextElement !== null ? nextElement.getAttribute(`${dynamicTagBreakPoint}if`) : null,
+                    nextElementIsElseIf = nextElement !== null ? nextElement.getAttribute(`${dynamicTagBreakPoint}else-if`) : null,
+                    nextElementElse = nextElement != null ? nextElement.getAttribute(`${dynamicTagBreakPoint}else`) : null
 
                     if (nextElementIsIf === null) {
                         if (nextElementIsElseIf !== null) {
@@ -49,12 +49,12 @@ export const query = (template, state, dataID) => {
                 }
             }
 
-            queryElements.map(el => el.style.display = 'none')
+            queryElements.map(el => el.style.display = "none")
 
             for (const i in queryElements) {
-                const el = queryElements[i]
-                const isIf = el.getAttribute(`${dynamicTagBreakPoint}if`)
-                const query = getQueryValue(el)
+                const el = queryElements[i],
+                isIf = el.getAttribute(`${dynamicTagBreakPoint}if`),
+                query = getQueryValue(el)
 
                 if (isIf !== null && eval(query)) {
                     el.style.display = ''
