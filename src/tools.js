@@ -38,7 +38,7 @@ const $addEvent = (template, ID = '', eventName = '', event = () => {}) => {
     const el = template.querySelector(ID)
     if (ID !== '') {
         if (el !== null) {            
-            template.querySelector(ID).addEventListener(eventName, () => event(el))
+            template.querySelector(ID).addEventListener(eventName, (target) => event(el, target))
         } else {
             return 'undefined'
         }
@@ -73,7 +73,7 @@ const $addEventList = (template, eventsList = {}) => {
         if (id.trim() !== '') {
             if (all === 'all') {
                 template.querySelectorAll(id).forEach(element => {
-                    element.addEventListener(eventName, () => event(element))
+                    element.addEventListener(eventName, (t) => event(element, t))
                 })
             } else {
                 template.querySelector(id).addEventListener(eventName, () => event(template.querySelector(id)))
