@@ -13,6 +13,8 @@ export class Vanille {
         this.state = state
         this.changes = changes
 
+        this.changeSorter(this.state)
+
         systemTools.map(tool => this[tool.name] = (ID, param1, param2) => tool(this.template, ID, param1, param2))
 
         document.body.innerHTML = ""
@@ -36,6 +38,21 @@ export class Vanille {
         })
 
         this.$update()
+    }
+
+    changeSorter(state) {
+        for (const [name, value] of Object.entries(this.changes)) {
+            if (name.includes("+")) {
+                const cahngeNames = name.split("+")
+
+                cahngeNames.map(changeName => {
+                    changeName = changeName.trim()
+                    this.changes[changeName] = () => value(eval(changeName))
+                })
+
+                delete this.changes[name]
+            }
+        }
     }
 
     $use(name, useItem) {
