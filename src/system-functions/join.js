@@ -7,7 +7,6 @@ const changeHandler = (value, changes, variableName) => {
 }
 
 export const join = (state, changes, variableName) => {
-    console.log(variableName)
     const trueValue = eval(variableName),
         changeValue = changeHandler(trueValue, changes, variableName, state)
 
