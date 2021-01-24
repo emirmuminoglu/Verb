@@ -179,13 +179,20 @@ export class Component {
         this.changes = this.changesConsumer(prop, this.state)
         this.dataID = dataID
 
+        const rootElement = document.querySelector(root)
+        
         this.first(prop, dataID)
-
+        
         for (const [name, value] of Object.entries(addAttributes)) {
             this.template.setAttribute(name, value)
         }
+        
+        const tempaltePropChild = this.template.querySelector("prop-child"),
+            propChild = rootElement.children[0]
+        
+        tempaltePropChild.replaceWith(propChild)
 
-        document.querySelector(root).replaceWith(this.template)
+        rootElement.replaceWith(this.template)
 
         this.created(prop, this.state)
 
