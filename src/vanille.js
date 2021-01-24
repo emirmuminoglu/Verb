@@ -37,7 +37,7 @@ export class Vanille {
             }
         })
 
-        this.$update()
+        this.$update("*", true)
     }
 
     changeSorter(state) {

@@ -4,6 +4,7 @@ import { getVanille, setVanille } from "../system-functions/DOMVanilleObject.js"
 
 function update(element, joinResult) {
     const innerFormat = element.getAttribute("inner-format")
+    console.log(innerFormat)
 
     if (innerFormat === "html") {
         element.innerHTML = joinResult.changeValue
