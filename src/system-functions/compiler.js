@@ -34,6 +34,10 @@ export const compiler = (template, state, changes, dataID) => {
             } else {
                 break
             }
+
+            if (i == 100) {
+                break
+            }
         }
     }
 

@@ -30,7 +30,7 @@ export class Vanille {
 
             if (element.tagName === "V") {
                 setVanille(element, "true-value", element.getAttribute("true-value"))
-                setVanille(element, "dependency", element.getAttribute("dependency"))
+                setVanille(element, "dependency", element.getAttribute("dependency").trim())
 
                 element.removeAttribute("true-value")
                 element.removeAttribute("dependency")
@@ -65,23 +65,30 @@ export class Vanille {
     }
 
     $getVanille(id) {
-        control(id).isNot({ type: "string" }).err("When you want to pull the vanille object of an element, you must send a string value as id to getVanille method.")
+        control(id).is({ type: "string" }).err("When you want to pull the vanille object of an element, you must send a string value as id to getVanille method.")
 
-        this.template.querySelector(id).vanille
+        return this.template.querySelector(id).vanille
     }
 
-    $update(doItByForce) {
-        contentUpdate(this.template, this.state, this.changes, this.dataID, doItByForce)
-        attributeHandler(this.template, this.state, this.changes, this.dataID)
-        show(this.template, this.state, this.dataID)
-        query(this.template, this.state, this.dataID)
+    $update(updateName, doItByForce) {
+        if (updateName === undefined || updateName === "*") {
+            contentUpdate(this.template, this.state, this.changes, this.dataID, doItByForce)
+            attributeHandler(this.template, this.state, this.changes, this.dataID)
+            show(this.template, this.state, this.dataID)
+            query(this.template, this.state, this.dataID)
+        } else {
+            updateName === "content" ? contentUpdate(this.template, this.state, this.changes, this.dataID, doItByForce) : null
+            updateName === "attribute" ? attributeHandler(this.template, this.state, this.changes, this.dataID) : null
+            updateName === "show" ? show(this.template, this.state, this.dataID) : null
+            updateName === "query" ? query(this.template, this.state, this.dataID) : null
+        }
     }
 
     compile() {
         compiler(this.template, this.state, this.changes, this.dataID)
     }
 
-    $setState(setValue) {
+    $setState(setValue, doItByForce) {
         const info = {}
         setValue = (typeof setValue === "function" ? setValue() : setValue)
 
@@ -102,7 +109,7 @@ export class Vanille {
             }
         }
 
-        this.$update()
+        this.$update(doItByForce)
 
         return info
     }

@@ -1,4 +1,4 @@
-import { CreateComponent } from "../system-functions/component.js"
+import { Component } from "../system-functions/component.js"
 import Settings from "../../settings.js"
 import { control } from "../system-functions/error.js"
 
@@ -27,7 +27,7 @@ const write = (root, props, component) => {
         }
     })
 
-    const componentClone = new CreateComponent(component).$render(root.tagName, propsClone, addAttributes)
+    const componentClone = new Component(component).$render(root.tagName, propsClone, addAttributes)
 
     componentClone.then(res => propTypesControl(res.propTypes, res.state))
 
