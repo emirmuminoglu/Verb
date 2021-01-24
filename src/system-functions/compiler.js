@@ -16,7 +16,7 @@ const tagChange = (variableName, trueValue, value, dataID, innerFormat) => {
 }
 
 export const compiler = (template, state, changes, dataID) => {
-    const { useVariableStart, useVariableEnd, useHTMLMark, useVariableLength } = Settings
+    const { useVariableStart, useVariableEnd, useHTMLMark, useVariableLength, compilerMaximumTransactionLimit } = Settings
 
     if ((template.innerHTML.indexOf(useVariableStart) !== -1) && (template.innerHTML.indexOf(useVariableEnd) !== -1)) {
         for (let i = 0; i < template.innerHTML.length; i++) {
@@ -35,7 +35,7 @@ export const compiler = (template, state, changes, dataID) => {
                 break
             }
 
-            if (i == 100) {
+            if (i == compilerMaximumTransactionLimit) {
                 break
             }
         }

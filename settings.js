@@ -25,7 +25,10 @@ const settings = {
     useVariableLength: 2,
 
     // Keyword to use if you want to print a variable in state into the content as HTML
-    useHTMLMark: "__html__"
+    useHTMLMark: "__html__",
+
+    // otherwise, the compiler's maximum run limit is
+    compilerMaximumTransactionLimit: 100
 }
 
 export default settings
