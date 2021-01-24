@@ -6,7 +6,7 @@ const vanilleObjectControl = (element) => {
 
 export const getVanille = (element, getName) => {
     vanilleObjectControl(element)
-    
+
     const value = element.vanille[getName]
 
     if (value !== undefined) {

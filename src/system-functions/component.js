@@ -17,7 +17,7 @@ export class Component {
         methods = () => ({}),
         events = () => ({}),
         changes = () => ({}),
-        created = () => {},
+        created = () => { },
         propTypes = {}
     } = {}) {
         this.template = ""
@@ -48,7 +48,7 @@ export class Component {
         control(tagName).is({ type: "string" }).err("When creating a component container with the $template method, the first parameter must contain a string value tag name, it cannot be sent empty.")
 
         control(attributes).is({ type: "object" }).err("Attributes to be given to the component container must be contained in an object. Object names and values ​​are equal to attribute names and values")
-        
+
         control(inner).isNot({ value: undefined }).is({ type: "string" }).err("A string value must be sent as the last parameter to the $template method in the component. The last parameter is taken as HTML content")
 
         const template = document.createElement(tagName)
@@ -64,19 +64,19 @@ export class Component {
 
     first(prop, dataID) {
         this.template.setAttribute(dataID, "")
-        
+
         systemTools.map(tool => this[tool.name] = (ID) => tool(this.template, ID))
-        
+
         this.compile()
 
         this.eventHandler(prop)
-        
+
         this.template.querySelectorAll("*").forEach(element => {
             element.setAttribute(dataID, "")
             if (element.tagName === "V") {
                 setVanille(element, "true-value", element.getAttribute("true-value"))
                 setVanille(element, "dependency", element.getAttribute("dependency").trim())
-                
+
                 element.removeAttribute("true-value")
                 element.removeAttribute("dependency")
             }
@@ -178,7 +178,7 @@ export class Component {
         this.eventsConsumer = this.events(prop, this.state)
         this.changes = this.changesConsumer(prop, this.state)
         this.dataID = dataID
-        
+
         this.first(prop, dataID)
 
         for (const [name, value] of Object.entries(addAttributes)) {

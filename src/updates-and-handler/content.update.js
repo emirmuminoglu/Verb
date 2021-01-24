@@ -2,7 +2,7 @@ import { join } from "../system-functions/join.js"
 import Settings from "../../settings.js"
 import { getVanille, setVanille } from "../system-functions/DOMVanilleObject.js"
 
-function update (element, joinResult) {
+function update(element, joinResult) {
     const innerFormat = element.getAttribute("inner-format")
 
     if (innerFormat === "html") {
@@ -17,14 +17,14 @@ function update (element, joinResult) {
 
 export const contentUpdate = (template, state, changes, dataID, doItByForce = false) => {
     const { variableTagName } = Settings
-    
+
     template.querySelectorAll(variableTagName).forEach(async element => {
         if (element.getAttribute(dataID) !== null) {
-            
+
             const variableName = getVanille(element, "dependency")
 
             const trueValue = getVanille(element, "true-value"),
-            joinResult = await join(state, changes, variableName.trim())
+                joinResult = await join(state, changes, variableName.trim())
 
             if (doItByForce) {
                 update(element, joinResult)

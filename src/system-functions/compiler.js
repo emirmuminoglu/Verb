@@ -21,12 +21,12 @@ export const compiler = (template, state, changes, dataID) => {
     if ((template.innerHTML.indexOf(useVariableStart) !== -1) && (template.innerHTML.indexOf(useVariableEnd) !== -1)) {
         for (let i = 0; i < template.innerHTML.length; i++) {
             const start = (template.innerHTML.indexOf(useVariableStart) + useVariableLength),
-            end = template.innerHTML.indexOf(useVariableEnd)
+                end = template.innerHTML.indexOf(useVariableEnd)
 
             if (start !== -1 && end !== -1) {
                 const variableName = template.innerHTML.slice(start, end),
-                innerFormat = variableName.includes(useHTMLMark),
-                joinResult = join(state, changes, variableName.replace(useHTMLMark, "").trim())
+                    innerFormat = variableName.includes(useHTMLMark),
+                    joinResult = join(state, changes, variableName.replace(useHTMLMark, "").trim())
 
                 template.innerHTML = template.innerHTML.replace(`${useVariableStart}${variableName}${useVariableEnd}`,
                     tagChange(variableName.replace(useHTMLMark, ""), joinResult.trueValue, joinResult.changeValue, dataID, innerFormat)

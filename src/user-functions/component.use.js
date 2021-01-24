@@ -7,7 +7,7 @@ const write = (root, props, component) => {
     control(component).is({ type: "object" }).err("The component value you send to the component user must be an object.")
 
     const { componentPropsBreakPoint } = Settings,
-    addAttributes = {}
+        addAttributes = {}
     let propsClone = JSON.parse(JSON.stringify(props))
 
     root.getAttributeNames().map(attrName => {
@@ -41,7 +41,7 @@ const propTypesControl = (propTypesControl, state) => {
         control(controlValue).is({ type: "string" }).err("Control values ​​in prop type checks must be strings")
 
         const type = controlValue.replace(".require", ""),
-        require = controlValue.includes(".require")
+            require = controlValue.includes(".require")
 
         const prop = state[controlName]
         if (prop !== undefined) {

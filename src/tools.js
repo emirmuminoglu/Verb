@@ -34,10 +34,10 @@ const $getAll = (template, ID = "") => {
  * @param {String} eventName event name to be assigned to element
  * @param {Function} event event to be assigned to element
 */
-const $addEvent = (template, ID = "", eventName = "", event = () => {}) => {
+const $addEvent = (template, ID = "", eventName = "", event = () => { }) => {
     const el = template.querySelector(ID)
     if (ID !== "") {
-        if (el !== null) {            
+        if (el !== null) {
             template.querySelector(ID).addEventListener(eventName, (target) => event(el, target))
         } else {
             return "undefined"
@@ -85,7 +85,7 @@ const $addEventList = (template, eventsList = {}) => {
 }
 
 // for system
-export const systemTools =  [$get, $getAll, $addEvent, $remove, $addEventList]
+export const systemTools = [$get, $getAll, $addEvent, $remove, $addEventList]
 
 // for users
 // Element of JSON object type

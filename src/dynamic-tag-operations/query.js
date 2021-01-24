@@ -3,7 +3,7 @@ import Settings from '../../settings.js'
 const getQueryValue = (element) => {
     const { dynamicTagBreakPoint } = Settings
 
-    const name =  element.getAttributeNames().map(name => {
+    const name = element.getAttributeNames().map(name => {
         if (name.includes(dynamicTagBreakPoint)) {
             return name
         }
@@ -22,7 +22,7 @@ export const query = (template, state, dataID) => {
     template.querySelectorAll("*").forEach(element => {
         if (element.getAttribute(dataID) !== null) {
             const isIf = element.getAttribute(`${dynamicTagBreakPoint}if`),
-            queryElements = []
+                queryElements = []
 
             if (isIf !== null) {
                 let nextElement = element.nextElementSibling
@@ -30,8 +30,8 @@ export const query = (template, state, dataID) => {
 
                 for (let i = 0; i < 30; i++) {
                     const nextElementIsIf = nextElement !== null ? nextElement.getAttribute(`${dynamicTagBreakPoint}if`) : null,
-                    nextElementIsElseIf = nextElement !== null ? nextElement.getAttribute(`${dynamicTagBreakPoint}else-if`) : null,
-                    nextElementElse = nextElement != null ? nextElement.getAttribute(`${dynamicTagBreakPoint}else`) : null
+                        nextElementIsElseIf = nextElement !== null ? nextElement.getAttribute(`${dynamicTagBreakPoint}else-if`) : null,
+                        nextElementElse = nextElement != null ? nextElement.getAttribute(`${dynamicTagBreakPoint}else`) : null
 
                     if (nextElementIsIf === null) {
                         if (nextElementIsElseIf !== null) {
@@ -53,8 +53,8 @@ export const query = (template, state, dataID) => {
 
             for (const i in queryElements) {
                 const el = queryElements[i],
-                isIf = el.getAttribute(`${dynamicTagBreakPoint}if`),
-                query = getQueryValue(el)
+                    isIf = el.getAttribute(`${dynamicTagBreakPoint}if`),
+                    query = getQueryValue(el)
 
                 if (isIf !== null && eval(query)) {
                     el.style.display = ''

@@ -1,6 +1,6 @@
 export const control = (item) => {
     const title = "{Vanillejs Error}",
-    suggetsions = `
+        suggetsions = `
 If you haven"t solved the problem you can check here
 
 Repository: https://github.com/Vanillejs/vanille
