@@ -67,8 +67,9 @@ export class CreateComponent {
         
         systemTools.map(tool => this[tool.name] = (ID) => tool(this.template, ID))
         
-        this.compile()
         this.eventHandler(prop)
+
+        this.compile()
         
         this.template.querySelectorAll('*').forEach(element => {
             element.setAttribute(dataID, '')
@@ -81,7 +82,7 @@ export class CreateComponent {
             }
         })
 
-        this.$update(true)
+        this.$update()
 
         contentUpdate(this.template, this.state, this.changes, this.dataID, true)
     }

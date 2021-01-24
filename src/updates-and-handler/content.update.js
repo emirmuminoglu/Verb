@@ -20,8 +20,10 @@ export const contentUpdate = (template, state, changes, dataID, doItByForce = fa
     
     template.querySelectorAll(variableTagName).forEach(async element => {
         if (element.getAttribute(dataID) !== null) {
-            const variableName = getVanille(element, "dependency"),
-            trueValue = getVanille(element, "true-value"),
+            
+            const variableName = getVanille(element, "dependency")
+
+            const trueValue = getVanille(element, "true-value"),
             joinResult = await join(state, changes, variableName.trim())
 
             if (doItByForce) {
