@@ -9,7 +9,7 @@ const getQueryValue = (element) => {
         }
     })
 
-    if (name !== `${dynamicTagBreakPoint}else`) {
+    if (name[0] !== `${dynamicTagBreakPoint}else`) {
         return element.getAttribute(name[0])
     } else {
         return true
