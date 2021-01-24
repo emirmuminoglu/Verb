@@ -82,7 +82,7 @@ export class Component {
             }
         })
 
-        this.$update()
+        this.$update("*", true)
 
         contentUpdate(this.template, this.state, this.changes, this.dataID, true)
     }
