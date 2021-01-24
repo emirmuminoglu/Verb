@@ -189,8 +189,10 @@ export class Component {
         
         const tempaltePropChild = this.template.querySelector("prop-child"),
             propChild = rootElement.children[0]
-        
-        tempaltePropChild.replaceWith(propChild)
+
+        if (tempaltePropChild !== null) {
+            tempaltePropChild.replaceWith(propChild)
+        }
 
         rootElement.replaceWith(this.template)
 
