@@ -165,6 +165,24 @@ export class Component {
         }
     }
 
+    propTypesControl() {
+        for (const [controlName, controlValue] of Object.entries(this.propTypes)) {
+            control(controlValue).is({ type: "string" }).err("Control values ​​in prop type checks must be strings")
+    
+            const type = controlValue.replace(".require", ""),
+                require = controlValue.includes(".require"),
+                prop = this.state[controlName]
+
+            if (prop !== undefined) {
+                control(prop).is({ type }).err(`"${controlName}" value was expected to come in "${type}" type but came in "${typeof prop}" type. Value:` + prop + ". Type: " + typeof prop)
+            } else {
+                if (require) {
+                    control().basicError([`The value of "${controlName}" was supposed to come but it didn"t. Props:`, this.state])
+                }
+            }
+        }
+    }
+
     /**
      * @param {any} prop 
      * @param {String} dataID dataID must be a string. dataID is not required to be sent
@@ -196,6 +214,7 @@ export class Component {
 
         rootElement.replaceWith(this.template)
 
+        this.propTypesControl()
         this.created(prop, this.state)
 
         return this

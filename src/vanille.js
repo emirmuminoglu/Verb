@@ -5,6 +5,8 @@ import { createKey } from "./system-functions/create.key.js"
 import { systemTools } from "./tools.js"
 import { setVanille } from "./system-functions/DOMVanilleObject.js"
 import { control } from "./system-functions/error.js"
+import { Component } from "./system-functions/component.js"
+import Settings from "../settings.js"
 
 export class Vanille {
     constructor({ state = {}, changes = {} } = {}, template = document.body, dataID = createKey()) {
@@ -86,6 +88,40 @@ export class Vanille {
 
     compile() {
         compiler(this.template, this.state, this.changes, this.dataID)
+    }
+
+    $createComponent({ rootName, component, props = {} }) {
+        control(document.querySelector(rootName)).isNot({ value: null }).err(`A component tag with root name "${rootName}" was not found. Make sure there is an HTML tag with the same name as the rootName you sent`)
+        const components = []
+
+        document.querySelectorAll(rootName).forEach(root => {
+            const { componentPropsBreakPoint } = Settings,
+                addAttributes = {}
+            let propsClone = JSON.parse(JSON.stringify(props))
+
+            root.getAttributeNames().map(attrName => {
+                if (attrName.includes(componentPropsBreakPoint)) {
+                    const propName = attrName.replace(componentPropsBreakPoint, "")
+                    let propValue = root.getAttribute(attrName)
+
+                    propValue = eval(`[${propValue}][0]`)
+
+                    propsClone[propName] = propValue
+                } else {
+                    const attrValue = root.getAttribute(attrName)
+
+                    if (!attrName.includes("data-l-")) {
+                        addAttributes[attrName] = attrValue
+                    }
+                }
+            })
+
+            const componentClone = new Component(component).$render(root.tagName, propsClone, addAttributes)
+
+            components.push(componentClone)
+        })
+
+        return components
     }
 
     $setState(setValue, doItByForce) {
