@@ -192,7 +192,7 @@ export class Component {
         this.props = prop
         this.state = Object.assign(this.stateConsumer(), prop)
         this.template = await this.html(prop, this.state)
-        this.methodsConsumer = this.methods(prop, this.state)
+        this.methods = this.methods(prop, this.state)
         this.eventsConsumer = this.events(prop, this.state)
         this.changes = this.changesConsumer(prop, this.state)
         this.dataID = dataID
