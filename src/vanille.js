@@ -67,7 +67,7 @@ export class Vanille {
     }
 
     $getVanille(id) {
-        control(id).is({ type: "string" }).err("When you want to pull the vanille object of an element, you must send a string value as id to getVanille method.")
+        control(typeof id === "string").err("When you want to pull the vanille object of an element, you must send a string value as id to getVanille method.")
 
         return this.template.querySelector(id).vanille
     }
@@ -91,7 +91,7 @@ export class Vanille {
     }
 
     $createComponent({ rootName, component, props = {} }) {
-        control(document.querySelector(rootName)).isNot({ value: null }).err(`A component tag with root name "${rootName}" was not found. Make sure there is an HTML tag with the same name as the rootName you sent`)
+        control(document.querySelector(rootName) !== null).err(`A component tag with root name "${rootName}" was not found. Make sure there is an HTML tag with the same name as the rootName you sent`)
         const components = []
 
         document.querySelectorAll(rootName).forEach(root => {

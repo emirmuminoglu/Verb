@@ -1,4 +1,4 @@
-import { settingsControl } from "./src/settings.control.js"
+import { settingsControl } from "./src/system-functions/settings.control.js"
 
 const settings = {
     // keyword for dynamic tag operations

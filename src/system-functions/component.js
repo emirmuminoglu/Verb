@@ -33,7 +33,7 @@ export class Component {
         this.propTypes = propTypes
 
         const keys = [state, methods, events, changes, created].map(item => {
-            control(item).is({ type: "function" }).err("state, methods, changes, events and created values ​​must be methods in components.")
+            control(typeof item === "function").err("state, methods, changes, events and created values ​​must be methods in components.")
         })
 
     }
@@ -45,11 +45,11 @@ export class Component {
      */
 
     $template(tagName, attributes, inner) {
-        control(tagName).is({ type: "string" }).err("When creating a component container with the $template method, the first parameter must contain a string value tag name, it cannot be sent empty.")
+        control(typeof tagName === "string").err("When creating a component container with the $template method, the first parameter must contain a string value tag name, it cannot be sent empty.")
 
-        control(attributes).is({ type: "object" }).err("Attributes to be given to the component container must be contained in an object. Object names and values ​​are equal to attribute names and values")
+        control(typeof attributes === "object").err("Attributes to be given to the component container must be contained in an object. Object names and values ​​are equal to attribute names and values")
 
-        control(inner).isNot({ value: undefined }).is({ type: "string" }).err("A string value must be sent as the last parameter to the $template method in the component. The last parameter is taken as HTML content")
+        control(inner !== undefined && typeof inner === "string").err("A string value must be sent as the last parameter to the $template method in the component. The last parameter is taken as HTML content")
 
         const template = document.createElement(tagName)
 
@@ -93,7 +93,7 @@ export class Component {
      */
 
     $update(updateName, doItByForce = false) {
-        control(doItByForce).is({ type: "boolean" }).err("The forced update parameter sent to the $update method should have been true or false")
+        control(typeof doItByForce === "boolean").err("The forced update parameter sent to the $update method should have been true or false")
 
         if (updateName === undefined || updateName === "*") {
             contentUpdate(this.template, this.state, this.changes, this.dataID, doItByForce)
@@ -167,17 +167,17 @@ export class Component {
 
     propTypesControl() {
         for (const [controlName, controlValue] of Object.entries(this.propTypes)) {
-            control(controlValue).is({ type: "string" }).err("Control values ​​in prop type checks must be strings")
+            control(controlValue === "string").err("Control values ​​in prop type checks must be strings")
     
             const type = controlValue.replace(".require", ""),
                 require = controlValue.includes(".require"),
                 prop = this.state[controlName]
 
             if (prop !== undefined) {
-                control(prop).is({ type }).err(`"${controlName}" value was expected to come in "${type}" type but came in "${typeof prop}" type. Value:` + prop + ". Type: " + typeof prop)
+                control(prop === type).err(`"${controlName}" value was expected to come in "${type}" type but came in "${typeof prop}" type. Value:` + prop + ". Type: " + typeof prop)
             } else {
                 if (require) {
-                    control().basicError([`The value of "${controlName}" was supposed to come but it didn"t. Props:`, this.state])
+                    control(false).err([`The value of "${controlName}" was supposed to come but it didn"t. Props:`, this.state])
                 }
             }
         }
