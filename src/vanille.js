@@ -19,10 +19,10 @@ export class Vanille {
 
         systemTools.map(tool => this[tool.name] = (ID, param1, param2) => tool(this.template, ID, param1, param2))
 
-        document.body.innerHTML = ""
         const templateNode = document.querySelector("template"),
-            content = templateNode.content.cloneNode(true)
-
+        content = templateNode.content.cloneNode(true)
+        
+        document.body.innerHTML = ""
         this.template.appendChild(content)
 
         this.compile()
