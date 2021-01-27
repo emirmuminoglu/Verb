@@ -28,7 +28,10 @@ const settings = {
     useHTMLMark: "__html__",
 
     // otherwise, the compiler's maximum run limit is
-    compilerMaximumTransactionLimit: 100
+    compilerMaximumTransactionLimit: 100,
+
+    // The tag name of the tags found for router routing
+    routerLinkTagName: "v-link"
 }
 
 export default settings

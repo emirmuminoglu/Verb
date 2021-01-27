@@ -1,17 +1,19 @@
 import { Component } from "../system-functions/component.js"
+import Settings from "../../settings.js"
 
 export class Router {
     constructor({ rootName = "body", routers = [] }) {
         this.root = document.querySelector(rootName)
         this.rootName = rootName
         this.routers = routers
+        this.routerLinkTagName = Settings.routerLinkTagName
 
         this.eventHandler()
         this.routeManager(location.pathname, true)
     }
 
     eventHandler() {
-        document.querySelectorAll("v-link").forEach(element => {
+        document.querySelectorAll(this.routerLinkTagName).forEach(element => {
             element.addEventListener("click", () => {
                 const path = element.getAttribute("path")
 
