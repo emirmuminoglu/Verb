@@ -186,7 +186,7 @@ export class Component {
      * @param {String} dataID dataID must be a string. dataID is not required to be sent
      */
 
-    async $render(root, prop, addAttributes, dataID = createKey()) {
+    async $render(root, prop, addAttributes, routerMode = false, dataID = createKey()) {
         this.props = prop
         this.state = Object.assign(this.stateConsumer(), prop)
         this.template = await this.html(prop, this.state)
@@ -200,7 +200,9 @@ export class Component {
         for (const [name, value] of Object.entries(addAttributes)) {
             this.template.setAttribute(name, value)
         }
-        
+
+        console.log(this.template, rootElement)
+
         const tempaltePropChild = this.template.querySelector("prop-child"),
             propChild = rootElement.children[0]
 
@@ -209,7 +211,12 @@ export class Component {
         }
 
         this.first(prop, dataID)
-        rootElement.replaceWith(this.template)
+
+        if (routerMode) {
+            rootElement.appendChild(this.template)
+        } else {
+            rootElement.replaceWith(this.template)
+        }
 
         this.propTypesControl()
         this.created(prop, this.state)
