@@ -5,6 +5,7 @@ import { createKey } from "./create.key.js"
 import { systemTools } from "../tools.js"
 import { setVanille } from "./DOMVanilleObject.js"
 import { control } from "./error.js"
+import Settings from "../../settings.js"
 
 export class Component {
     /**
@@ -64,21 +65,18 @@ export class Component {
 
     first(prop, dataID) {
         this.template.setAttribute(dataID, "")
+        this.compile()
 
         systemTools.map(tool => this[tool.name] = (ID) => tool(this.template, ID))
-
-        this.compile()
 
         this.eventHandler(prop)
 
         this.template.querySelectorAll("*").forEach(element => {
             element.setAttribute(dataID, "")
+
             if (element.tagName === "V") {
                 setVanille(element, "true-value", element.getAttribute("true-value"))
-                setVanille(element, "dependency", element.getAttribute("dependency").trim())
-
-                element.removeAttribute("true-value")
-                element.removeAttribute("dependency")
+                setVanille(element, "dependency", element.getAttribute("dependency"))
             }
         })
 
@@ -199,8 +197,6 @@ export class Component {
 
         const rootElement = document.querySelector(root)
         
-        this.first(prop, dataID)
-        
         for (const [name, value] of Object.entries(addAttributes)) {
             this.template.setAttribute(name, value)
         }
@@ -212,12 +208,50 @@ export class Component {
             tempaltePropChild.replaceWith(propChild)
         }
 
+        this.first(prop, dataID)
         rootElement.replaceWith(this.template)
 
         this.propTypesControl()
         this.created(prop, this.state)
 
         return this
+    }
+
+    /**
+     * @param {Object} param0
+    */
+    $createComponent({ rootName, component, props = {} }) {
+        control(document.querySelector(rootName) !== null).err(`A component tag with root name "${rootName}" was not found. Make sure there is an HTML tag with the same name as the rootName you sent`)
+        const components = []
+
+        document.querySelectorAll(rootName).forEach(root => {
+            const { componentPropsBreakPoint } = Settings,
+                addAttributes = {}
+            let propsClone = JSON.parse(JSON.stringify(props))
+
+            root.getAttributeNames().map(attrName => {
+                if (attrName.includes(componentPropsBreakPoint)) {
+                    const propName = attrName.replace(componentPropsBreakPoint, "")
+                    let propValue = root.getAttribute(attrName)
+
+                    propValue = eval(`[${propValue}][0]`)
+
+                    propsClone[propName] = propValue
+                } else {
+                    const attrValue = root.getAttribute(attrName)
+
+                    if (!attrName.includes("data-l-")) {
+                        addAttributes[attrName] = attrValue
+                    }
+                }
+            })
+
+            const componentClone = new Component(component).$render(root.tagName, propsClone, addAttributes)
+
+            components.push(componentClone)
+        })
+
+        return components
     }
 
     /**
