@@ -201,8 +201,6 @@ export class Component {
             this.template.setAttribute(name, value)
         }
 
-        console.log(this.template, rootElement)
-
         const tempaltePropChild = this.template.querySelector("prop-child"),
             propChild = rootElement.children[0]
 

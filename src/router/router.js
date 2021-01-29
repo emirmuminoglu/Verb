@@ -2,40 +2,47 @@ import { Component } from "../system-functions/component.js"
 import Settings from "../../settings.js"
 
 export class Router {
-    constructor({ rootName = "body", routers = [] }) {
+    constructor({ rootName = "body", routers = [], defaultOnloadComponent }) {
         this.root = document.querySelector(rootName)
         this.rootName = rootName
         this.routers = routers
         this.routerLinkTagName = Settings.routerLinkTagName
+        this.hash = location.hash
+        this.defaultOnloadComponent = defaultOnloadComponent
 
         this.eventHandler()
-        this.routeManager(location.pathname, true)
+        this.routeManager(true)
     }
 
     eventHandler() {
         document.querySelectorAll(this.routerLinkTagName).forEach(element => {
             element.addEventListener("click", () => {
-                const path = element.getAttribute("path")
+                const hash = element.getAttribute("hash")
 
-                this.routeManager(path, false)
-                history.pushState({}, "", path)
+                this.hash = hash
+
+                this.routeManager()
             })
         })
     }
-    
-    getPathName = () => (location.pathname)
 
-    routeManager(pathName, onloadMode) {
-        
+    getHash = () => (location.hash)
+
+    routeManager(onloadMode) {
         for (const i in this.routers) {
-            const path = this.routers[i].path,
+            const hash = this.routers[i].hash,
                 component = this.routers[i].component
-            
-            if (path === pathName) {
-                if (pathName !== this.getPathName() || onloadMode) {
+
+            if (onloadMode) {
+                this.root.innerHTML = ""
+                new Component(this.defaultOnloadComponent).$render(this.rootName, {}, {}, true)
+
+                break
+            } else {
+                if (hash === this.hash) {
                     this.root.innerHTML = ""
                     new Component(component).$render(this.rootName, {}, {}, true)
-                    
+
                     break
                 }
             }
