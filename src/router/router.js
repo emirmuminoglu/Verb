@@ -29,23 +29,25 @@ export class Router {
     getHash = () => (location.hash)
 
     routeManager(onloadMode) {
+        let defaultMode = false
+
         for (const i in this.routers) {
             const hash = this.routers[i].hash,
                 component = this.routers[i].component
 
-            if (onloadMode) {
+            if (hash === this.hash) {
                 this.root.innerHTML = ""
-                new Component(this.defaultOnloadComponent).$render(this.rootName, {}, {}, true)
+                new Component(component).$render(this.rootName, {}, {}, true)
+                defaultMode = false
 
                 break
-            } else {
-                if (hash === this.hash) {
-                    this.root.innerHTML = ""
-                    new Component(component).$render(this.rootName, {}, {}, true)
+            } else
+                defaultMode = true
+        }
 
-                    break
-                }
-            }
+        if (defaultMode) {
+            this.root.innerHTML = ""
+            new Component(this.defaultOnloadComponent).$render(this.rootName, {}, {}, true)
         }
     }
 }
