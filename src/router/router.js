@@ -11,6 +11,7 @@ export class Router {
         this.defaultComponent = defaultComponent
         this.routerMode = routerMode
         this.title = ""
+        this.name = ""
 
         this.createRouterObject()
         this.routeManager()
@@ -48,7 +49,7 @@ export class Router {
 
         for (const i in this.routers) {
             const req = this.routers[i][this.routerMode],
-                { component, title } = this.routers[i]
+                { component, title, name } = this.routers[i]
 
             if (req === this[this.routerMode]) {
                 this.root.innerHTML = ""
@@ -57,6 +58,7 @@ export class Router {
 
                 this.title = title
                 title !== undefined ? document.title = this.title : null
+                this.name = name !== undefined ? name : ""
                 defaultMode = false
                 this.updateRouterObject()
 
