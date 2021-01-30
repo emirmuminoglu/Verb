@@ -40,6 +40,12 @@ export class Component {
     }
 
     /**
+     * @param {String} path
+     */
+
+    getTemplate = async (path) => await fetch(path).then(res => res.text())
+
+    /**
      * @param {String} tagName is the name of the main label of this component
      * @param {Object} attributes are the characteristics of the main label of this component
      * @param {String} inner are HTML codes of the main tag of this component
