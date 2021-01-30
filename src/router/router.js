@@ -10,16 +10,25 @@ export class Router {
         this[routerMode] = location[routerMode]
         this.defaultComponent = defaultComponent
         this.routerMode = routerMode
+        this.title = ""
 
+        this.createRouterObject()
+        this.routeManager()
         this.eventHandler()
-        this.routeManager(true)
     }
+    
+    createRouterObject() {
+        window.vanille.$router = {
+            ...this
+        }
+    }
+
+    updateRouterObject = () => window.vanille.$router = Object.assign(window.vanille.$router, this)
 
     eventHandler() {
         document.querySelectorAll(this.routerLinkTagName).forEach(element => {
             element.addEventListener("click", () => {
-                const to = element.getAttribute("to"),
-                    title = element.getAttribute("title")
+                const to = element.getAttribute("to")
 
                 this[this.routerMode] = to
 
@@ -29,34 +38,37 @@ export class Router {
                     location.hash = to
                 }
 
-                title !== null ? document.title = title : null
-
                 this.routeManager()
             })
         })
     }
 
-    getHash = () => (location.hash)
-
-    routeManager(onloadMode) {
+    routeManager() {
         let defaultMode = false
 
         for (const i in this.routers) {
             const req = this.routers[i][this.routerMode],
-                component = this.routers[i].component
+                { component, title } = this.routers[i]
 
             if (req === this[this.routerMode]) {
                 this.root.innerHTML = ""
+                
                 new Component(component).$render(this.rootName, {}, {}, true)
+
+                this.title = title
+                title !== undefined ? document.title = this.title : null
                 defaultMode = false
+                this.updateRouterObject()
 
                 break
-            } else
+            } else {
                 defaultMode = true
+            }
         }
 
         if (defaultMode) {
             this.root.innerHTML = ""
+
             new Component(this.defaultComponent).$render(this.rootName, {}, {}, true)
         }
     }

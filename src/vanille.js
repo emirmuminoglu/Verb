@@ -40,6 +40,7 @@ export class Vanille {
         })
 
         this.$update("*", true)
+        window.vanille = {}
     }
 
     changeSorter(state) {
