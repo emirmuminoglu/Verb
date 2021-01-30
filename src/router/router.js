@@ -2,13 +2,14 @@ import { Component } from "../system-functions/component.js"
 import Settings from "../../settings.js"
 
 export class Router {
-    constructor({ rootName = "body", routers = [], defaultOnloadComponent }) {
+    constructor({ routerMode = "path", rootName = "body", routers = [], defaultComponent }) {
         this.root = document.querySelector(rootName)
         this.rootName = rootName
         this.routers = routers
         this.routerLinkTagName = Settings.routerLinkTagName
-        this.hash = location.hash
-        this.defaultOnloadComponent = defaultOnloadComponent
+        this[routerMode] = location[routerMode]
+        this.defaultComponent = defaultComponent
+        this.routerMode = routerMode
 
         this.eventHandler()
         this.routeManager(true)
@@ -17,9 +18,18 @@ export class Router {
     eventHandler() {
         document.querySelectorAll(this.routerLinkTagName).forEach(element => {
             element.addEventListener("click", () => {
-                const hash = element.getAttribute("hash")
+                const to = element.getAttribute("to"),
+                    title = element.getAttribute("title")
 
-                this.hash = hash
+                this[this.routerMode] = to
+
+                if (this.routerMode === "pathname") {
+                    history.pushState({}, "", to)
+                } else if (this.routerMode === "hash") {
+                    location.hash = to
+                }
+
+                title !== null ? document.title = title : null
 
                 this.routeManager()
             })
@@ -32,10 +42,10 @@ export class Router {
         let defaultMode = false
 
         for (const i in this.routers) {
-            const hash = this.routers[i].hash,
+            const req = this.routers[i][this.routerMode],
                 component = this.routers[i].component
 
-            if (hash === this.hash) {
+            if (req === this[this.routerMode]) {
                 this.root.innerHTML = ""
                 new Component(component).$render(this.rootName, {}, {}, true)
                 defaultMode = false
@@ -47,7 +57,7 @@ export class Router {
 
         if (defaultMode) {
             this.root.innerHTML = ""
-            new Component(this.defaultOnloadComponent).$render(this.rootName, {}, {}, true)
+            new Component(this.defaultComponent).$render(this.rootName, {}, {}, true)
         }
     }
 }
