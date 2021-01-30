@@ -2,7 +2,7 @@ import { Component } from "../system-functions/component.js"
 import Settings from "../../settings.js"
 
 export class Router {
-    constructor({ routerMode = "path", rootName = "body", routers = [], defaultComponent }) {
+    constructor({ linkChanged, routerMode = "path", rootName = "body", routers = [], defaultComponent }) {
         this.root = document.querySelector(rootName)
         this.rootName = rootName
         this.routers = routers
@@ -10,6 +10,7 @@ export class Router {
         this[routerMode] = location[routerMode]
         this.defaultComponent = defaultComponent
         this.routerMode = routerMode
+        this.linkChanged = linkChanged
         this.title = ""
         this.name = ""
 
@@ -26,6 +27,16 @@ export class Router {
 
     updateRouterObject = () => window.vanille.$router = Object.assign(window.vanille.$router, this)
 
+    setLink(to) {
+        if (this.linkChanged) {
+            if (this.routerMode === "pathname") {
+                history.pushState({}, "", to)
+            } else if (this.routerMode === "hash") {
+                location.hash = to
+            }
+        }
+    }
+
     eventHandler() {
         document.querySelectorAll(this.routerLinkTagName).forEach(element => {
             element.addEventListener("click", () => {
@@ -33,11 +44,7 @@ export class Router {
 
                 this[this.routerMode] = to
 
-                if (this.routerMode === "pathname") {
-                    history.pushState({}, "", to)
-                } else if (this.routerMode === "hash") {
-                    location.hash = to
-                }
+                this.setLink(to)
 
                 this.routeManager()
             })
