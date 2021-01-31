@@ -3,13 +3,13 @@ import { contentUpdate, attributeHandler } from "../updates-and-handler/distribu
 import { show, query } from "../dynamic-tag-operations/distribution.js"
 import { createKey } from "./create.key.js"
 import { systemTools } from "../tools.js"
-import { setVanille } from "./DOMVanilleObject.js"
+import { setVerb } from "./DOMVerbObject.js"
 import { control } from "./error.js"
 import Settings from "../../settings.js"
 
 export class Component {
     /**
-     * 
+     *
      * @param {Object} param0 Component data submitted during component creation must be object
      */
     constructor({
@@ -81,8 +81,8 @@ export class Component {
             element.setAttribute(dataID, "")
 
             if (element.tagName === "V") {
-                setVanille(element, "true-value", element.getAttribute("true-value"))
-                setVanille(element, "dependency", element.getAttribute("dependency"))
+                setVerb(element, "true-value", element.getAttribute("true-value"))
+                setVerb(element, "dependency", element.getAttribute("dependency"))
             }
         })
 
@@ -172,7 +172,7 @@ export class Component {
     propTypesControl() {
         for (const [controlName, controlValue] of Object.entries(this.propTypes)) {
             control(typeof controlValue === "string").err("Control values ​​in prop type checks must be strings")
-    
+
             const type = controlValue.replace(".require", ""),
                 require = controlValue.includes(".require"),
                 prop = this.state[controlName]
@@ -188,7 +188,7 @@ export class Component {
     }
 
     /**
-     * @param {any} prop 
+     * @param {any} prop
      * @param {String} dataID dataID must be a string. dataID is not required to be sent
      */
 
@@ -202,7 +202,7 @@ export class Component {
         this.dataID = dataID
 
         const rootElement = document.querySelector(root)
-        
+
         for (const [name, value] of Object.entries(addAttributes)) {
             this.template.setAttribute(name, value)
         }

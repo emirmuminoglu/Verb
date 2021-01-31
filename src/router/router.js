@@ -18,14 +18,14 @@ export class Router {
         this.routeManager()
         this.eventHandler()
     }
-    
+
     createRouterObject() {
-        window.vanille.$router = {
+        window.verb.$router = {
             ...this
         }
     }
 
-    updateRouterObject = () => window.vanille.$router = Object.assign(window.vanille.$router, this)
+    updateRouterObject = () => window.verb.$router = Object.assign(window.verb.$router, this)
 
     setLink(to) {
         if (this.linkChanged) {
@@ -60,7 +60,7 @@ export class Router {
 
             if (req === this[this.routerMode]) {
                 this.root.innerHTML = ""
-                
+
                 new Component(component).$render(this.rootName, {}, {}, true)
 
                 this.title = title

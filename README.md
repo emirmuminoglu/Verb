@@ -1,9 +1,9 @@
-# Vanille.js
+# Verb.js
 
 ![Logo](https://avatars.githubusercontent.com/u/77127183?s=200&v=4)
 
-## What is vanillejs
-Vanillejs aims to build powerful structures by increasing the dynamism power of your plain and frameless javascript application and reducing the cost of code. It offers a flexible structure where you can organize the keywords used in it and make it unique to you.
+## What is verbjs
+Verb.js aims to build powerful structures by increasing the dynamism power of your plain and frameless javascript application and reducing the cost of code. It offers a flexible structure where you can organize the keywords used in it and make it unique to you.
 
 ## Specifications
 1. Using dynamic variables in HTML
@@ -19,12 +19,12 @@ Vanillejs aims to build powerful structures by increasing the dynamism power of 
 ## Install
 ### git
 ```
-git clone https://github.com/Vanillejs/vanille.git
+git clone https://github.com/Verbjs/verb.git
 ```
 
 ### npm
 ```
-npm install vanillejs
+npm install verbjs
 ```
 
 <br>

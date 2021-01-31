@@ -3,12 +3,12 @@ import { contentUpdate, attributeHandler } from "./updates-and-handler/distribut
 import { show, query } from "./dynamic-tag-operations/distribution.js"
 import { createKey } from "./system-functions/create.key.js"
 import { systemTools } from "./tools.js"
-import { setVanille } from "./system-functions/DOMVanilleObject.js"
+import { setVerb } from "./system-functions/DOMVerbObject.js"
 import { control } from "./system-functions/error.js"
 import { Component } from "./system-functions/component.js"
 import Settings from "../settings.js"
 
-export class Vanille {
+export class Verb {
     constructor({ state = {}, changes = {} } = {}, template = document.body, dataID = createKey()) {
         this.template = template
         this.dataID = dataID
@@ -21,7 +21,7 @@ export class Vanille {
 
         const templateNode = document.querySelector("template"),
         content = templateNode.content.cloneNode(true)
-        
+
         document.body.innerHTML = ""
         this.template.appendChild(content)
 
@@ -31,8 +31,8 @@ export class Vanille {
             element.setAttribute(this.dataID, "")
 
             if (element.tagName === "V") {
-                setVanille(element, "true-value", element.getAttribute("true-value"))
-                setVanille(element, "dependency", element.getAttribute("dependency").trim())
+                setVerb(element, "true-value", element.getAttribute("true-value"))
+                setVerb(element, "dependency", element.getAttribute("dependency").trim())
 
                 element.removeAttribute("true-value")
                 element.removeAttribute("dependency")
@@ -40,7 +40,7 @@ export class Vanille {
         })
 
         this.$update("*", true)
-        window.vanille = {}
+        window.verb = {}
     }
 
     changeSorter(state) {
@@ -59,18 +59,18 @@ export class Vanille {
     }
 
     $use(name, useItem) {
-        if (window.vanille === undefined) {
-            window.vanille = {}
+        if (window.verb === undefined) {
+            window.verb = {}
         }
 
-        window.vanille[name] = useItem
+        window.verb[name] = useItem
         this[name] = useItem
     }
 
-    $getVanille(id) {
-        control(typeof id === "string").err("When you want to pull the vanille object of an element, you must send a string value as id to getVanille method.")
+    $getVerb(id) {
+        control(typeof id === "string").err("When you want to pull the verb object of an element, you must send a string value as id to getVerb method.")
 
-        return this.template.querySelector(id).vanille
+        return this.template.querySelector(id).verb
     }
 
     $update(updateName, doItByForce) {

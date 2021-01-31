@@ -1,6 +1,6 @@
 import { join } from "../system-functions/join.js"
 import Settings from "../../settings.js"
-import { getVanille, setVanille } from "../system-functions/DOMVanilleObject.js"
+import { getVerb, setVerb } from "../system-functions/DOMVerbObject.js"
 
 function update(element, joinResult) {
     const innerFormat = element.getAttribute("inner-format")
@@ -12,7 +12,7 @@ function update(element, joinResult) {
         element.innerText = joinResult.changeValue
     }
 
-    setVanille(element, "true-value", joinResult.trueValue)
+    setVerb(element, "true-value", joinResult.trueValue)
 }
 
 export const contentUpdate = (template, state, changes, dataID, doItByForce = false) => {
@@ -21,9 +21,9 @@ export const contentUpdate = (template, state, changes, dataID, doItByForce = fa
     template.querySelectorAll(variableTagName).forEach(async element => {
         if (element.getAttribute(dataID) !== null) {
 
-            const variableName = getVanille(element, "dependency")
+            const variableName = getVerb(element, "dependency")
 
-            const trueValue = getVanille(element, "true-value"),
+            const trueValue = getVerb(element, "true-value"),
                 joinResult = await join(state, changes, variableName.trim())
 
             if (doItByForce) {

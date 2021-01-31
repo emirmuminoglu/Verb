@@ -1,9 +1,9 @@
-import { Vanille } from "./src/vanille.js"
+import { Verb } from "./src/verb.js"
 import { tools } from "./src/tools.js"
 import { Router } from "./src/router/router.js"
 
 export {
-    Vanille,
+    Verb,
     Router,
     tools
 }
