@@ -1,7 +1,5 @@
 # Verb.js
 
-![Logo](https://avatars.githubusercontent.com/u/77127183?s=200&v=4)
-
 ## What is verbjs
 Verb.js aims to build powerful structures by increasing the dynamism power of your plain and frameless javascript application and reducing the cost of code. It offers a flexible structure where you can organize the keywords used in it and make it unique to you.
 
@@ -30,4 +28,4 @@ npm install verbjs
 <br>
 
 ## Document Site
-https://quirky-almeida-8a2611.netlify.app/
+https://practical-knuth-3700ea.netlify.app/
