@@ -1,11 +1,11 @@
-import { compiler } from "./system-functions/compiler.js"
+import { compiler } from "./system/compiler.js"
 import { contentUpdate, attributeHandler } from "./updates-and-handler/distribution.js"
 import { show, query } from "./dynamic-tag-operations/distribution.js"
-import { createKey } from "./system-functions/create.key.js"
+import { createKey } from "./system/create.key.js"
 import { systemTools } from "./tools.js"
-import { setVerb } from "./system-functions/DOMVerbObject.js"
-import { control } from "./system-functions/error.js"
-import { Component } from "./system-functions/component.js"
+import { setVerb } from "./system/DOMVerbObject.js"
+import { control } from "./system/error.js"
+import { Component } from "./system/component.js"
 import Settings from "../settings.js"
 
 export class Verb {

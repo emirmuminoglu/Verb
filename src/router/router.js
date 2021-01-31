@@ -1,4 +1,4 @@
-import { Component } from "../system-functions/component.js"
+import { Component } from "../system/component.js"
 import Settings from "../../settings.js"
 
 export class Router {

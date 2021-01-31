@@ -1,4 +1,4 @@
-import { join } from "../system-functions/join.js"
+import { join } from "../system/join.js"
 import Settings from "../../settings.js"
 
 export const attributeHandler = (template, state, changes, dataID) => {
