@@ -1,6 +1,6 @@
 import { compiler } from "./compiler.js"
 import { contentUpdate, attributeHandler } from "../updates-and-handler/distribution.js"
-import { show, query } from "../dynamic-tag-operations/distribution.js"
+import { show, query, node } from "../dynamic-tag-operations/distribution.js"
 import { createKey } from "./create.key.js"
 import { systemTools } from "../tools.js"
 import { setVerb } from "./DOMVerbObject.js"
@@ -104,11 +104,13 @@ export class Component {
             attributeHandler(this.template, this.state, this.changes, this.dataID)
             show(this.template, this.state, this.dataID)
             query(this.template, this.state, this.dataID)
+            node(this.template, this, this.dataID)
         } else {
             updateName === "content" ? contentUpdate(this.template, this.state, this.changes, this.dataID, doItByForce) : null
             updateName === "attribute" ? attributeHandler(this.template, this.state, this.changes, this.dataID) : null
             updateName === "show" ? show(this.template, this.state, this.dataID) : null
             updateName === "query" ? query(this.template, this.state, this.dataID) : null
+            updateName === "node" ? node(this.template, this, this.dataID) : null
         }
     }
 
