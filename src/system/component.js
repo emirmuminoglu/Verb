@@ -198,7 +198,7 @@ export class Component {
         this.template = await this.html(prop, this.state)
         this.methods = this.methods(prop, this.state)
         this.eventsConsumer = this.events(prop, this.state)
-        this.changes = this.changesConsumer(prop, this.state)
+        this.changes = Object.assign(this.changesConsumer(prop, this.state), _storeChanges)
         this.dataID = dataID
 
         const rootElement = document.querySelector(root)

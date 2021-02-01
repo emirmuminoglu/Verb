@@ -16,11 +16,11 @@ const getQueryValue = (element) => {
     }
 }
 
-export const query = (template, state, dataID) => {
+export const query = (template, state, dataID, storeMode = false) => {
     const { dynamicTagBreakPoint } = Settings
 
     template.querySelectorAll("*").forEach(element => {
-        if (element.getAttribute(dataID) !== null) {
+        if (element.getAttribute(dataID) !== null || storeMode) {
             const isIf = element.getAttribute(`${dynamicTagBreakPoint}if`),
                 queryElements = []
 

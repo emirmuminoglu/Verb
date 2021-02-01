@@ -1,6 +1,6 @@
 import { join } from "../system/join.js"
 import Settings from "../../settings.js"
-import { getVerb, setVerb } from "../system-functions/DOMVerbObject.js"
+import { getVerb, setVerb } from "../system/DOMVerbObject.js"
 
 function update(element, joinResult) {
     const innerFormat = element.getAttribute("inner-format")
@@ -15,15 +15,13 @@ function update(element, joinResult) {
     setVerb(element, "true-value", joinResult.trueValue)
 }
 
-export const contentUpdate = (template, state, changes, dataID, doItByForce = false) => {
+export const contentUpdate = (template, state, changes, dataID, doItByForce = false, storeMode = false) => {
     const { variableTagName } = Settings
 
     template.querySelectorAll(variableTagName).forEach(async element => {
-        if (element.getAttribute(dataID) !== null) {
-
-            const variableName = getVerb(element, "dependency")
-
-            const trueValue = getVerb(element, "true-value"),
+        if (element.getAttribute(dataID) !== null || storeMode) {
+            const variableName = getVerb(element, "dependency"),
+                trueValue = getVerb(element, "true-value"),
                 joinResult = await join(state, changes, variableName.trim())
 
             if (doItByForce) {
