@@ -61,7 +61,7 @@ export class Verx {
         }
     }
 
-    $run(mutationName, mutationParams) {
+    $run(mutationName, mutationParams = []) {
         const oldState = {...window[this.storeUseName]}
         this.mutations[mutationName](...mutationParams)
         this.$update("*", true)
