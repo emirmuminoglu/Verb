@@ -1,11 +1,11 @@
 import { join } from "../system/join.js"
 import Settings from "../../settings.js"
 
-export const attributeHandler = (template, state, changes, dataID, storeMode = false) => {
+export const attributeHandler = (template, state, changes, dataID) => {
     const { dynamicTagAttributeBreakPoint } = Settings
 
     template.querySelectorAll("*").forEach(element => {
-        if (element.getAttribute(dataID) !== null || storeMode) {
+        if (element.getAttribute(dataID) !== null || element.getAttribute("store") !== null) {
             element.getAttributeNames().map(async attributeText => {
                 if (attributeText.includes(dynamicTagAttributeBreakPoint) && attributeText !== `${dynamicTagAttributeBreakPoint}change`) {
                     const attributeName = attributeText.replace(dynamicTagAttributeBreakPoint, "").trim(),

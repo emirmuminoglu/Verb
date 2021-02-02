@@ -15,11 +15,11 @@ function update(element, joinResult) {
     setVerb(element, "true-value", joinResult.trueValue)
 }
 
-export const contentUpdate = (template, state, changes, dataID, doItByForce = false, storeMode = false) => {
+export const contentUpdate = (template, state, changes, dataID, doItByForce = false) => {
     const { variableTagName } = Settings
 
     template.querySelectorAll(variableTagName).forEach(async element => {
-        if (element.getAttribute(dataID) !== null || storeMode) {
+        if (element.getAttribute(dataID) !== null || element.getAttribute("store") !== null) {
             const variableName = getVerb(element, "dependency"),
                 trueValue = getVerb(element, "true-value"),
                 joinResult = await join(state, changes, variableName.trim())

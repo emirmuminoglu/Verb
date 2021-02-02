@@ -2,11 +2,11 @@ import Settings from "../../settings.js"
 import { join } from "../system/join.js"
 import { getVerb, setVerb } from "../system/DOMVerbObject.js"
 
-export const node = (template, _this, dataID, storeMode = false) => {
+export const node = (template, _this, dataID) => {
     const { dynamicTagBreakPoint } = Settings
 
     template.querySelectorAll("*").forEach(element => {
-        if (element.getAttribute(dataID) !== null || storeMode) {
+        if (element.getAttribute(dataID) !== null || element.getAttribute("store") !== null) {
             const attributeNames = element.getAttributeNames(),
                 nodeAttributeIndex = attributeNames.findIndex(e => e.includes(`${dynamicTagBreakPoint}node`))
 

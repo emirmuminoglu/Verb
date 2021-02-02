@@ -1,10 +1,10 @@
 import Settings from "../../settings.js"
 
-export const show = (template, state, dataID, storeMode = false) => {
+export const show = (template, state, dataID) => {
     const { dynamicTagBreakPoint } = Settings
 
     template.querySelectorAll("*").forEach(element => {
-        if (element.getAttribute(dataID) !== null || storeMode) {
+        if (element.getAttribute(dataID) !== null || element.getAttribute("store") !== null) {
             const show = element.getAttribute(`${dynamicTagBreakPoint}show`)
 
             if (show !== null) {

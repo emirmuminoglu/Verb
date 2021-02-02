@@ -27,15 +27,15 @@ export class Verx {
 
     $update(updateName, doItByForce) {
         if (updateName === undefined || updateName === "*") {
-            contentUpdate(this.template, _store, this.changes, this.dataID, doItByForce, true)
-            attributeHandler(this.template, _store, this.changes, this.dataID, true)
-            show(this.template, _store, this.dataID, true)
-            query(this.template, _store, this.dataID, true)
+            contentUpdate(this.template, _store, this.changes, this.dataID, doItByForce)
+            attributeHandler(this.template, _store, this.changes, this.dataID)
+            show(this.template, _store, this.dataID)
+            query(this.template, _store, this.dataID)
         } else {
-            updateName === "content" ? contentUpdate(this.template, _store, this.changes, this.dataID, doItByForce, true) : null
-            updateName === "attribute" ? attributeHandler(this.template, _store, this.changes, this.dataID, true) : null
-            updateName === "show" ? show(this.template, _store, this.dataID, true) : null
-            updateName === "query" ? query(this.template, _store, this.dataID, true) : null
+            updateName === "content" ? contentUpdate(this.template, _store, this.changes, this.dataID, doItByForce) : null
+            updateName === "attribute" ? attributeHandler(this.template, _store, this.changes, this.dataID) : null
+            updateName === "show" ? show(this.template, _store, this.dataID) : null
+            updateName === "query" ? query(this.template, _store, this.dataID) : null
         }
     }
 
