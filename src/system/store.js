@@ -12,36 +12,40 @@ export class Verx {
         this.historySave = historySave
     }
 
-    createStore({ changes = {}, state = {}, mutations = {}, actions = {}, updateList = [] }) {
+    createStore({ changes = {}, state = {}, mutations = {}, actions = {} }) {
         this.state = state
         this.mutations = mutations
         this.actions = actions
-        this.updateList = updateList
         this.changes = changes
 
         window[this.storeUseName] = this.state
         window._storeChanges = this.changes
-
-        this.$update()
     }
 
     $update(updateName, doItByForce) {
         if (updateName === undefined || updateName === "*") {
-            contentUpdate(this.template, _store, this.changes, this.dataID, doItByForce)
-            attributeHandler(this.template, _store, this.changes, this.dataID)
-            show(this.template, _store, this.dataID)
-            query(this.template, _store, this.dataID)
+            contentUpdate(this.template, window[this.storeUseName], this.changes, this.dataID, doItByForce)
+            attributeHandler(this.template, window[this.storeUseName], this.changes, this.dataID)
+            show(this.template, window[this.storeUseName], this.dataID)
+            query(this.template, window[this.storeUseName], this.dataID)
         } else {
-            updateName === "content" ? contentUpdate(this.template, _store, this.changes, this.dataID, doItByForce) : null
-            updateName === "attribute" ? attributeHandler(this.template, _store, this.changes, this.dataID) : null
-            updateName === "show" ? show(this.template, _store, this.dataID) : null
-            updateName === "query" ? query(this.template, _store, this.dataID) : null
+            updateName === "content" ? contentUpdate(this.template, window[this.storeUseName], this.changes, this.dataID, doItByForce) : null
+            updateName === "attribute" ? attributeHandler(this.template, window[this.storeUseName], this.changes, this.dataID) : null
+            updateName === "show" ? show(this.template, window[this.storeUseName], this.dataID) : null
+            updateName === "query" ? query(this.template, window[this.storeUseName], this.dataID) : null
         }
     }
 
-    history(oldState, newState) {
+    history(oldState, newState, mutationName, mutationParams) {
         const historyPush = (mode, name, oldValue, newValue) => {
-            this.$history.unshift({ mode, variableName: name, oldValue, newValue: newValue })
+            this.$history.unshift({
+                mode,
+                variableName: name,
+                oldValue,
+                newValue: newValue,
+                mutationName,
+                mutationParams
+            })
 
             if (this.$history.length > this.maxHistorySave) {
                 this.$history.pop()
@@ -57,17 +61,15 @@ export class Verx {
         }
     }
 
-    async $run(mutationName, mutationParams) {
-        const oldState = JSON.parse(JSON.stringify(_store))
-        await this.mutations[mutationName](...mutationParams)
-        const newState = _store
+    $run(mutationName, mutationParams) {
+        const oldState = {...window[this.storeUseName]}
+        this.mutations[mutationName](...mutationParams)
+        this.$update("*", true)
+        const newState = window[this.storeUseName]
 
-        if (this.updateList.includes(mutationName) || this.updateList.includes("*")) {
-            this.$update("*", true)
-        }
 
         if (this.historySave) {
-            this.history(oldState, newState)
+            this.history(oldState, newState, mutationName, mutationParams)
         }
     }
 }
