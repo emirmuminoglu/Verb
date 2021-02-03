@@ -40,29 +40,12 @@ export class Verx {
     }
 
     $setState(setValue, doItByForce) {
-        const info = {}
         setValue = (typeof setValue === "function" ? setValue() : setValue)
 
         for (const variableName in setValue) {
-            const oldValue = JSON.stringify(this.state[variableName]),
-                incomingValue = {
-                    name: variableName,
-                    value: setValue[variableName]
-                }
-
             this.state[variableName] = setValue[variableName]
-
-            info[`update variable name: "${variableName}"`] = {
-                incomingValue,
-                oldValue: JSON.parse(oldValue),
-                newValue: setValue[variableName],
-                type: Array.isArray(setValue[variableName]) ? "array" : false || typeof setValue[variableName]
-            }
+            this.$update("*", doItByForce)
         }
-
-        this.$update(doItByForce)
-
-        return info
     }
 
     history(oldState, newState, mutationName, mutationParams) {

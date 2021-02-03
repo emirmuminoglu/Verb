@@ -139,6 +139,7 @@ export class Verb {
                 }
 
             this.state[variableName] = setValue[variableName]
+            this.$update("*", doItByForce)
 
             info[`update variable name: "${variableName}"`] = {
                 incomingValue,
@@ -147,8 +148,6 @@ export class Verb {
                 type: Array.isArray(setValue[variableName]) ? "array" : false || typeof setValue[variableName]
             }
         }
-
-        this.$update(doItByForce)
 
         return info
     }
