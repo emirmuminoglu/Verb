@@ -13,7 +13,7 @@ export class Verb {
         this.template = template
         this.dataID = dataID
         this.state = state
-        this.changes = Object.assign(changes, _storeChanges)
+        this.changes = changes
 
         this.changeSorter(this.state)
 

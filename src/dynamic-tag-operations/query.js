@@ -20,7 +20,7 @@ export const query = (template, state, dataID) => {
     const { dynamicTagBreakPoint } = Settings
 
     template.querySelectorAll("*").forEach(element => {
-        if (element.getAttribute(dataID) !== null || element.getAttribute("store") !== null) {
+        if (element.getAttribute(dataID) !== null) {
             const isIf = element.getAttribute(`${dynamicTagBreakPoint}if`),
                 queryElements = []
 

@@ -1,8 +1,7 @@
 import { join } from "./join.js"
 import Settings from "../../settings.js"
 
-const tagChange = (variableName, trueValue, value, dataID, innerFormat, store) => {
-    console.log(store)
+const tagChange = (variableName, trueValue, value, dataID, innerFormat) => {
     const { variableTagName } = Settings
 
     return `
@@ -10,7 +9,6 @@ const tagChange = (variableName, trueValue, value, dataID, innerFormat, store) =
             dependency='${variableName}'
             true-value='${trueValue}'
             inner-format="${innerFormat ? 'html' : 'text'}"
-            ${store ? "store" : ""}
             ${dataID}
         >${value}
         </${variableTagName}>
@@ -36,8 +34,7 @@ export const compiler = (template, state, changes, dataID) => {
                         joinResult.trueValue,
                         joinResult.changeValue,
                         dataID,
-                        innerFormat,
-                        variableName.includes("_store")
+                        innerFormat
                     )
                 )
             } else {

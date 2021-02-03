@@ -200,7 +200,7 @@ export class Component {
         this.template = await this.html(prop, this.state)
         this.methods = this.methods(prop, this.state)
         this.eventsConsumer = this.events(prop, this.state)
-        this.changes = Object.assign(this.changesConsumer(prop, this.state), _storeChanges)
+        this.changes = this.changesConsumer(prop, this.state)
         this.dataID = dataID
 
         const rootElement = document.querySelector(root)
@@ -235,11 +235,11 @@ export class Component {
     */
     $createComponent({ rootName, component, props = {} }) {
         panic(document.querySelector(rootName) !== null).err(`A component tag with root name "${rootName}" was not found. Make sure there is an HTML tag with the same name as the rootName you sent`)
-        const components = []
 
         document.querySelectorAll(rootName).forEach(root => {
             const { componentPropsBreakPoint } = Settings,
                 addAttributes = {}
+
             let propsClone = JSON.parse(JSON.stringify(props))
 
             root.getAttributeNames().map(attrName => {
@@ -259,12 +259,8 @@ export class Component {
                 }
             })
 
-            const componentClone = new Component(component).$render(root.tagName, propsClone, addAttributes)
-
-            components.push(componentClone)
+            new Component(component).$render(root.tagName, propsClone, addAttributes)
         })
-
-        return components
     }
 
     /**
@@ -276,15 +272,9 @@ export class Component {
     $setState(setValue, doItByForce) {
         setValue = (typeof setValue === "function" ? setValue() : setValue)
 
-        const variables = {}
-
         for (const variableName in setValue) {
             this.state[variableName] = setValue[variableName]
-            variables[variableName] = setValue[variableName]
+            this.$update(doItByForce)
         }
-
-        this.$update(doItByForce)
-
-        return variables
     }
 }

@@ -6,7 +6,7 @@ export const node = (template, _this, dataID) => {
     const { dynamicTagBreakPoint } = Settings
 
     template.querySelectorAll("*").forEach(element => {
-        if (element.getAttribute(dataID) !== null || element.getAttribute("store") !== null) {
+        if (element.getAttribute(dataID) !== null) {
             const attributeNames = element.getAttributeNames(),
                 nodeAttributeIndex = attributeNames.findIndex(e => e.includes(`${dynamicTagBreakPoint}node`))
 

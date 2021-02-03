@@ -5,7 +5,7 @@ export const attributeHandler = (template, state, changes, dataID) => {
     const { dynamicTagAttributeBreakPoint } = Settings
 
     template.querySelectorAll("*").forEach(element => {
-        if (element.getAttribute(dataID) !== null || element.getAttribute("store") !== null) {
+        if (element.getAttribute(dataID) !== null) {
             element.getAttributeNames().map(async attributeText => {
                 if (attributeText.includes(dynamicTagAttributeBreakPoint) && attributeText !== `${dynamicTagAttributeBreakPoint}change`) {
                     const attributeName = attributeText.replace(dynamicTagAttributeBreakPoint, "").trim(),
