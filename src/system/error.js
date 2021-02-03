@@ -1,9 +1,8 @@
-export const control = (controlValue) => {
+export const panic = (controlValue) => {
     const title = "{Verbjs Error}",
     suggestions = `
 If you haven"t solved the problem you can check here
 
-Repository: https://github.com/Verbjs/verb
 Issues: https://github.com/Verbjs/verb/issues
 `
 
@@ -19,4 +18,15 @@ Issues: https://github.com/Verbjs/verb/issues
             }
         }
     }
+}
+
+export const error = (msg) => {
+    const title = "{Verbjs Error}",
+    suggestions = `
+If you haven"t solved the problem you can check here
+
+Issues: https://github.com/Verbjs/verb/issues
+`
+
+    console.error(title, msg, suggestions)
 }

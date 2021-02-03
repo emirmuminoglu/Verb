@@ -1,7 +1,7 @@
-import { control } from "./error.js"
+import { panic } from "./error.js"
 
 export const settingsControl = (settings) => {
-    control(settings.dynamicTagBreakPoint !== settings.dynamicTagAttributeBreakPoint).err("Dynamic Tag BreakPoint and dynamic Tag Attribute BreakPoint values ​​cannot be the same. Check your settings.")
-    control(settings.variableTagName !== "").err("The name of the tag to compile variables in HTML cannot be null. Value type must be string")
-    control(typeof settings.variableTagName === "string").err("The name of the tag to compile variables in HTML cannot be null. Value type must be string")
+    panic(settings.dynamicTagBreakPoint !== settings.dynamicTagAttributeBreakPoint).err("Dynamic Tag BreakPoint and dynamic Tag Attribute BreakPoint values ​​cannot be the same. Check your settings.")
+    panic(settings.variableTagName !== "").err("The name of the tag to compile variables in HTML cannot be null. Value type must be string")
+    panic(typeof settings.variableTagName === "string").err("The name of the tag to compile variables in HTML cannot be null. Value type must be string")
 }

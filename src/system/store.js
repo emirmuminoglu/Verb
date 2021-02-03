@@ -1,5 +1,6 @@
 import { contentUpdate, attributeHandler } from "../updates-and-handler/distribution.js"
-import { show, query } from "../dynamic-tag-operations/distribution.js"
+import { show, query, node } from "../dynamic-tag-operations/distribution.js"
+import { error } from "./error.js"
 
 export class Verx {
     constructor({ maxHistorySave = 5, storeUseName = "_store", historySave = false }) {
@@ -28,21 +29,47 @@ export class Verx {
             attributeHandler(this.template, window[this.storeUseName], this.changes, this.dataID)
             show(this.template, window[this.storeUseName], this.dataID)
             query(this.template, window[this.storeUseName], this.dataID)
+            node(this.template, this, this.dataID)
         } else {
             updateName === "content" ? contentUpdate(this.template, window[this.storeUseName], this.changes, this.dataID, doItByForce) : null
             updateName === "attribute" ? attributeHandler(this.template, window[this.storeUseName], this.changes, this.dataID) : null
             updateName === "show" ? show(this.template, window[this.storeUseName], this.dataID) : null
             updateName === "query" ? query(this.template, window[this.storeUseName], this.dataID) : null
+            updateName === "node" ? node(this.template, this, this.dataID) : null
         }
+    }
+
+    $setState(setValue, doItByForce) {
+        const info = {}
+        setValue = (typeof setValue === "function" ? setValue() : setValue)
+
+        for (const variableName in setValue) {
+            const oldValue = JSON.stringify(this.state[variableName]),
+                incomingValue = {
+                    name: variableName,
+                    value: setValue[variableName]
+                }
+
+            this.state[variableName] = setValue[variableName]
+
+            info[`update variable name: "${variableName}"`] = {
+                incomingValue,
+                oldValue: JSON.parse(oldValue),
+                newValue: setValue[variableName],
+                type: Array.isArray(setValue[variableName]) ? "array" : false || typeof setValue[variableName]
+            }
+        }
+
+        this.$update(doItByForce)
+
+        return info
     }
 
     history(oldState, newState, mutationName, mutationParams) {
         const historyPush = (mode, name, oldValue, newValue) => {
             this.$history.unshift({
                 mode,
-                variableName: name,
-                oldValue,
-                newValue: newValue,
+                variableInfo: { variableName: name, oldValue, newValue: newValue, },
                 mutationName,
                 mutationParams
             })
@@ -62,14 +89,17 @@ export class Verx {
     }
 
     $run(mutationName, mutationParams = []) {
-        const oldState = {...window[this.storeUseName]}
-        this.mutations[mutationName](...mutationParams)
-        this.$update("*", true)
-        const newState = window[this.storeUseName]
+        if (this.mutations[mutationName] !== undefined) {
+            const oldState = {...window[this.storeUseName]}
+            this.mutations[mutationName](...mutationParams)
+            this.$update("*", true)
+            const newState = window[this.storeUseName]
 
-
-        if (this.historySave) {
-            this.history(oldState, newState, mutationName, mutationParams)
+            if (this.historySave) {
+                this.history(oldState, newState, mutationName, mutationParams)
+            }
+        } else {
+            error(`Could not run because a mutation named "${mutationName}" was not found`);
         }
     }
 }

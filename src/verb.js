@@ -4,7 +4,7 @@ import { show, query, node } from "./dynamic-tag-operations/distribution.js"
 import { createKey } from "./system/create.key.js"
 import { systemTools } from "./tools.js"
 import { setVerb } from "./system/DOMVerbObject.js"
-import { control } from "./system/error.js"
+import { panic } from "./system/error.js"
 import { Component } from "./system/component.js"
 import Settings from "../settings.js"
 
@@ -68,7 +68,7 @@ export class Verb {
     }
 
     $getVerb(id) {
-        control(typeof id === "string").err("When you want to pull the verb object of an element, you must send a string value as id to getVerb method.")
+        panic(typeof id === "string").err("When you want to pull the verb object of an element, you must send a string value as id to getVerb method.")
 
         return this.template.querySelector(id).verb
     }
@@ -94,7 +94,7 @@ export class Verb {
     }
 
     $createComponent({ rootName, component, props = {} }) {
-        control(document.querySelector(rootName) !== null).err(`A component tag with root name "${rootName}" was not found. Make sure there is an HTML tag with the same name as the rootName you sent`)
+        panic(document.querySelector(rootName) !== null).err(`A component tag with root name "${rootName}" was not found. Make sure there is an HTML tag with the same name as the rootName you sent`)
         const components = []
 
         document.querySelectorAll(rootName).forEach(root => {
