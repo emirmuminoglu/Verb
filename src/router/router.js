@@ -20,12 +20,10 @@ export class Router {
     }
 
     createRouterObject() {
-        window.verb.$router = {
-            ...this
-        }
+        window.$router = { ...this }
     }
 
-    updateRouterObject = () => window.verb.$router = Object.assign(window.verb.$router, this)
+    updateRouterObject = () => window.$router = Object.assign(window.$router, this)
 
     setLink(to) {
         if (this.linkChanged) {
@@ -64,21 +62,23 @@ export class Router {
                 new Component(component).$render(this.rootName, {}, {}, true)
 
                 this.title = title
-                title !== undefined ? document.title = this.title : null
-                this.name = name !== undefined ? name : ""
+                if (title !== undefined) document.title = this.title
+                if (this.name !== undefined) this.name = name
+
                 defaultMode = false
+
                 this.updateRouterObject()
+                this.eventHandler()
 
                 break
-            } else {
-                defaultMode = true
-            }
+            } else defaultMode = true
         }
 
         if (defaultMode) {
             this.root.innerHTML = ""
 
             new Component(this.defaultComponent).$render(this.rootName, {}, {}, true)
+            this.eventHandler()
         }
     }
 }

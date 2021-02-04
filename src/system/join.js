@@ -1,9 +1,7 @@
 const changeHandler = (value, changes, variableName) => {
     if (changes[variableName]) {
         return changes[variableName](value)
-    } else {
-        return value
-    }
+    } else return value
 }
 
 export const join = (state, changes, variableName) => {

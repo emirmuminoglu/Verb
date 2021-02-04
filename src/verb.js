@@ -6,23 +6,26 @@ import { systemTools } from "./tools.js"
 import { setVerb } from "./system/DOMVerbObject.js"
 import { panic } from "./system/error.js"
 import { Component } from "./system/component.js"
+import { comradeHandler } from "./particles/comrade.js"
 import Settings from "../settings.js"
 
 export class Verb {
-    constructor({ state = {}, changes = {} } = {}, template = document.body, dataID = createKey()) {
-        this.template = template
+    constructor({ state = {}, changes = {} } = {}, template = "body", dataID = createKey()) {
+        this.template = document.querySelector(template)
         this.dataID = dataID
         this.state = state
         this.changes = changes
+        this.comrades = {}
+        this.cloneState = { ...this.state }
 
-        this.changeSorter(this.state)
+        this.changeSorter()
 
         systemTools.map(tool => this[tool.name] = (ID, param1, param2) => tool(this.template, ID, param1, param2))
 
-        const templateNode = document.querySelector("template"),
+        const templateNode = this.template.querySelector("template"),
         content = templateNode.content.cloneNode(true)
 
-        document.body.innerHTML = ""
+        this.template.innerHTML = ""
         this.template.appendChild(content)
 
         this.compile()
@@ -43,7 +46,7 @@ export class Verb {
         window.verb = {}
     }
 
-    changeSorter(state) {
+    changeSorter() {
         for (const [name, value] of Object.entries(this.changes)) {
             if (name.includes("+")) {
                 const cahngeNames = name.split("+")
@@ -67,6 +70,17 @@ export class Verb {
         this[name] = useItem
     }
 
+    /**
+     * 
+     * @param {String} name variable name to be assigned companion
+     * @param {Function} comradeItem comrade
+     */
+    $addComrade(name, comradeItem) {
+        panic(typeof name === "string" || typeof comradeItem === "function").err("The comrade name sent to the add comrade method is in string type and companion should be function")
+
+        this.comrades[name] = (value, old) => comradeItem(value, old)
+    }
+
     $getVerb(id) {
         panic(typeof id === "string").err("When you want to pull the verb object of an element, you must send a string value as id to getVerb method.")
 
@@ -87,6 +101,9 @@ export class Verb {
             updateName === "query" ? query(this.template, this.state, this.dataID) : null
             updateName === "node" ? node(this.template, this, this.dataID) : null
         }
+
+        comradeHandler(this.comrades, this.cloneState, this.state)
+        this.cloneState = { ...this.state }
     }
 
     compile() {
@@ -95,7 +112,6 @@ export class Verb {
 
     $createComponent({ rootName, component, props = {} }) {
         panic(document.querySelector(rootName) !== null).err(`A component tag with root name "${rootName}" was not found. Make sure there is an HTML tag with the same name as the rootName you sent`)
-        const components = []
 
         document.querySelectorAll(rootName).forEach(root => {
             const { componentPropsBreakPoint } = Settings,
@@ -119,36 +135,16 @@ export class Verb {
                 }
             })
 
-            const componentClone = new Component(component).$render(root.tagName, propsClone, addAttributes)
-
-            components.push(componentClone)
+            new Component(component).$render(root.tagName, propsClone, addAttributes)
         })
-
-        return components
     }
 
-    $setState(setValue, doItByForce) {
-        const info = {}
+    $setState(setValue, doItByForce = true) {
         setValue = (typeof setValue === "function" ? setValue() : setValue)
 
         for (const variableName in setValue) {
-            const oldValue = JSON.stringify(this.state[variableName]),
-                incomingValue = {
-                    name: variableName,
-                    value: setValue[variableName]
-                }
-
             this.state[variableName] = setValue[variableName]
             this.$update("*", doItByForce)
-
-            info[`update variable name: "${variableName}"`] = {
-                incomingValue,
-                oldValue: JSON.parse(oldValue),
-                newValue: setValue[variableName],
-                type: Array.isArray(setValue[variableName]) ? "array" : false || typeof setValue[variableName]
-            }
         }
-
-        return info
     }
 }

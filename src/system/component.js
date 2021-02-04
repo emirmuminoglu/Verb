@@ -5,6 +5,7 @@ import { createKey } from "./create.key.js"
 import { systemTools } from "../tools.js"
 import { setVerb } from "./DOMVerbObject.js"
 import { panic } from "./error.js"
+import { comradeHandler } from "../particles/comrade.js"
 import Settings from "../../settings.js"
 
 export class Component {
@@ -32,11 +33,24 @@ export class Component {
         this.methods = methods
         this.created = created
         this.propTypes = propTypes
+        this.cloneState = { ...this.state }
+        this.comrades = {}
 
         const keys = [state, methods, events, changes, created].map(item => {
             panic(typeof item === "function").err("state, methods, changes, events and created values ​​must be methods in components.")
         })
 
+    }
+
+    /**
+     * 
+     * @param {String} name variable name to be assigned companion
+     * @param {Function} comradeItem comrade
+     */
+    $addComrade(name, comradeItem) {
+        panic(typeof name === "string" || typeof comradeItem === "function").err("The comrade name sent to the add comrade method is in string type and companion should be function")
+
+        this.comrades[name] = (value, old) => comradeItem(value, old)
     }
 
     /**
@@ -60,8 +74,8 @@ export class Component {
 
         const template = document.createElement(tagName)
 
-        for (const name in attributes) {
-            template.setAttribute(name, attributes[name])
+        for (const [name, value] in Object.entries(attributes)) {
+            template.setAttribute(name, value)
         }
 
         template.innerHTML = inner
@@ -87,8 +101,6 @@ export class Component {
         })
 
         this.$update("*", true)
-
-        contentUpdate(this.template, this.state, this.changes, this.dataID, true)
     }
 
     /**
@@ -112,6 +124,9 @@ export class Component {
             updateName === "query" ? query(this.template, this.state, this.dataID) : null
             updateName === "node" ? node(this.template, this, this.dataID) : null
         }
+
+        comradeHandler(this.comrades, this.cloneState, this.state)
+        this.cloneState = { ...this.state }
     }
 
     /**
@@ -210,24 +225,18 @@ export class Component {
         }
 
         const tempaltePropChild = this.template.querySelector("prop-child"),
-            propChild = rootElement.children[0]
+            propChild = rootElement.children
 
-        if (tempaltePropChild !== null) {
-            tempaltePropChild.replaceWith(propChild)
-        }
+        if (tempaltePropChild !== null) tempaltePropChild.replaceWith(...propChild)
 
         this.first(prop, dataID)
 
         if (routerMode) {
             rootElement.appendChild(this.template)
-        } else {
-            rootElement.replaceWith(this.template)
-        }
+        } else rootElement.replaceWith(this.template)
 
         this.propTypesControl()
         this.created(prop, this.state)
-
-        return this
     }
 
     /**
@@ -240,7 +249,7 @@ export class Component {
             const { componentPropsBreakPoint } = Settings,
                 addAttributes = {}
 
-            let propsClone = JSON.parse(JSON.stringify(props))
+            let propsClone = { ...props }
 
             root.getAttributeNames().map(attrName => {
                 if (attrName.includes(componentPropsBreakPoint)) {

@@ -10,9 +10,7 @@ export const show = (template, state, dataID) => {
             if (show !== null) {
                 if (eval(show)) {
                     element.style.display = ""
-                } else {
-                    element.style.display = "none"
-                }
+                } else element.style.display = "none"
             }
         }
     })

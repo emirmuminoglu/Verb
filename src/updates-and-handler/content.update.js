@@ -18,18 +18,16 @@ function update(element, joinResult) {
 export const contentUpdate = (template, state, changes, dataID, doItByForce = false) => {
     const { variableTagName } = Settings
 
-    template.querySelectorAll(variableTagName).forEach(async element => {
+    template.querySelectorAll(variableTagName).forEach(element => {
         if (element.getAttribute(dataID) !== null) {
             const variableName = getVerb(element, "dependency"),
                 trueValue = getVerb(element, "true-value"),
-                joinResult = await join(state, changes, variableName.trim())
+                joinResult = join(state, changes, variableName.trim())
 
             if (doItByForce) {
                 update(element, joinResult)
-            } else {
-                if (joinResult.trueValue !== trueValue) {
-                    update(element, joinResult)
-                }
+            } else if (joinResult.trueValue !== trueValue) {
+                update(element, joinResult)
             }
         }
     })

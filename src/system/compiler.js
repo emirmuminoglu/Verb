@@ -37,13 +37,9 @@ export const compiler = (template, state, changes, dataID) => {
                         innerFormat
                     )
                 )
-            } else {
-                break
-            }
+            } else break
 
-            if (i == compilerMaximumTransactionLimit) {
-                break
-            }
+            if (i == compilerMaximumTransactionLimit) break
         }
     }
 

@@ -1,7 +1,5 @@
 const verbObjectControl = (element) => {
-    if (element.verb === undefined) {
-        element.verb = {}
-    }
+    if (element.verb === undefined) element.verb = {}
 }
 
 export const getVerb = (element, getName) => {
@@ -9,9 +7,7 @@ export const getVerb = (element, getName) => {
 
     const value = element.verb[getName]
 
-    if (value !== undefined) {
-        return value
-    }
+    if (value !== undefined) return value
 }
 
 export const setVerb = (element, setName, setValue) => {
