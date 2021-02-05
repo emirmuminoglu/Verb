@@ -1,31 +1,63 @@
 # Verb.js
+javascript library
 
-## What is verbjs
-Verb.js aims to build powerful structures by increasing the dynamism power of your plain and frameless javascript application and reducing the cost of code. It offers a flexible structure where you can organize the keywords used in it and make it unique to you.
+### Document Site
+[https://practical-knuth-3700ea.netlify.app/](https://practical-knuth-3700ea.netlify.app/)
 
-## Specifications
-1. Using dynamic variables in HTML
-2. Reflecting changes on javascript in HTML
-3. A fast and simple router
-4. XSS protection
-5. Component system in plain javascript applications
-6. Binding variables to tag attributes and querying within
-7. Methods for manipulating DOM objects
+### About
+Verb.js aims to increase the dynamics of simple javascript applications in a simple and powerful way, at the same time, it significantly increases the communication between javascript and HTML.
 
-<br>
+### where is it used
+It is used in applications that are very dynamic and have multiple functions with plain javascript, where javascript interferes with HTML and can have more than one scenario.
 
-## Install
-### git
+### Use
+The simplest way to use Verb.js is to buy a clone on github. After getting the clone, all the features are available from the ``distribution.js`` file in the Verb folder.
+
 ```
-git clone https://github.com/Verbjs/verb.git
+git clone git clone https://github.com/Verbjs/verb.git
 ```
 
-### npm
-```
-npm install verbjs
+If you are using verb in the main html file, you must function in template tags. The main verb is in a class structure, the state in which you can operate on HTML contains variables
+
+```html
+<template>
+  <h1> {{ state.message }} </h1>
+</template>
+
+<script type="module">
+  import { Verb } from "./verb/distribution.js"
+
+  const app = new Verb({
+    state: {
+      message: "Hello World"
+    }
+  })
+</script>
 ```
 
-<br>
+### update
+When a change is made, a variable on state is automatically reflected on the HTML, but you should notify verb.js of this change. For this notification process, you must run the ``$update`` process.
 
-## Document Site
-https://practical-knuth-3700ea.netlify.app/
+```html
+<template>
+  <h1> {{ state.message }} </h1>
+</template>
+
+<script type="module">
+  import { Verb } from "./verb/distribution.js"
+
+  const app = new Verb({
+    state: {
+      message: "Hello World"
+    }
+  })
+
+  setTimeout(() => {
+    app.state.message = "Hello Verb.js"
+
+    app.$update()
+  }, 2000)
+</script>
+```
+
+All features and detailed description of verb.js are available on the [document](https://practical-knuth-3700ea.netlify.app/) site.
