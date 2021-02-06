@@ -67,15 +67,13 @@ export class Component {
 
     $template(tagName, attributes, inner) {
         panic(typeof tagName === "string").err("When creating a component container with the $template method, the first parameter must contain a string value tag name, it cannot be sent empty.")
-
         panic(typeof attributes === "object").err("Attributes to be given to the component container must be contained in an object. Object names and values ​​are equal to attribute names and values")
-
         panic(inner !== undefined && typeof inner === "string").err("A string value must be sent as the last parameter to the $template method in the component. The last parameter is taken as HTML content")
 
         const template = document.createElement(tagName)
 
-        for (const [name, value] in Object.entries(attributes)) {
-            template.setAttribute(name, value)
+        for (const name in attributes) {
+            template.setAttribute(name, attributes[name])
         }
 
         template.innerHTML = inner
