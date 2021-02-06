@@ -33,6 +33,7 @@ export class Router {
             }
         }
 
+        this.routeManager()
     }
 
     eventHandler() {
@@ -40,10 +41,11 @@ export class Router {
             element.addEventListener("click", () => {
                 const to = element.getAttribute("to")
 
-                this[this.routerMode] = to
-
-                this.setLink(to)
-                this.routeManager()
+                if (to !== this[this.routerMode]) {
+                    this[this.routerMode] = to
+                    
+                    this.setLink(to)
+                }
             })
         })
     }
