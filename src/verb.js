@@ -10,20 +10,41 @@ import { comradeHandler } from "./particles/comrade.js"
 import Settings from "../settings.js"
 
 export class Verb {
-    constructor({ state = {}, changes = {} } = {}, template = "body", dataID = createKey()) {
+    constructor({ state = () => ({}), changes = {}, created = () => {} } = {}, template = "body", dataID = createKey()) {
         this.template = document.querySelector(template)
         this.dataID = dataID
-        this.state = state
         this.changes = changes
         this.comrades = {}
-        this.cloneState = { ...this.state }
+        this.created = created
 
+        if (typeof state === "function") {
+            state().then(res => {
+                this.state = res
+                this.cloneState = { ...this.state }
+                this.first()
+                this.created()
+            })
+
+            return
+        }
+
+        this.state = state
+        this.cloneState = { ...this.state }
+        this.first()
+        this.created()
+    }
+
+    first() {
         this.changeSorter()
 
         systemTools.map(tool => this[tool.name] = (ID, param1, param2) => tool(this.template, ID, param1, param2))
 
-        const templateNode = this.template.querySelector("template"),
-        content = templateNode.content.cloneNode(true)
+        const templateNode = this.template.querySelector("template")
+        let content
+        
+        if (templateNode !== null) {
+            content = templateNode.content.cloneNode(true)
+        } else console.error("No 'template' tag found in the tag you sent")
 
         this.template.innerHTML = ""
         this.template.appendChild(content)
