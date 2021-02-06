@@ -16,7 +16,6 @@ export class Router {
 
         this.createRouterObject()
         this.routeManager()
-        this.eventHandler()
     }
 
     createRouterObject() {
@@ -33,6 +32,7 @@ export class Router {
                 location.hash = to
             }
         }
+
     }
 
     eventHandler() {
@@ -43,7 +43,6 @@ export class Router {
                 this[this.routerMode] = to
 
                 this.setLink(to)
-
                 this.routeManager()
             })
         })
@@ -57,9 +56,7 @@ export class Router {
                 { component, title, name } = this.routers[i]
 
             if (req === this[this.routerMode]) {
-                this.root.innerHTML = ""
-
-                new Component(component).$render(this.rootName, {}, {}, true)
+                new Component(component).$render(this.rootName, {}, {}, true).then(() => this.eventHandler())
 
                 this.title = title
                 if (title !== undefined) document.title = this.title
@@ -68,17 +65,13 @@ export class Router {
                 defaultMode = false
 
                 this.updateRouterObject()
-                this.eventHandler()
 
                 break
             } else defaultMode = true
         }
 
         if (defaultMode) {
-            this.root.innerHTML = ""
-
-            new Component(this.defaultComponent).$render(this.rootName, {}, {}, true)
-            this.eventHandler()
+            new Component(this.defaultComponent).$render(this.rootName, {}, {}, true).then(() => this.eventHandler())
         }
     }
 }

@@ -230,6 +230,7 @@ export class Component {
         this.first(prop, dataID)
 
         if (routerMode) {
+            rootElement.innerHTML = ""
             rootElement.appendChild(this.template)
         } else rootElement.replaceWith(this.template)
 
