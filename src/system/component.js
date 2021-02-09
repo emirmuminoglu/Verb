@@ -93,30 +93,22 @@ export class Component {
             element.setAttribute(dataID, "")
 
             if (element.tagName === "V") {
-                setVerb(element, "true-value", element.getAttribute("true-value"))
                 setVerb(element, "dependency", element.getAttribute("dependency"))
             }
         })
 
-        this.$update("*", true)
+        this.$update("*")
     }
 
-    /**
-     * @param {Boolean} doItByForce specifies obligation to update,
-     * true: force update, false: check value
-     */
-
-    $update(updateName, doItByForce = false) {
-        panic(typeof doItByForce === "boolean").err("The forced update parameter sent to the $update method should have been true or false")
-
+    $update(updateName) {
         if (updateName === undefined || updateName === "*") {
-            contentUpdate(this.template, this.state, this.changes, this.dataID, doItByForce)
+            contentUpdate(this.template, this.state, this.changes, this.dataID)
             attributeHandler(this.template, this.state, this.changes, this.dataID)
             show(this.template, this.state, this.dataID)
             query(this.template, this.state, this.dataID)
             node(this.template, this, this.dataID)
         } else {
-            updateName === "content" ? contentUpdate(this.template, this.state, this.changes, this.dataID, doItByForce) : null
+            updateName === "content" ? contentUpdate(this.template, this.state, this.changes, this.dataID) : null
             updateName === "attribute" ? attributeHandler(this.template, this.state, this.changes, this.dataID) : null
             updateName === "show" ? show(this.template, this.state, this.dataID) : null
             updateName === "query" ? query(this.template, this.state, this.dataID) : null
@@ -277,12 +269,12 @@ export class Component {
      * equal to a value in the state
     */
 
-    $setState(setValue, doItByForce) {
+    $setState(setValue) {
         setValue = (typeof setValue === "function" ? setValue() : setValue)
 
         for (const variableName in setValue) {
             this.state[variableName] = setValue[variableName]
-            this.$update(doItByForce)
+            this.$update()
         }
     }
 }

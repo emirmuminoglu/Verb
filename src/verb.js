@@ -55,15 +55,13 @@ export class Verb {
             element.setAttribute(this.dataID, "")
 
             if (element.tagName === "V") {
-                setVerb(element, "true-value", element.getAttribute("true-value"))
                 setVerb(element, "dependency", element.getAttribute("dependency").trim())
 
-                element.removeAttribute("true-value")
                 element.removeAttribute("dependency")
             }
         })
 
-        this.$update("*", true)
+        this.$update("*")
         window.verb = {}
     }
 
@@ -160,12 +158,12 @@ export class Verb {
         })
     }
 
-    $setState(setValue, doItByForce = true) {
+    $setState(setValue) {
         setValue = (typeof setValue === "function" ? setValue() : setValue)
 
         for (const variableName in setValue) {
             this.state[variableName] = setValue[variableName]
-            this.$update("*", doItByForce)
+            this.$update("*")
         }
     }
 }
