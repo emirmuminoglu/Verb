@@ -39,7 +39,6 @@ export class Component {
         const keys = [state, methods, events, changes, created].map(item => {
             panic(typeof item === "function").err("state, methods, changes, events and created values ​​must be methods in components.")
         })
-
     }
 
     /**
@@ -201,7 +200,7 @@ export class Component {
 
     async $render(root, prop, addAttributes, routerMode = false, dataID = createKey()) {
         this.props = prop
-        this.state = Object.assign(this.stateConsumer(), prop)
+        this.state = Object.assign(await this.stateConsumer(), prop)
         this.template = await this.html(prop, this.state)
         this.methods = this.methods(prop, this.state)
         this.eventsConsumer = this.events(prop, this.state)
