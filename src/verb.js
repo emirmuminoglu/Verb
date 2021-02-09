@@ -10,7 +10,7 @@ import { comradeHandler } from "./particles/comrade.js"
 import Settings from "../settings.js"
 
 export class Verb {
-    constructor({ state = () => ({}), changes = {}, created = () => {} } = {}, template = "body", dataID = createKey()) {
+    constructor({ state = {}, changes = {}, created = () => {} } = {}, template = "body", dataID = createKey()) {
         this.template = document.querySelector(template)
         this.dataID = dataID
         this.changes = changes
