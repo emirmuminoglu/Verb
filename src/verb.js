@@ -135,7 +135,7 @@ export class Verb {
         document.querySelectorAll(rootName).forEach(root => {
             const { componentPropsBreakPoint } = Settings,
                 addAttributes = {}
-            let propsClone = JSON.parse(JSON.stringify(props))
+            let propsClone = { ...props }
 
             root.getAttributeNames().map(attrName => {
                 if (attrName.includes(componentPropsBreakPoint)) {
