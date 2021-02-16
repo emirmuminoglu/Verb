@@ -37,7 +37,7 @@ export const node = (verbNodeList, _this, dataID) => {
                 // conversion of type name to the system name
                 if (nodeType) nodeTypeSystemName = nodeType[0].toUpperCase() + nodeType.slice(1)
 
-                // event assignment to input or textarea tag  
+                // event assignment to input or textarea tag
                 element.addEventListener(dist[1], (e) => {
                     // type control
                     const typeControl = () => {

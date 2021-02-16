@@ -85,13 +85,13 @@ export class Component {
         return template
     }
 
-    first(prop, dataID) {
+    first(dataID) {
         this.template.setAttribute(dataID, "")
         this.compile()
 
         systemTools.map(tool => this[tool.name] = (ID) => tool(this.template, ID))
 
-        this.eventHandler(prop)
+        this.eventHandler()
 
         this.template.querySelectorAll("*").forEach(element => {
             element.setAttribute(dataID, "")
@@ -155,48 +155,34 @@ export class Component {
         compiler(this.template, this.state, this.changes, this.dataID)
     }
 
-    eventHandler(props) {
+    eventHandler() {
         for (const name in this.eventsConsumer) {
             const eventName = name.slice((name.indexOf("[") + 1), name.indexOf("]")).trim(),
                 event = this.eventsConsumer[name],
                 id = name.slice(0, name.indexOf("[")).trim(),
-                additionalProcessing = name.slice((name.indexOf("(") + 1), name.indexOf(")")).trim(),
-                additionalProcessingMode = name.includes("($update)")
+                additionalProcessingMode = name.includes('$$')
 
             if (name === "top") {
                 const top = this.eventsConsumer.top,
                     id = this.eventsConsumer.top.id,
+                    topAdditionalProcessingMode = this.eventsConsumer.top.update,
                     elements = this.template.querySelectorAll(id)
 
                 elements.forEach(el => {
                     for (let [name, event] of Object.entries(top)) {
-                        const topAdditionalProcessingMode = name.includes("($update)")
+                        el.addEventListener(name, e => {
+                            event(e)
 
-                        name = name.replace("($update)", "").trim()
-
-                        if (name !== id) {
-                            el.addEventListener(name, (target) => {
-                                event({ element: el, target, props: props, _this: this })
-
-                                if (topAdditionalProcessingMode) {
-                                    const additionalProcessing = name.slice((name.indexOf("(") + 1), name.indexOf(")")).trim()
-
-
-                                    this[additionalProcessing]("*", true)
-                                }
-                            })
-                        }
+                            if (topAdditionalProcessingMode) this.$update('*')
+                        })
                     }
                 })
             } else {
                 this.template.querySelectorAll(id).forEach(el => {
+                    el.addEventListener(eventName, e => {
+                        event(e)
 
-                    el.addEventListener(eventName, (target) => {
-                        event({ element: el, target, props: props })
-
-                        if (additionalProcessingMode) {
-                            this[additionalProcessing]("*", true)
-                        }
+                        if (additionalProcessingMode) this.$update('*')
                     })
                 })
             }
@@ -246,7 +232,7 @@ export class Component {
 
         if (tempaltePropChild !== null) tempaltePropChild.replaceWith(...propChild)
 
-        this.first(prop, dataID)
+        this.first(dataID)
 
         if (routerMode) {
             rootElement.innerHTML = ""
