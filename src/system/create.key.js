@@ -6,7 +6,7 @@ export const createKey = () => {
             randomNum = Math.floor(Math.random() * 10),
             randomAph = Math.floor(Math.random() * alphabet.length)
 
-            key += randomNum + alphabet[randomAph]
+        key += randomNum + alphabet[randomAph]
     }
 
     return key

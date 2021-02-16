@@ -16,37 +16,34 @@ const getQueryValue = (element) => {
     }
 }
 
-export const query = (template, state, dataID) => {
+export const query = (verbQueryList, state, dataID) => {
     const { dynamicTagBreakPoint } = Settings
 
-    template.querySelectorAll("*").forEach(element => {
+    verbQueryList.map(element => {
         if (element.getAttribute(dataID) !== null) {
-            const isIf = element.getAttribute(`${dynamicTagBreakPoint}if`),
-                queryElements = []
+            const queryElements = []
 
-            if (isIf !== null) {
-                let nextElement = element.nextElementSibling
-                queryElements.push(element)
+            let nextElement = element.nextElementSibling
+            queryElements.push(element)
 
-                for (let i = 0; i < 30; i++) {
-                    const nextElementIsIf = nextElement !== null ? nextElement.getAttribute(`${dynamicTagBreakPoint}if`) : null,
-                        nextElementIsElseIf = nextElement !== null ? nextElement.getAttribute(`${dynamicTagBreakPoint}else-if`) : null,
-                        nextElementElse = nextElement != null ? nextElement.getAttribute(`${dynamicTagBreakPoint}else`) : null
+            for (let i = 0; i < 30; i++) {
+                const nextElementIsIf = nextElement !== null ? nextElement.getAttribute(`${dynamicTagBreakPoint}if`) : null,
+                    nextElementIsElseIf = nextElement !== null ? nextElement.getAttribute(`${dynamicTagBreakPoint}else-if`) : null,
+                    nextElementElse = nextElement != null ? nextElement.getAttribute(`${dynamicTagBreakPoint}else`) : null
 
-                    if (nextElementIsIf === null) {
-                        if (nextElementIsElseIf !== null) {
-                            queryElements.push(nextElement)
-                        } else if (nextElementElse !== null) {
-                            queryElements.push(nextElement)
+                if (nextElementIsIf === null) {
+                    if (nextElementIsElseIf !== null) {
+                        queryElements.push(nextElement)
+                    } else if (nextElementElse !== null) {
+                        queryElements.push(nextElement)
 
-                            break
-                        } else {
-                            break
-                        }
+                        break
+                    } else {
+                        break
                     }
-
-                    nextElement = nextElement.nextElementSibling
                 }
+
+                nextElement = nextElement.nextElementSibling
             }
 
             queryElements.map(el => el.style.display = "none")

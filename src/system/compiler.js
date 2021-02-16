@@ -22,7 +22,7 @@ export const compiler = (template, state, changes, dataID) => {
             const start = (template.innerHTML.indexOf(useVariableStart) + useVariableLength),
                 end = template.innerHTML.indexOf(useVariableEnd)
 
-            if (start !== -1 && end !== -1) {
+            if ((start !== -1 && end !== -1) || (i == compilerMaximumTransactionLimit)) {
                 const variableName = template.innerHTML.slice(start, end),
                     innerFormat = variableName.includes(useHTMLMark),
                     joinResult = join(state, changes, variableName.replace(useHTMLMark, "").trim())
@@ -37,8 +37,6 @@ export const compiler = (template, state, changes, dataID) => {
                     )
                 )
             } else break
-
-            if (i == compilerMaximumTransactionLimit) break
         }
     }
 

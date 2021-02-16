@@ -1,5 +1,4 @@
 import { join } from "../system/join.js"
-import Settings from "../../settings.js"
 import { getVerb } from "../system/DOMVerbObject.js"
 
 function update(element, joinResult) {
@@ -13,10 +12,8 @@ function update(element, joinResult) {
     }
 }
 
-export const contentUpdate = (template, state, changes, dataID) => {
-    const { variableTagName } = Settings
-
-    template.querySelectorAll(variableTagName).forEach(element => {
+export const contentUpdate = (verbElementList, state, changes, dataID) => {
+    verbElementList.map(element => {
         if (element.getAttribute(dataID) !== null) {
             const variableName = getVerb(element, "dependency"),
                 joinResult = join(state, changes, variableName.trim())

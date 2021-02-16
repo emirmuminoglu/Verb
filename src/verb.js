@@ -16,6 +16,11 @@ export class Verb {
         this.changes = changes
         this.comrades = {}
         this.created = created
+        this.verbElementList = []
+        this.verbQueryList = []
+        this.verbNodeList = []
+        this.verbAttributeList = []
+        this.verbShowList = []
 
         if (typeof state === "function") {
             state().then(res => {
@@ -61,8 +66,34 @@ export class Verb {
             }
         })
 
-        this.$update("*")
         window.verb = {}
+
+        this.template.querySelectorAll('*').forEach(e => {
+            if (e.tagName === Settings.variableTagName.toUpperCase()) this.verbElementList.push(e)
+
+            if (e.hasAttribute(Settings.dynamicTagBreakPoint + 'if')) this.verbQueryList.push(e)
+
+            if (e.hasAttribute(Settings.dynamicTagBreakPoint + 'show')) this.verbShowList.push(e)
+
+            const attributeNames = e.getAttributeNames()
+            for (const i in attributeNames) {
+                const name = attributeNames[i]
+
+                if (name.includes(Settings.dynamicTagBreakPoint + 'node')) {
+                    this.verbNodeList.push(e)
+
+                    break
+                } else if (name.includes(Settings.dynamicTagAttributeBreakPoint)) {
+                    this.verbAttributeList.push(e)
+
+                    break
+                }
+            }
+        })
+
+        console.log(this)
+
+        this.$update("*")
     }
 
     changeSorter() {
@@ -106,19 +137,19 @@ export class Verb {
         return this.template.querySelector(id).verb
     }
 
-    $update(updateName, doItByForce) {
+    $update(updateName) {
         if (updateName === undefined || updateName === "*") {
-            contentUpdate(this.template, this.state, this.changes, this.dataID, doItByForce)
-            attributeHandler(this.template, this.state, this.changes, this.dataID)
-            show(this.template, this.state, this.dataID)
-            query(this.template, this.state, this.dataID)
-            node(this.template, this, this.dataID)
+            contentUpdate(this.verbElementList, this.state, this.changes, this.dataID)
+            attributeHandler(this.verbAttributeList, this.state, this.changes, this.dataID)
+            show(this.verbShowList, this.state, this.dataID)
+            query(this.verbQueryList, this.state, this.dataID)
+            node(this.verbNodeList, this, this.dataID)
         } else {
-            updateName === "content" ? contentUpdate(this.template, this.state, this.changes, this.dataID, doItByForce) : null
-            updateName === "attribute" ? attributeHandler(this.template, this.state, this.changes, this.dataID) : null
-            updateName === "show" ? show(this.template, this.state, this.dataID) : null
-            updateName === "query" ? query(this.template, this.state, this.dataID) : null
-            updateName === "node" ? node(this.template, this, this.dataID) : null
+            if (updateName === "content") return contentUpdate(this.verbElementList, this.state, this.changes, this.dataID)
+            if (updateName === "attribute") return attributeHandler(this.verbAttributeList, this.state, this.changes, this.dataID)
+            if (updateName === "show") return show(this.verbShowList, this.state, this.dataID)
+            if (updateName === "query") return query(this.verbQueryList, this.state, this.dataID)
+            if (updateName === "node") return node(this.verbNodeList, this, this.dataID)
         }
 
         comradeHandler(this.comrades, this.cloneState, this.state)

@@ -1,17 +1,14 @@
 import Settings from "../../settings.js"
 
-export const show = (template, state, dataID) => {
+export const show = (verbShowList, state, dataID) => {
     const { dynamicTagBreakPoint } = Settings
 
-    template.querySelectorAll("*").forEach(element => {
+    verbShowList.map(element => {
         if (element.getAttribute(dataID) !== null) {
             const show = element.getAttribute(`${dynamicTagBreakPoint}show`)
 
-            if (show !== null) {
-                if (eval(show)) {
-                    element.style.display = ""
-                } else element.style.display = "none"
-            }
+            if (eval(show)) element.style.display = ""
+            else element.style.display = "none"
         }
     })
 }

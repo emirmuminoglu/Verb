@@ -1,10 +1,10 @@
 import { join } from "../system/join.js"
 import Settings from "../../settings.js"
 
-export const attributeHandler = (template, state, changes, dataID) => {
+export const attributeHandler = (verbAttributeList, state, changes, dataID) => {
     const { dynamicTagAttributeBreakPoint } = Settings
 
-    template.querySelectorAll("*").forEach(element => {
+    verbAttributeList.map(element => {
         if (element.getAttribute(dataID) !== null) {
             element.getAttributeNames().map(async attributeText => {
                 if (attributeText.includes(dynamicTagAttributeBreakPoint) && attributeText !== `${dynamicTagAttributeBreakPoint}change`) {
