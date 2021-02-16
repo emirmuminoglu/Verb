@@ -20,5 +20,7 @@ test function returns: ${JSON.stringify(returns)}
         if (timer <= max) {
             resolve(result)
         } else reject(result)
+
+        return timer > max ? false : true
     })
 }
