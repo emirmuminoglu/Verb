@@ -19,10 +19,10 @@ export class Router {
     }
 
     createRouterObject() {
-        window.$router = { ...this }
+        window.$router = this
     }
 
-    updateRouterObject = () => window.$router = Object.assign(window.$router, this)
+    updateRouterObject = () => window.$router = this
 
     setLink(to) {
         if (this.linkChanged) {
