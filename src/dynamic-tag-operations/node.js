@@ -22,7 +22,7 @@ export const node = (verbNodeList, _this, dataID) => {
 
                 let keyCode,
                     nodeType,
-                    nodeTypeSystemName = ""
+                    nodeTypeSystemName = "String"
 
                 // keyCode control
                 if (dist.join().includes("[") && dist.join().includes("]")) {

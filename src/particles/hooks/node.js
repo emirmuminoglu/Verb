@@ -1,5 +1,7 @@
+import { panic } from '../../system/error.js'
+
 export class Node {
-    constructor(id, { value = "", type = "string", event = "keypress" } = {}, func = () => {}) {
+    constructor(id, { value = "", type = "string", event = "keypress" } = {}, func = () => { }) {
         this.id = id
         this.el = document.querySelector(id)
         this.value = value
@@ -7,7 +9,9 @@ export class Node {
         this.func = func
         this.event = event
 
-        this.first()
+        if (this.el) {
+            this.first()
+        } else panic().err('element null. ID: ' + this.id)
     }
 
     first() {

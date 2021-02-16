@@ -1,5 +1,5 @@
 export const panic = (controlValue) => {
-    const title = "{Verbjs Error}",
+    const title = "{Verbjs Error}\n",
         suggestions = `
 If you haven"t solved the problem you can check here
 
