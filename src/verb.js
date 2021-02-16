@@ -91,8 +91,6 @@ export class Verb {
             }
         })
 
-        console.log(this)
-
         this.$update("*")
     }
 

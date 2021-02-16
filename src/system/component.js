@@ -125,7 +125,6 @@ export class Component {
         })
 
         this.$update("*")
-        console.log(this)
     }
 
     $update(updateName) {
