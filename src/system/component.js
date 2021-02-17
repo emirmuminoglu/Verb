@@ -35,6 +35,7 @@ export class Component {
         this.propTypes = propTypes
         this.cloneState = { ...this.state }
         this.comrades = {}
+        this.map = new WeakMap()
         this.verbElementList = []
         this.verbQueryList = []
         this.verbNodeList = []
@@ -85,8 +86,32 @@ export class Component {
         return template
     }
 
+    stateHandler(obj) {
+        const map = this.map,
+            _this = this
+
+        for (const key in obj) {
+            if (typeof obj[key] === 'object') {
+                this.stateHandler(obj[key])
+            } else {
+                this.map.set(obj, {...obj})
+    
+                Object.defineProperty(obj, key, {
+                    get() {
+                        return map.get(obj)[key]
+                    },
+                    set(value) {
+                        map.get(obj)[key] = value
+                        _this.$update()
+                    }
+                })
+            }
+        }
+    }
+
     first(dataID) {
         this.template.setAttribute(dataID, "")
+        this.stateHandler(this.state)
         this.compile()
 
         systemTools.map(tool => this[tool.name] = (ID) => tool(this.template, ID))

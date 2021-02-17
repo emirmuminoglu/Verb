@@ -16,6 +16,7 @@ export class Verb {
         this.changes = changes
         this.comrades = {}
         this.created = created
+        this.map = new WeakMap()
         this.verbElementList = []
         this.verbQueryList = []
         this.verbNodeList = []
@@ -39,8 +40,32 @@ export class Verb {
         this.created()
     }
 
+    stateHandler(obj) {
+        const map = this.map,
+            _this = this
+
+        for (const key in obj) {
+            if (typeof obj[key] === 'object') {
+                this.stateHandler(obj[key])
+            } else {
+                this.map.set(obj, {...obj})
+    
+                Object.defineProperty(obj, key, {
+                    get() {
+                        return map.get(obj)[key]
+                    },
+                    set(value) {
+                        map.get(obj)[key] = value
+                        _this.$update()
+                    }
+                })
+            }
+        }
+    }
+
     first() {
         this.changeSorter()
+        this.stateHandler(this.state)
 
         systemTools.map(tool => this[tool.name] = (ID, param1, param2) => tool(this.template, ID, param1, param2))
 
