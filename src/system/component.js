@@ -263,7 +263,7 @@ export class Component {
     /**
      * @param {Object} param0
     */
-    $createComponent({ rootName, component, props = {} }) {
+    $createComponent(rootName, component, props = {}) {
         panic(document.querySelector(rootName) !== null).err(`A component tag with root name "${rootName}" was not found. Make sure there is an HTML tag with the same name as the rootName you sent`)
 
         document.querySelectorAll(rootName).forEach(root => {
