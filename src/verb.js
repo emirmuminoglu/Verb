@@ -10,7 +10,7 @@ import { comradeHandler } from "./particles/comrade.js"
 import Settings from "../settings.js"
 
 export class Verb {
-    constructor({ state = {}, changes = {}, created = () => {} } = {}, template = "body", dataID = createKey()) {
+    constructor({ state = {}, changes = {}, created = () => { } } = {}, template = "body", dataID = createKey()) {
         this.template = document.querySelector(template)
         this.dataID = dataID
         this.changes = changes
@@ -48,8 +48,8 @@ export class Verb {
             if (typeof obj[key] === 'object') {
                 this.stateHandler(obj[key])
             } else {
-                this.map.set(obj, {...obj})
-    
+                this.map.set(obj, { ...obj })
+
                 Object.defineProperty(obj, key, {
                     get() {
                         return map.get(obj)[key]
@@ -71,7 +71,7 @@ export class Verb {
 
         const templateNode = this.template.querySelector("template")
         let content
-        
+
         if (templateNode !== null) {
             content = templateNode.content.cloneNode(true)
         } else console.error("No 'template' tag found in the tag you sent")
@@ -160,20 +160,12 @@ export class Verb {
         return this.template.querySelector(id).verb
     }
 
-    $update(updateName) {
-        if (updateName === undefined || updateName === "*") {
-            contentUpdate(this.verbElementList, this.state, this.changes, this.dataID)
-            attributeHandler(this.verbAttributeList, this.state, this.changes, this.dataID)
-            show(this.verbShowList, this.state, this.dataID)
-            query(this.verbQueryList, this.state, this.dataID)
-            node(this.verbNodeList, this, this.dataID)
-        } else {
-            if (updateName === "content") return contentUpdate(this.verbElementList, this.state, this.changes, this.dataID)
-            if (updateName === "attribute") return attributeHandler(this.verbAttributeList, this.state, this.changes, this.dataID)
-            if (updateName === "show") return show(this.verbShowList, this.state, this.dataID)
-            if (updateName === "query") return query(this.verbQueryList, this.state, this.dataID)
-            if (updateName === "node") return node(this.verbNodeList, this, this.dataID)
-        }
+    $update() {
+        contentUpdate(this.verbElementList, this.state, this.changes, this.dataID)
+        attributeHandler(this.verbAttributeList, this.state, this.changes, this.dataID)
+        show(this.verbShowList, this.state, this.dataID)
+        query(this.verbQueryList, this.state, this.dataID)
+        node(this.verbNodeList, this, this.dataID)
 
         comradeHandler(this.comrades, this.cloneState, this.state)
         this.cloneState = { ...this.state }
