@@ -62,7 +62,7 @@ export class Component {
      * @param {String} path
      */
 
-    getTemplate = async (path) => await fetch(path).then(res => res.text())
+    $getTemplate = async (path) => await fetch(path).then(res => res.text())
 
     /**
      * @param {String} tagName is the name of the main label of this component
