@@ -24,6 +24,15 @@ const settings = {
     // The character length of the signs to use variables in HTML
     useVariableLength: 2,
 
+    // Beginning of the jss handler breakpoint
+    JSSPointStart: '((',
+
+    // End of jss handler breakpoint
+    JSSPointEnd: '))',
+
+    // character length of the jss handler breakpoint
+    JSSPointLength: 2,
+
     // Keyword to use if you want to print a variable in state into the content as HTML
     useHTMLMark: "__html__",
 
