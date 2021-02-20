@@ -36,6 +36,12 @@ export class Router {
         this.routeManager()
     }
 
+    canterChange(to) {
+        this[this.routerMode] = to
+
+        this.routeManager()
+    }
+
     eventHandler() {
         document.querySelectorAll(this.routerLinkTagName).forEach(element => {
             element.addEventListener("click", () => {
