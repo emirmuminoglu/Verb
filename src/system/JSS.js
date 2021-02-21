@@ -38,16 +38,6 @@ export class JSS {
         }
     }
 
-    breakPoint(index) {
-        for (let i = index; i > 0; i--) {
-            const x = this.css[i]
-
-            if (x === ':') {
-                return (i + 1)
-            }
-        }
-    }
-
     changeHandler(variableName, evalValue) {
         const variableChangeName = variableName.replace(this.startPoint, '').replace(this.endPoint, '').trim()
 
@@ -58,23 +48,31 @@ export class JSS {
         }
     }
 
-    JSSCompiler(state) {
-        let cloneCSS = ''
-
-        for (const i in this.css) {
-            const start = this.css.indexOf(this.startPoint),
-                finish = this.css.indexOf(this.endPoint) + this.pointLength,
-                _var = this.css.slice(start, finish),
-                value = this.css.slice(this.breakPoint(start), (start - 3)),
-                evalValue = eval(_var.replace(this.startPoint, '').replace(this.endPoint, '').trim())
-
-            if (start === -1 || finish === -1) break
-
-            cloneCSS = this.css.replace(`${value}/* ${_var} */`, this.changeHandler(_var, evalValue))
-            this.css = this.css.replace(`${value}/* ${_var} */`, '')
+    stringInMap(string, _function) {
+        for (const i in string) {
+            _function(string[i].trim(), i)
         }
+    }
 
-        this.css = cloneCSS
-        this.element.innerText = cloneCSS
+    JSSCompiler(state) {
+        let compileCSS = this.css
+        compileCSS = compileCSS.split('/* JSS */')
+        compileCSS.splice(0, 1)
+        compileCSS.splice((compileCSS.length - 1), 1)
+
+        this.stringInMap(compileCSS.join('').split(';'), t => {
+            if (t.includes(this.startPoint) || t.includes(this.endPoint)) {
+                const start = t.indexOf(this.startPoint),
+                    end = t.indexOf(this.endPoint) + this.pointLength,
+                    _var = t.slice(start, end),
+                    evalValue = eval(_var.replace(this.startPoint, '').replace(this.endPoint, '')),
+                    value = t.slice((t.indexOf(':') + 1), t.indexOf('/*')),
+                    replaceValue = t.replace(value, ` ${this.changeHandler(_var, evalValue)} `)
+
+                this.css = this.css.replace(t, replaceValue)
+            }
+        })
+
+        this.element.innerHTML = this.css
     }
 }
