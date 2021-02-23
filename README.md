@@ -2,7 +2,7 @@
 javascript library
 
 ### Document Site
-[https://practical-knuth-3700ea.netlify.app/](https://practical-knuth-3700ea.netlify.app/)
+[https://lucid-wright-59b19c.netlify.app/](https://lucid-wright-59b19c.netlify.app/)
 
 ### About
 Verb.js aims to increase the dynamics of simple javascript applications in a simple and powerful way, at the same time, it significantly increases the communication between javascript and HTML.
@@ -54,10 +54,8 @@ When a change is made, a variable on state is automatically reflected on the HTM
 
   setTimeout(() => {
     app.state.message = "Hello Verb.js"
-
-    app.$update()
   }, 2000)
 </script>
 ```
 
-All features and detailed description of verb.js are available on the [document](https://practical-knuth-3700ea.netlify.app/) site.
+All features and detailed description of verb.js are available on the [document](https://lucid-wright-59b19c.netlify.app/) site.
