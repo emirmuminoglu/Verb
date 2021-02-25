@@ -1,4 +1,4 @@
-export const createReactiveObject = (obj, _function = () => { }) => {
+export const createReactiveObject = (obj) => {
     const map = new WeakMap()
 
     for (const key in obj) {
