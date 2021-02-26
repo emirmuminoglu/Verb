@@ -2,7 +2,7 @@ import { Component } from "../system/component.js"
 import Settings from "../../settings.js"
 
 export class Router {
-    constructor({ name, linkChanged, routerMode = "path", rootName = "body", routers = [], defaultComponent }) {
+    constructor({ name, linkChanged, routerMode = "path", rootName = "body", routers = [], defaultComponent, $mounted = () => {}, $created = () => {} }) {
         this.root = document.querySelector(rootName)
         this.rootName = rootName
         this.routers = routers
@@ -13,9 +13,12 @@ export class Router {
         this.linkChanged = linkChanged
         this.title = ""
         this.name = name
+        this.$created = $created
+        this.$mounted = $mounted
 
         this.updateRouterObject()
         this.routeManager()
+        $created()
     }
 
     updateRouterObject() {
@@ -64,8 +67,10 @@ export class Router {
                 { component, title, name } = this.routers[i]
 
             if (req === this[this.routerMode]) {
-                new Component(component).$render(this.rootName, {}, {}, true).then(() => this.eventHandler())
-
+                new Component(component).$render(this.rootName, {}, {}, true).then(() => {
+                    this.eventHandler()
+                    this.$mounted(this)
+                })
                 this.title = title
                 if (title !== undefined) document.title = this.title
 
@@ -78,7 +83,10 @@ export class Router {
         }
 
         if (defaultMode) {
-            new Component(this.defaultComponent).$render(this.rootName, {}, {}, true).then(() => this.eventHandler())
+            new Component(this.defaultComponent).$render(this.rootName, {}, {}, true).then(() => {
+                this.eventHandler()
+                this.$mounted(this)
+            })
         }
     }
 }
