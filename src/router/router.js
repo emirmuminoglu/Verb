@@ -2,7 +2,7 @@ import { Component } from "../system/component.js"
 import Settings from "../../settings.js"
 
 export class Router {
-    constructor({ linkChanged, routerMode = "path", rootName = "body", routers = [], defaultComponent }) {
+    constructor({ name, linkChanged, routerMode = "path", rootName = "body", routers = [], defaultComponent }) {
         this.root = document.querySelector(rootName)
         this.rootName = rootName
         this.routers = routers
@@ -12,17 +12,17 @@ export class Router {
         this.routerMode = routerMode
         this.linkChanged = linkChanged
         this.title = ""
-        this.name = ""
+        this.name = name
 
-        this.createRouterObject()
+        this.updateRouterObject()
         this.routeManager()
     }
 
-    createRouterObject() {
-        window.$router = this
-    }
+    updateRouterObject() {
+        if (window.$routers === undefined) window.$routers = {}
 
-    updateRouterObject = () => window.$router = this
+        window.$routers[this.name] = this
+    }
 
     setLink(to) {
         if (this.linkChanged) {
@@ -68,7 +68,6 @@ export class Router {
 
                 this.title = title
                 if (title !== undefined) document.title = this.title
-                if (this.name !== undefined) this.name = name
 
                 defaultMode = false
 
