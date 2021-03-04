@@ -14,7 +14,7 @@ It is used in applications that are very dynamic and have multiple functions wit
 The simplest way to use Verb.js is to buy a clone on github. After getting the clone, all the features are available from the ``distribution.js`` file in the Verb folder.
 
 ```
-git clone git clone https://github.com/Verbjs/verb.git
+git clone https://github.com/Verbjs/verb.git
 ```
 
 If you are using verb in the main html file, you must function in template tags. The main verb is in a class structure, the state in which you can operate on HTML contains variables
