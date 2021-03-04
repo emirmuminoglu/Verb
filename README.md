@@ -2,7 +2,7 @@
 javascript library
 
 ### Document Site
-[https://lucid-wright-59b19c.netlify.app/](https://lucid-wright-59b19c.netlify.app/)
+[https://verbjs.github.io/polat-poyraz.github.io/index.html#home](https://verbjs.github.io/polat-poyraz.github.io/index.html#home)
 
 ### About
 Verb.js aims to increase the dynamics of simple javascript applications in a simple and powerful way, at the same time, it significantly increases the communication between javascript and HTML.
@@ -58,4 +58,4 @@ When a change is made, a variable on state is automatically reflected on the HTM
 </script>
 ```
 
-All features and detailed description of verb.js are available on the [document](https://lucid-wright-59b19c.netlify.app/) site.
+All features and detailed description of verb.js are available on the [document](https://verbjs.github.io/polat-poyraz.github.io/index.html#home) site.
