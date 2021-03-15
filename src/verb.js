@@ -6,6 +6,7 @@ import { systemTools } from "./tools.js"
 import { setVerb } from "./system/DOMVerbObject.js"
 import { panic } from "./system/error.js"
 import { Component } from "./system/component.js"
+import { createComponent } from './particles/create.component.js'
 import { comradeHandler } from "./particles/comrade.js"
 import Settings from "../settings.js"
 
@@ -66,7 +67,7 @@ export class Verb {
 
     componentHandler() {
         for (const [name, component] of Object.entries(this.components)) {
-            this.$createComponent(name, component)
+            createComponent(this.template, name, component)
         }
     }
 
@@ -124,7 +125,7 @@ export class Verb {
             }
         })
 
-        this.$update("*")
+        this.$update()
     }
 
     changeSorter() {
@@ -183,41 +184,12 @@ export class Verb {
         compiler(this.template, this.state, this.changes, this.dataID)
     }
 
-    $createComponent(rootName, component, props = {}) {
-        panic(this.template.querySelector(rootName) !== null).err(`A component tag with root name "${rootName}" was not found. Make sure there is an HTML tag with the same name as the rootName you sent`)
-
-        this.template.querySelectorAll(rootName).forEach(root => {
-            const { componentPropsBreakPoint } = Settings,
-                addAttributes = {}
-            let propsClone = { ...props }
-
-            root.getAttributeNames().map(attrName => {
-                if (attrName.includes(componentPropsBreakPoint)) {
-                    const propName = attrName.replace(componentPropsBreakPoint, "")
-                    let propValue = root.getAttribute(attrName)
-
-                    propValue = eval(`[${propValue}][0]`)
-
-                    propsClone[propName] = propValue
-                } else {
-                    const attrValue = root.getAttribute(attrName)
-
-                    if (!attrName.includes("data-l-")) {
-                        addAttributes[attrName] = attrValue
-                    }
-                }
-            })
-
-            new Component(component).$render(root.tagName, propsClone, addAttributes)
-        })
-    }
-
     $setState(setValue) {
         setValue = (typeof setValue === "function" ? setValue() : setValue)
 
         for (const variableName in setValue) {
             this.state[variableName] = setValue[variableName]
-            this.$update("*")
+            this.$update()
         }
     }
 }

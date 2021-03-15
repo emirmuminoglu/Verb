@@ -6,6 +6,7 @@ import { systemTools } from "../tools.js"
 import { setVerb } from "./DOMVerbObject.js"
 import { panic } from "./error.js"
 import { comradeHandler } from "../particles/comrade.js"
+import { createComponent } from '../particles/create.component.js'
 import Settings from "../../settings.js"
 
 export class Component {
@@ -113,7 +114,7 @@ export class Component {
 
     componentHandler() {
         for (const [name, component] of Object.entries(this.components)) {
-            this.$createComponent(name, component)
+            createComponent(this.template, name, component)
         }
     }
 
@@ -158,7 +159,7 @@ export class Component {
             }
         })
 
-        this.$update("*")
+        this.$update()
     }
 
     $update() {
@@ -199,7 +200,7 @@ export class Component {
                         el.addEventListener(name, e => {
                             event(e)
 
-                            if (topAdditionalProcessingMode) this.$update('*')
+                            if (topAdditionalProcessingMode) this.$update()
                         })
                     }
                 })
@@ -208,7 +209,7 @@ export class Component {
                     el.addEventListener(eventName, e => {
                         event(e)
 
-                        if (additionalProcessingMode) this.$update('*')
+                        if (additionalProcessingMode) this.$update()
                     })
                 })
             }
@@ -267,39 +268,6 @@ export class Component {
 
         this.propTypesControl()
         this.created(prop, this.state)
-    }
-
-    /**
-     * @param {Object} param0
-    */
-    $createComponent(rootName, component, props = {}) {
-        panic(this.template.querySelector(rootName) !== null).err(`A component tag with root name "${rootName}" was not found. Make sure there is an HTML tag with the same name as the rootName you sent`)
-
-        this.template.querySelectorAll(rootName).forEach(root => {
-            const { componentPropsBreakPoint } = Settings,
-                addAttributes = {}
-
-            let propsClone = { ...props }
-
-            root.getAttributeNames().map(attrName => {
-                if (attrName.includes(componentPropsBreakPoint)) {
-                    const propName = attrName.replace(componentPropsBreakPoint, "")
-                    let propValue = root.getAttribute(attrName)
-
-                    propValue = eval(`[${propValue}][0]`)
-
-                    propsClone[propName] = propValue
-                } else {
-                    const attrValue = root.getAttribute(attrName)
-
-                    if (!attrName.includes("data-l-")) {
-                        addAttributes[attrName] = attrValue
-                    }
-                }
-            })
-
-            new Component(component).$render(root.tagName, propsClone, addAttributes)
-        })
     }
 
     /**
