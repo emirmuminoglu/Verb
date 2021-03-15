@@ -20,7 +20,8 @@ export class Component {
         events = () => ({}),
         changes = () => ({}),
         created = () => { },
-        propTypes = {}
+        propTypes = {},
+        components = {}
     } = {}) {
         this.template = ""
         this.html = html
@@ -30,6 +31,7 @@ export class Component {
         this.changes = {}
         this.state = {}
         this.props = {}
+        this.components = components
         this.methods = methods
         this.created = created
         this.propTypes = propTypes
@@ -109,10 +111,17 @@ export class Component {
         }
     }
 
+    componentHandler() {
+        for (const [name, component] of Object.entries(this.components)) {
+            this.$createComponent(name, component)
+        }
+    }
+
     first(dataID) {
         this.template.setAttribute(dataID, "")
         this.stateHandler(this.state)
         this.compile()
+        this.componentHandler()
 
         systemTools.map(tool => this[tool.name] = (ID) => tool(this.template, ID))
 
@@ -264,9 +273,9 @@ export class Component {
      * @param {Object} param0
     */
     $createComponent(rootName, component, props = {}) {
-        panic(document.querySelector(rootName) !== null).err(`A component tag with root name "${rootName}" was not found. Make sure there is an HTML tag with the same name as the rootName you sent`)
+        panic(this.template.querySelector(rootName) !== null).err(`A component tag with root name "${rootName}" was not found. Make sure there is an HTML tag with the same name as the rootName you sent`)
 
-        document.querySelectorAll(rootName).forEach(root => {
+        this.template.querySelectorAll(rootName).forEach(root => {
             const { componentPropsBreakPoint } = Settings,
                 addAttributes = {}
 

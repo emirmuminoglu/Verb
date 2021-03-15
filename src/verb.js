@@ -10,11 +10,12 @@ import { comradeHandler } from "./particles/comrade.js"
 import Settings from "../settings.js"
 
 export class Verb {
-    constructor({ state = {}, changes = {}, created = () => { } } = {}, template = "body", dataID = createKey()) {
+    constructor({ state = {}, changes = {}, created = () => { }, components } = {}, template = "body", dataID = createKey()) {
         this.template = document.querySelector(template)
         this.dataID = dataID
         this.changes = changes
         this.comrades = {}
+        this.components = components
         this.created = created
         this.map = new WeakMap()
         this.verbElementList = []
@@ -63,6 +64,12 @@ export class Verb {
         }
     }
 
+    componentHandler() {
+        for (const [name, component] of Object.entries(this.components)) {
+            this.$createComponent(name, component)
+        }
+    }
+
     first() {
         this.changeSorter()
         this.stateHandler(this.state)
@@ -80,6 +87,7 @@ export class Verb {
         this.template.appendChild(content)
 
         this.compile()
+        this.componentHandler()
 
         this.template.querySelectorAll("*").forEach(element => {
             element.setAttribute(this.dataID, "")
@@ -176,9 +184,9 @@ export class Verb {
     }
 
     $createComponent(rootName, component, props = {}) {
-        panic(document.querySelector(rootName) !== null).err(`A component tag with root name "${rootName}" was not found. Make sure there is an HTML tag with the same name as the rootName you sent`)
+        panic(this.template.querySelector(rootName) !== null).err(`A component tag with root name "${rootName}" was not found. Make sure there is an HTML tag with the same name as the rootName you sent`)
 
-        document.querySelectorAll(rootName).forEach(root => {
+        this.template.querySelectorAll(rootName).forEach(root => {
             const { componentPropsBreakPoint } = Settings,
                 addAttributes = {}
             let propsClone = { ...props }
