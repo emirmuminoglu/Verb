@@ -15,6 +15,7 @@ export class Component {
         events = () => ({}),
         changes = () => ({}),
         created = () => { },
+        mounted = () => { },
         propTypes = {},
         components = {}
     } = {}) {
@@ -29,6 +30,7 @@ export class Component {
         this.components = components
         this.methods = methods
         this.created = created
+        this.mounted = mounted
         this.propTypes = propTypes
         this.cloneState = { ...this.state }
         this.comrades = {}
@@ -254,10 +256,10 @@ export class Component {
     async $render(root, prop, addAttributes, routerMode = false, dataID = createKey()) {
         this.props = prop
         this.state = Object.assign(await this.stateConsumer(), prop)
-        this.template = await this.html(prop, this.state)
-        this.methods = this.methods(prop, this.state)
-        this.eventsConsumer = this.events(prop, this.state)
-        this.changes = this.changesConsumer(prop, this.state)
+        this.template = await this.html()
+        this.methods = this.methods()
+        this.eventsConsumer = this.events()
+        this.changes = this.changesConsumer()
         this.dataID = dataID
 
         const rootElement = document.querySelector(root)
@@ -272,6 +274,7 @@ export class Component {
         if (tempaltePropChild !== null) tempaltePropChild.replaceWith(...propChild)
 
         this.first(dataID)
+        this.mounted()
 
         if (routerMode) {
             rootElement.innerHTML = ""
@@ -279,7 +282,7 @@ export class Component {
         } else rootElement.replaceWith(this.template)
 
         this.propTypesControl()
-        this.created(prop, this.state)
+        this.created()
     }
 
     /**
