@@ -75,7 +75,9 @@ export class Component {
      * @param {String} inner are HTML codes of the main tag of this component
      */
 
-    $template(tagName, attributes, inner) {
+    createTemplate(structure) {
+        const [tagName, attributes, inner] = structure
+
         if (typeof tagName !== 'string') {
             log.err('When creating a component container with the $template method, the first parameter must contain a string value tag name, it cannot be sent empty.')
 
@@ -256,7 +258,7 @@ export class Component {
     async $render(root, prop, addAttributes, routerMode = false, dataID = createKey()) {
         this.props = prop
         this.state = Object.assign(await this.stateConsumer(), prop)
-        this.template = await this.html()
+        this.template = await this.createTemplate(await this.html())
         this.methods = this.methods()
         this.eventsConsumer = this.events()
         this.changes = this.changesConsumer()
