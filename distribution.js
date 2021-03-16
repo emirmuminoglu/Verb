@@ -1,11 +1,9 @@
-import { Verb } from "./src/verb.js"
-import { hooks } from "./src/particles/hooks/distribution.js"
-import { tools } from "./src/tools.js"
-import { JSS } from './src/system/JSS.js'
+import { Verb } from "./verb.js"
+import { hooks } from "./hooks/distribution.js"
+import { tools } from "./utils/tools.js"
 
 export {
     Verb,
-    JSS,
     hooks,
     tools
 }

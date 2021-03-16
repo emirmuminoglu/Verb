@@ -1,4 +1,4 @@
-import Settings from '../../settings.js'
+import Settings from '../settings.js'
 
 const getQueryValue = (element) => {
     const { dynamicTagBreakPoint } = Settings

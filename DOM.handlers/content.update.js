@@ -1,5 +1,4 @@
-import { join } from "../system/join.js"
-import { getVerb } from "../system/DOMVerbObject.js"
+import { join, getVerb } from '../utils/distribution.js'
 
 function update(element, joinResult) {
     const innerFormat = element.getAttribute("inner-format")

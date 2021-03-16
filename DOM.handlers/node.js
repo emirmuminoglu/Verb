@@ -1,6 +1,5 @@
-import Settings from "../../settings.js"
-import { join } from "../system/join.js"
-import { getVerb, setVerb } from "../system/DOMVerbObject.js"
+import Settings from "../settings.js"
+import { join, getVerb, setVerb } from "../utils/distribution.js"
 
 export const node = (verbNodeList, _this, dataID) => {
     const { dynamicTagBreakPoint } = Settings

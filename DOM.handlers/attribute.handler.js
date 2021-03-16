@@ -1,5 +1,5 @@
-import { join } from "../system/join.js"
-import Settings from "../../settings.js"
+import { join } from "../utils/join.js"
+import Settings from "../settings.js"
 
 export const attributeHandler = (verbAttributeList, state, changes, dataID) => {
     const { dynamicTagAttributeBreakPoint } = Settings

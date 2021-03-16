@@ -1,4 +1,4 @@
-import Settings from '../../settings.js'
+import Settings from '../../Verb/settings.js'
 
 export class JSS {
     constructor(element, { state, changes }) {

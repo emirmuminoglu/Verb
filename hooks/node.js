@@ -1,4 +1,4 @@
-import { panic } from '../../system/error.js'
+import { log } from '../utils/log.js'
 
 export class Node {
     constructor(id, { value = "", type = "string", event = "keypress" } = {}, func = () => { }) {
@@ -11,7 +11,7 @@ export class Node {
 
         if (this.el) {
             this.first()
-        } else panic().err('element null. ID: ' + this.id)
+        } else log.err('element null. ID: ', this.id)
     }
 
     first() {

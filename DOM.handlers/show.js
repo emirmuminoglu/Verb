@@ -1,4 +1,4 @@
-import Settings from "../../settings.js"
+import Settings from "../../../verb/settings.js"
 
 export const show = (verbShowList, state, dataID) => {
     const { dynamicTagBreakPoint } = Settings

@@ -1,14 +1,7 @@
-import { compiler } from "./system/compiler.js"
-import { contentUpdate, attributeHandler } from "./updates-and-handler/distribution.js"
-import { show, query, node } from "./dynamic-tag-operations/distribution.js"
-import { createKey } from "./system/create.key.js"
-import { systemTools } from "./tools.js"
-import { setVerb } from "./system/DOMVerbObject.js"
-import { panic } from "./system/error.js"
-import { Component } from "./system/component.js"
-import { createComponent } from './particles/create.component.js'
-import { comradeHandler } from "./particles/comrade.js"
-import Settings from "../settings.js"
+import { compiler } from "./compiler.js"
+import { contentUpdate, attributeHandler, show, query, node } from './DOM.handlers/distribution.js'
+import { createComponent, createKey, tools, setVerb, log, comradeHandler } from './utils/distribution.js'
+import Settings from "./settings.js"
 
 export class Verb {
     constructor({ state = {}, changes = {}, created = () => { }, components } = {}, template = "body", dataID = createKey()) {
@@ -75,7 +68,7 @@ export class Verb {
         this.changeSorter()
         this.stateHandler(this.state)
 
-        systemTools.map(tool => this[tool.name] = (ID, param1, param2) => tool(this.template, ID, param1, param2))
+        tools.map(tool => this[tool.name] = (ID, param1, param2) => tool(this.template, ID, param1, param2))
 
         const templateNode = this.template.querySelector("template")
         let content
@@ -158,13 +151,21 @@ export class Verb {
      * @param {Function} comradeItem comrade
      */
     $addComrade(name, comradeItem) {
-        panic(typeof name === "string" || typeof comradeItem === "function").err("The comrade name sent to the add comrade method is in string type and companion should be function")
+        if (typeof name === "string" || typeof comradeItem === "function") {
+            log.err('The comrade name sent to the add comrade method is in string type and companion should be function')
+
+            return
+        }
 
         this.comrades[name] = (value, old) => comradeItem(value, old)
     }
 
     $getVerb(id) {
-        panic(typeof id === "string").err("When you want to pull the verb object of an element, you must send a string value as id to getVerb method.")
+        if (typeof id === "string") {
+            log.err('When you want to pull the verb object of an element, you must send a string value as id to getVerb method.')
+
+            return
+        }
 
         return this.template.querySelector(id).verb
     }

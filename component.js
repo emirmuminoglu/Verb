@@ -1,13 +1,7 @@
-import { compiler } from "./compiler.js"
-import { contentUpdate, attributeHandler } from "../updates-and-handler/distribution.js"
-import { show, query, node } from "../dynamic-tag-operations/distribution.js"
-import { createKey } from "./create.key.js"
-import { systemTools } from "../tools.js"
-import { setVerb } from "./DOMVerbObject.js"
-import { panic } from "./error.js"
-import { comradeHandler } from "../particles/comrade.js"
-import { createComponent } from '../particles/create.component.js'
-import Settings from "../../settings.js"
+import { compiler } from './compiler.js'
+import { contentUpdate, attributeHandler, show, query, node } from './DOM.handlers/distribution.js'
+import { createKey, setVerb, comradeHandler, createComponent, tools, log } from './utils/distribution.js'
+import Settings from "./settings.js"
 
 export class Component {
     /**
@@ -46,7 +40,9 @@ export class Component {
         this.verbShowList = []
 
         const keys = [state, methods, events, changes, created].map(item => {
-            panic(typeof item === "function").err("state, methods, changes, events and created values ​​must be methods in components.")
+            if (typeof item !== 'function') {
+                log.err("state, methods, changes, events and created values ​​must be methods in components.")
+            }
         })
     }
 
@@ -56,7 +52,11 @@ export class Component {
      * @param {Function} comradeItem comrade
      */
     $addComrade(name, comradeItem) {
-        panic(typeof name === "string" || typeof comradeItem === "function").err("The comrade name sent to the add comrade method is in string type and companion should be function")
+        if (typeof name !== 'string' || typeof comradeItem !== 'function') {
+            log.err("The comrade name sent to the add comrade method is in string type and companion should be function")
+
+            return
+        }
 
         this.comrades[name] = (value, old) => comradeItem(value, old)
     }
@@ -74,9 +74,19 @@ export class Component {
      */
 
     $template(tagName, attributes, inner) {
-        panic(typeof tagName === "string").err("When creating a component container with the $template method, the first parameter must contain a string value tag name, it cannot be sent empty.")
-        panic(typeof attributes === "object").err("Attributes to be given to the component container must be contained in an object. Object names and values ​​are equal to attribute names and values")
-        panic(inner !== undefined && typeof inner === "string").err("A string value must be sent as the last parameter to the $template method in the component. The last parameter is taken as HTML content")
+        if (typeof tagName !== 'string') {
+            log.err('When creating a component container with the $template method, the first parameter must contain a string value tag name, it cannot be sent empty.')
+
+            return
+        } else if (typeof attributes !== 'object') {
+            log.err("Attributes to be given to the component container must be contained in an object. Object names and values ​​are equal to attribute names and values")
+
+            return
+        } else if (inner !== undefined && typeof inner !== 'string') {
+            log.err("A string value must be sent as the last parameter to the $template method in the component. The last parameter is taken as HTML content")
+
+            return
+        }
 
         const template = document.createElement(tagName)
 
@@ -124,7 +134,7 @@ export class Component {
         this.compile()
         this.componentHandler()
 
-        systemTools.map(tool => this[tool.name] = (ID) => tool(this.template, ID))
+        tools.map(tool => this[tool.name] = (ID) => tool(this.template, ID))
 
         this.eventHandler()
 
@@ -218,18 +228,20 @@ export class Component {
 
     propTypesControl() {
         for (const [controlName, controlValue] of Object.entries(this.propTypes)) {
-            panic(typeof controlValue === "string").err("Control values ​​in prop type checks must be strings")
+            if (typeof controlValue !== "string") {
+                log.err("Control values ​​in prop type checks must be strings")
+
+                return
+            }
 
             const type = controlValue.replace(".require", ""),
                 require = controlValue.includes(".require"),
                 prop = this.state[controlName]
 
-            if (prop !== undefined) {
-                panic(typeof prop === type).err(`"${controlName}" value was expected to come in "${type}" type but came in "${typeof prop}" type. Value:` + prop + ". Type: " + typeof prop)
-            } else {
-                if (require) {
-                    panic(false).err([`The value of "${controlName}" was supposed to come but it didn"t. Props:`, this.state])
-                }
+            if (prop !== undefined && typeof prop === type) {
+                log.err(`"${controlName}" value was expected to come in "${type}" type but came in "${typeof prop}" type. Value:` + prop + ". Type: " + typeof prop)
+            } else if (require) {
+                log.err(`The value of "${controlName}" was supposed to come but it didn"t. Props:`, this.state)
             }
         }
     }
@@ -277,7 +289,7 @@ export class Component {
     */
 
     $setState(setValue) {
-        setValue = (typeof setValue === "function" ? setValue() : setValue)
+        setValue = (typeof setValue === 'function' ? setValue() : setValue)
 
         for (const variableName in setValue) {
             this.state[variableName] = setValue[variableName]

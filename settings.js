@@ -1,6 +1,4 @@
-import { settingsControl } from "./src/system/settings.control.js"
-
-const settings = {
+export default {
     // keyword for dynamic tag operations
     dynamicTagBreakPoint: "l:",
 
@@ -43,8 +41,6 @@ const settings = {
     routerLinkTagName: "v-link"
 }
 
-export default settings
-
 /**
  * update alerts
  * 
@@ -52,5 +48,3 @@ export default settings
  * Give the value as a value that will not have the same name in the state
  * dynamic Tag BreakPoint and dynamic Tag Attribute BreakPoint values ​​should not be the same.
 */
-
-settingsControl(settings)

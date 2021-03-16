@@ -1,5 +1,5 @@
-import { Component } from '../system/component.js'
-import Settings from '../../settings.js'
+import { Component } from '../component.js'
+import Settings from '../settings.js'
 
 export const createComponent = (template, rootName, component) => {
     if (template.querySelector(rootName) === null) {

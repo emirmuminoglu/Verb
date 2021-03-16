@@ -1,5 +1,5 @@
-import { join } from "./join.js"
-import Settings from "../../settings.js"
+import { join } from './utils/join.js'
+import Settings from "./settings.js"
 
 const tagChange = (variableName, trueValue, value, dataID, innerFormat) => {
     const { variableTagName } = Settings
