@@ -151,7 +151,7 @@ export class Verb {
      * @param {Function} comradeItem comrade
      */
     $addComrade(name, comradeItem) {
-        if (typeof name === "string" || typeof comradeItem === "function") {
+        if (typeof name !== "string" || typeof comradeItem !== "function") {
             log.err('The comrade name sent to the add comrade method is in string type and companion should be function')
 
             return
@@ -190,7 +190,6 @@ export class Verb {
 
         for (const variableName in setValue) {
             this.state[variableName] = setValue[variableName]
-            this.$update()
         }
     }
 }
