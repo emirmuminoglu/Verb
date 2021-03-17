@@ -1,7 +1,7 @@
 import { join } from './utils/join.js'
 import Settings from "./settings.js"
 
-const tagChange = (variableName, trueValue, value, dataID, innerFormat) => {
+const tagChange = (variableName, value, dataID, innerFormat) => {
     const { variableTagName } = Settings
 
     return `
@@ -29,8 +29,7 @@ export const compiler = (template, state, changes, dataID) => {
 
                 template.innerHTML = template.innerHTML.replace(`${useVariableStart}${variableName}${useVariableEnd}`,
                     tagChange(
-                        variableName.replace(useHTMLMark, ""),
-                        joinResult.trueValue,
+                        variableName.replace(useHTMLMark, '').trim(),
                         joinResult.changeValue,
                         dataID,
                         innerFormat
