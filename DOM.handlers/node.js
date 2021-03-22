@@ -9,8 +9,8 @@ export const node = (verbNodeList, _this, dataID) => {
             const attributeNames = element.getAttributeNames(),
                 nodeAttributeIndex = attributeNames.findIndex(e => e.includes(`${dynamicTagBreakPoint}node`)) // index of used node attribute
 
-            const name = attributeNames[nodeAttributeIndex],
-                variableName = element.getAttribute(name)
+            const name = attributeNames[nodeAttributeIndex]
+            let variableName = element.getAttribute(name)
 
             element.value = join(_this.state, name.includes("change") ? _this.changes : {}, variableName.trim()).changeValue
 
@@ -50,8 +50,27 @@ export const node = (verbNodeList, _this, dataID) => {
                         }
                     }
 
-                    // suitable object format for the setstate function 
-                    setObj[variableName.replace("state.", "")] = typeControl()
+                    // suitable object format for the setstate function
+
+                    variableName = variableName.replace("state.", "")
+
+                    const s = variableName.split('.')
+                    const last = s.splice(s.length - 1, 1)
+                    let m = true
+                    let b
+
+                    s.map(e => {
+                        if (m) {
+                            b = _this.state[e]
+                            m = false
+
+                            return
+                        }
+
+                        b = b[e]
+                    })
+
+                    b[last] = typeControl()
 
                     // if there is key assignment tuş ataması yapılmış ise
                     if (keyCode) {
