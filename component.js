@@ -75,30 +75,10 @@ export class Component {
      * @param {String} inner are HTML codes of the main tag of this component
      */
 
-    createTemplate(structure) {
-        const [tagName, attributes, inner] = structure
+    createTemplate(HTML) {
+        const template = document.createElement('verb-component-element')
 
-        if (typeof tagName !== 'string') {
-            log.err('When creating a component container with the $template method, the first parameter must contain a string value tag name, it cannot be sent empty.')
-
-            return
-        } else if (typeof attributes !== 'object') {
-            log.err("Attributes to be given to the component container must be contained in an object. Object names and values ​​are equal to attribute names and values")
-
-            return
-        } else if (inner !== undefined && typeof inner !== 'string') {
-            log.err("A string value must be sent as the last parameter to the $template method in the component. The last parameter is taken as HTML content")
-
-            return
-        }
-
-        const template = document.createElement(tagName)
-
-        for (const name in attributes) {
-            template.setAttribute(name, attributes[name])
-        }
-
-        template.innerHTML = inner
+        template.innerHTML = HTML
 
         return template
     }
@@ -280,8 +260,8 @@ export class Component {
 
         if (routerMode) {
             rootElement.innerHTML = ""
-            rootElement.appendChild(this.template)
-        } else rootElement.replaceWith(this.template)
+            rootElement.appendChild(...this.template.children)
+        } else rootElement.replaceWith(...this.template.children)
 
         this.propTypesControl()
         this.created()
